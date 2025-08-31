@@ -26,12 +26,14 @@
   padding: 13px 112px;
   background: linear-gradient(90deg, #ffc727 0%, #9e40ba 61%, #7000ff 91%);
   border-radius: 20px;
-  max-width: 300px;
+  max-width: 285px;
   font-size: 18px;
   cursor: pointer;
   transition: all 0.5s ease-in-out;
   color: white;
   border: none;
+  display: flex;
+  justify-content: center;
 }
 .login:hover {
   transform: scale(1.05);
@@ -49,6 +51,8 @@
   cursor: pointer;
   transition: all 1s ease 0s;
   border: none;
+  display: flex;
+  justify-content: center;
 }
 .reg:hover {
   transform: scale(1.05);

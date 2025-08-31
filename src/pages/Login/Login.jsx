@@ -3,9 +3,18 @@ import logo from "./logo.png";
 import css from "./Login.module.css";
 import { IoMailOutline } from "react-icons/io5";
 import { RiLockPasswordLine } from "react-icons/ri";
+import { useNavigate } from "react-router-dom";
+
 
 export default function Login() {
+
+  const navigate = useNavigate();
+  const toRegister = () => {
+    navigate("/register");
+  }
   return (
+    <>
+    <title>Login</title>
     <div className={css.shell}>
       <div className={css.bgDecor} />
       <form className={css.Form}>
@@ -21,8 +30,9 @@ export default function Login() {
           <input type="password" className={css.text} placeholder="Password" />
         </div>
         <button className={css.login}>LOG IN</button>
-        <button className={css.reg}>REGISTER</button>
+        <button className={css.reg} onClick={toRegister}>REGISTER</button>
       </form>
     </div>
+    </>
   );
 }

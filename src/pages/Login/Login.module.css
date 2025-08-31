@@ -47,6 +47,8 @@
   font-size: 18px;
   cursor: pointer;
   transition: all 1s ease 0s;
+  display: flex;
+  justify-content: center;
 }
 .reg:hover {
   transform: scale(1.05);

@@ -4,9 +4,17 @@ import css from "./Register.module.css";
 import { IoMailOutline } from "react-icons/io5";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { MdPerson2 } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
 
 export default function Register() {
+    const navigate = useNavigate();
+  const toLogin = () => {
+    navigate("/");
+  }
+  
   return (
+    <>
+    <title>Register</title>
     <div className={css.shell}>
       <div className={css.bgDecor} />
       <form className={css.Form}>
@@ -25,9 +33,10 @@ export default function Register() {
             placeholder="Confirm Password"
           />
         </div>
-        <button className={css.login}>LOG IN</button>
-        <button className={css.reg}>REGISTER</button>
+        <button className={css.login} >REGISTER</button>
+        <button className={css.reg} onClick={toLogin}>LOG IN</button>
       </form>
     </div>
+    </>
   );
 }
