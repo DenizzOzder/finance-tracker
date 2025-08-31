@@ -1,0 +1,69 @@
+.wrapper { 
+  position: relative; 
+  width: 100%;
+  max-width: 100%;
+}
+
+.tableContainer {
+  max-height: 70vh;
+  overflow: visible;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.15);
+  width: 100%;
+  margin: 0 auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 720px;
+}
+
+.table thead th {
+  position: sticky; 
+  top: 0;
+  text-align: left; 
+  padding: 12px 16px;
+  background: rgba(82,59,126,.65);
+  color: #fff; 
+  font-weight: 700;
+}
+
+.table tbody td {
+  padding: 12px 16px; 
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  color: #fff;
+}
+
+.mobileContainer {
+  max-height: 70vh;
+  overflow: visible;
+  padding-right: 4px;
+  width: 100%;
+}
+
+/* Responsive düzenlemeler */
+@media (max-width: 768px) {
+  .tableContainer {
+    margin: 0;
+    border-radius: 8px;
+  }
+  
+  .table {
+    min-width: 600px;
+  }
+}
+
+.empty {
+  text-align: center; 
+  padding: 24px 12px; 
+  color: rgba(255,255,255,.85);
+}
+.emptyTitle { 
+  font-weight: 700; 
+  margin: 0 0 6px 0; 
+}
+.emptyText { 
+  margin: 0; 
+  opacity: .8; 
+}
