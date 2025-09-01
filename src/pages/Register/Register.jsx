@@ -9,6 +9,7 @@ import { RiLockPasswordLine } from "react-icons/ri";
 import { MdPerson2 } from "react-icons/md";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import PassControl from "../../components/PassControl/PassControl";
 
 // Yup şema
 const RegisterSchema = Yup.object({
@@ -17,12 +18,15 @@ const RegisterSchema = Yup.object({
     .min(1, "Kullanıcı adı boş olamaz")
     .max(30, "En fazla 30 karakter")
     .required("Zorunlu"),
-  email: Yup.string()
-    .email("Geçerli bir e-posta gir")
-    .required("Zorunlu"),
+  email: Yup.string().email("Geçerli bir e-posta gir").required("Zorunlu"),
   password: Yup.string()
     .min(6, "En az 6 karakter")
-    .required("Zorunlu"),
+    .max(18, "En fazla 18 karakter")
+    .required("Zorunlu")
+    .matches(
+      /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)[A-Za-z\d]{6,18}$/,
+      "Şifre en az 1 büyük harf, 1 küçük harf ve 1 rakam içermelidir"
+    ),
   confirmPassword: Yup.string()
     .oneOf([Yup.ref("password")], "Şifreler eşleşmiyor")
     .required("Zorunlu"),
@@ -66,7 +70,7 @@ export default function Register() {
           validateOnBlur
           validateOnChange={false}
         >
-          {({ isSubmitting }) => (
+          {({ isSubmitting, values }) => (
             <Form className={css.Form} noValidate>
               <img src={logo} alt="Logo" />
 
@@ -78,34 +82,47 @@ export default function Register() {
                   placeholder="Name"
                   className={css.text}
                 />
-                <div className={css.error}><ErrorMessage name="username" /></div>
+                <div className={css.error}>
+                  <ErrorMessage name="username" />
+                </div>
+                <div className={css.kapsam}>
+                  <IoMailOutline className={css.mail} />
+                  <Field
+                    name="email"
+                    type="email"
+                    placeholder="E-mail"
+                    className={css.text}
+                  />
+                </div>
+                <div className={css.error}>
+                  <ErrorMessage name="email" />
+                </div>
 
-                <IoMailOutline className={css.mail} />
-                <Field
-                  name="email"
-                  type="email"
-                  placeholder="E-mail"
-                  className={css.text}
-                />
-                <div className={css.error}><ErrorMessage name="email" /></div>
-
-                <RiLockPasswordLine className={css.pass} />
-                <Field
-                  name="password"
-                  type="password"
-                  placeholder="Password"
-                  className={css.text}
-                />
-                <div className={css.error}><ErrorMessage name="password" /></div>
-
-                <RiLockPasswordLine className={`${css.pass} ${css.Confirmpass}`} />
-                <Field
-                  name="confirmPassword"
-                  type="password"
-                  placeholder="Confirm Password"
-                  className={css.text}
-                />
-                <div className={css.error}><ErrorMessage name="confirmPassword" /></div>
+                <div className={css.kapsam}>
+                  <RiLockPasswordLine className={css.pass} />
+                  <Field
+                    name="password"
+                    type="password"
+                    placeholder="Password"
+                    className={css.text}
+                  />
+                </div>
+                <div className={css.error}>
+                  <ErrorMessage name="password" />
+                </div>
+                <div className={css.kapsam}>
+                  <RiLockPasswordLine className={css.Confirmpass} />
+                  <Field
+                    name="confirmPassword"
+                    type="password"
+                    placeholder="Confirm Password"
+                    className={css.text}
+                  />
+                </div>
+                <div className={css.error}>
+                  <ErrorMessage name="confirmPassword" />
+                </div>
+                <PassControl password={values.password} />
               </div>
 
               <button

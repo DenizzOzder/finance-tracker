@@ -73,17 +73,14 @@
   height: 24px;
   color: lightgray;
 }
-.inputs .pass {
-  top: 123px;
-}
-.inputs .Confirmpass {
-  top: 183px;
-}
-/* Email top: 65px; */
-.inputs .mail {
-  top: 65px;
-}
 
+/* Email top: 65px; */
+.error {
+  color: #ff6b81;
+}
+.kapsam {
+  position: relative;
+}
 /* Decorations */
 
 :root {
