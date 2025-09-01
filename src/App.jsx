@@ -1,5 +1,8 @@
 import { useState } from "react";
 import TransactionsList from "./components/Transactions/TransactionsList.jsx";
+import Header from "./components/Header/Header.jsx";
+
+
 
 const initial = [
   {
@@ -53,6 +56,7 @@ export default function App() {
 
   return (
     <div style={{ margin: "16px" }}>
+      <Header />
       <TransactionsList
         transactions={items}
         onAdd={handleAdd}
