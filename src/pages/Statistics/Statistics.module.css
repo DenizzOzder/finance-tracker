@@ -1,0 +1,107 @@
+/* Container: sol chart ve sağ liste/özet yan yana */
+.container {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+  flex-wrap: nowrap; /* masaüstünde yan yana */
+}
+
+/* Sol taraf: circle chart */
+.leftSide {
+  flex: 1;
+  min-width: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+/* Circle chart kutusu */
+.chartContainer {
+  position: relative;
+  width: 300px;
+  height: 300px;
+}
+
+/* Circle chart: toplam değer ortada */
+.circleTotal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+/* Hover değeri */
+.circleHover {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  font-size: 14px;
+  background: #fff;
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+
+/* Sağ taraf: filtre, liste ve özet */
+.rightSide {
+  flex: 1;
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Filtre dropdown */
+.filterContainer {
+  display: flex;
+  gap: 10px;
+}
+
+.filterContainer select {
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+}
+
+/* Transaction List */
+.transactionList {
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 10px;
+  max-height: 300px;
+  overflow-y: auto;
+  background: #f9f9f9;
+}
+
+.transactionItem {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.colorBox {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+  margin-right: 10px;
+}
+
+.transactionInfo {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+/* Summary */
+.summary {
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 10px;
+  background: #f5f5f5;
+  font-weight: 500;
+}
