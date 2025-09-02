@@ -1,68 +1,29 @@
-import { useState } from "react";
-import TransactionsList from "./components/Transactions/TransactionsList.jsx";
-import Header from "./components/Header/Header.jsx";
-
-
-
-const initial = [
-  {
-    id: 1,
-    transactionDate: "2025-08-25",
-    type: "INCOME",
-    categoryName: "Salary",
-    comment: "August",
-    amount: 25000,
-  },
-  {
-    id: 2,
-    transactionDate: "2025-08-26",
-    type: "EXPENSE",
-    categoryName: "Groceries",
-    comment: "",
-    amount: 980,
-  },
-];
+import { Routes, Route } from "react-router-dom";
+import Login from "./pages/Login/Login";
+import Register from "./pages/Register/Register";
+import Dash from "./pages/Dash/Dash";
+import ProtectedRoute from "./components/ProtectedRoute";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { getCurrent } from "./redux/auth/operations";
 
 export default function App() {
-  const [items, setItems] = useState(initial);
-
-  const handleAdd = () => {
-    // sadece demo
-    const id = Math.random().toString(36).slice(2, 8);
-    setItems((prev) => [
-      {
-        id,
-        transactionDate: new Date().toISOString(),
-        type: "EXPENSE",
-        categoryName: "New",
-        comment: "demo",
-        amount: 123,
-      },
-      ...prev,
-    ]);
-  };
-
-  const handleEdit = (it) => {
-    // demo: comment'e " (edited)" ekleyelim
-    setItems((prev) =>
-      prev.map((x) =>
-        x.id === it.id ? { ...x, comment: (x.comment || "") + " (edited)" } : x
-      )
-    );
-  };
-
-  const handleDelete = (id) =>
-    setItems((prev) => prev.filter((x) => x.id !== id));
+  const dispatch = useDispatch();
+  useEffect(() => { dispatch(getCurrent()); }, [dispatch]);
 
   return (
-    <div style={{ margin: "16px" }}>
-      <Header />
-      <TransactionsList
-        transactions={items}
-        onAdd={handleAdd}
-        onEdit={handleEdit}
-        onDelete={handleDelete}
+    <Routes>
+      <Route path="/login" element={<Login/>} />
+      <Route path="/register" element={<Register/>} />
+      <Route
+        path="/dashboard"
+        element={
+          <ProtectedRoute>
+            <Dash/>
+          </ProtectedRoute>
+        }
       />
-    </div>
+      <Route path="*" element={<Login />} />
+    </Routes>
   );
 }

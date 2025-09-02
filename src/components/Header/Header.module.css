@@ -1,5 +1,5 @@
 .header {
-  width: 100%;
+  width: auto;
   height: 80px;
   background: linear-gradient(90deg, #2e1746 3%, #2e225f 100%);
   display: flex;
