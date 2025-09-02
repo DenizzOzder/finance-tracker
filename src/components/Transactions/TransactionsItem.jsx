@@ -22,26 +22,26 @@ const TransactionsItem = ({ transaction, onEdit, onDelete }) => {
 
   if (isMobile) {
     return (
-      <ul className={`${styles.mobileCard} ${borderClass}`}>
-        <li className={styles.row}>
+      <div className={`${styles.mobileCard} ${borderClass}`}>
+        <div className={styles.row}>
           <p className={styles.label}>Date</p>
           <div className={styles.value}>
             {formatDate(transaction.transactionDate)}
           </div>
-        </li>
-        <li className={styles.row}>
+        </div>
+        <div className={styles.row}>
           <p className={styles.label}>Type</p>
           <div className={styles.value}>{isIncome ? "+" : "-"}</div>
-        </li>
-        <li className={styles.row}>
+        </div>
+        <div className={styles.row}>
           <p className={styles.label}>Category</p>
           <div className={styles.value}>{transaction.categoryName}</div>
-        </li>
-        <li className={styles.row}>
+        </div>
+        <div className={styles.row}>
           <p className={styles.label}>Comment</p>
           <div className={styles.value}>{transaction.comment || "—"}</div>
-        </li>
-        <li className={styles.row}>
+        </div>
+        <div className={styles.row}>
           <p className={styles.label}>Sum</p>
           <div
             className={`${styles.sum} ${
@@ -50,8 +50,8 @@ const TransactionsItem = ({ transaction, onEdit, onDelete }) => {
           >
             {Number(transaction.amount).toLocaleString()} ₺
           </div>
-        </li>
-        <li className={styles.actions}>
+        </div>
+        <div className={styles.actions}>
           <button
             type="button"
             className={styles.editIcon}
@@ -68,8 +68,8 @@ const TransactionsItem = ({ transaction, onEdit, onDelete }) => {
           >
             Delete
           </button>
-        </li>
-      </ul>
+        </div>
+      </div>
     );
   }
 

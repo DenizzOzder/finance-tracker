@@ -1,68 +1,71 @@
-import { useState } from "react";
+/* filepath: /home/ohhamamcioglu/finance-tracker/src/pages/Dash/Dash.jsx */
+import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import TransactionsList from "../../components/Transactions/TransactionsList.jsx";
-import "../../index.css";
+
 import Header from "../../components/Header/Header.jsx";
-const initial = [
-  {
-    id: 1,
-    transactionDate: "2025-08-25",
-    type: "INCOME",
-    categoryName: "Salary",
-    comment: "August",
-    amount: 25000,
-  },
-  {
-    id: 2,
-    transactionDate: "2025-08-26",
-    type: "EXPENSE",
-    categoryName: "Groceries",
-    comment: "",
-    amount: 980,
-  },
-];
-export default function Dash() {
-  const [items, setItems] = useState(initial);
+import { getTransactions } from "../../redux/transactions/operations.js";
+import { 
+  selectTransactionsLoading, 
+  selectTransactionsError 
+} from "../../redux/transactions/selectors.js";
+// Auth selectors'ları import et (auth slice'ından)
+import { selectIsLoggedIn, selectToken } from "../../redux/auth/selectors.js";
+import styles from "./Dash.module.css";
+
+export default function DashboardHome() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   
-    const handleAdd = () => {
-      // sadece demo
-      const id = Math.random().toString(36).slice(2, 8);
-      setItems((prev) => [
-        {
-          id,
-          transactionDate: new Date().toISOString(),
-          type: "EXPENSE",
-          categoryName: "New",
-          comment: "demo",
-          amount: 123,
-        },
-        ...prev,
-      ]);
-    };
-  
-    const handleEdit = (it) => {
-      // demo: comment'e " (edited)" ekleyelim
-      setItems((prev) =>
-        prev.map((x) =>
-          x.id === it.id ? { ...x, comment: (x.comment || "") + " (edited)" } : x
-        )
-      );
-    };
-  
-    const handleDelete = (id) =>
-      setItems((prev) => prev.filter((x) => x.id !== id));
-  
+  const loading = useSelector(selectTransactionsLoading);
+  const error = useSelector(selectTransactionsError);
+  const isLoggedIn = useSelector(selectIsLoggedIn);
+  const token = useSelector(selectToken);
+
+  useEffect(() => {
+    // Eğer kullanıcı giriş yapmamışsa login'e yönlendir
+    if (!isLoggedIn || !token) {
+      navigate('/login');
+      return;
+    }
+
+    // Giriş yapmışsa API isteklerini yap
+    dispatch(getTransactions());
+  }, [dispatch, isLoggedIn, token, navigate]);
+
+  // Eğer henüz auth kontrolü devam ediyorsa loading göster
+  if (!isLoggedIn || !token) {
     return (
-      <>
-      <Header />
-      <div style={{ margin: "16px" }}>
-        <TransactionsList
-          transactions={items}
-          onAdd={handleAdd}
-          onEdit={handleEdit}
-          onDelete={handleDelete}
-        />
+      <div className={styles.wrapper}>
+        <div className={styles.loading}>Authenticating...</div>
       </div>
-      </>
     );
   }
-  
+
+  return (
+    <div className={styles.wrapper}>
+      <Header />
+      
+      <div className={styles.content}>
+        <div className={styles.sidebar}>
+          <div className={styles.navigation}>
+            yönlendirme Alanı
+          </div>
+          <div className={styles.balance}>
+            Balance
+          </div>
+          <div className={styles.currencyChart}>
+            parite grafik alanı
+          </div>
+        </div>
+
+        <div className={styles.transactionsContainer}>
+          {loading && <div className={styles.loading}>Loading...</div>}
+          {error && <div className={styles.error}>Error: {error}</div>}
+          {!loading && !error && <TransactionsList />}
+        </div>
+      </div>
+    </div>
+  );
+}
