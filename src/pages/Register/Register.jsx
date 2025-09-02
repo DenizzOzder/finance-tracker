@@ -4,6 +4,7 @@ import css from "./Register.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { register } from "../../redux/auth/operations";
 import { Navigate, useNavigate } from "react-router-dom";
+import { selectIsLoggedIn, selectIsRefreshing } from "../../redux/auth/selectors";
 import { IoMailOutline } from "react-icons/io5";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { MdPerson2 } from "react-icons/md";
@@ -37,7 +38,26 @@ const RegisterSchema = Yup.object({
 export default function Register() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { isLoggedIn, loading, error } = useSelector((s) => s.auth);
+  const { loading, error } = useSelector((s) => s.auth);
+  const isLoggedIn = useSelector(selectIsLoggedIn);
+  const isRefreshing = useSelector(selectIsRefreshing);
+
+  // Auth durumu yükleniyorsa loading göster
+  if (isRefreshing) {
+    return (
+      <div style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100vh',
+        background: 'linear-gradient(135deg, #101010 0%, #0E0D12 50%, #0A0A0A 100%)',
+        color: 'white',
+        fontSize: '18px'
+      }}>
+        Loading...
+      </div>
+    );
+  }
 
   if (isLoggedIn) return <Navigate to="/dashboard" replace />;
 

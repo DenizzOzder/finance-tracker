@@ -1,14 +1,88 @@
-import React from "react";
-import PropTypes from "prop-types";
+/* filepath: /home/ohhamamcioglu/finance-tracker/src/components/Transactions/TransactionsList.jsx */
+import { useSelector, useDispatch } from "react-redux";
 import { useMediaQuery } from "react-responsive";
+import { useEffect } from "react";
 import styles from "./TransactionsList.module.css";
 import TransactionsItem from "./TransactionsItem.jsx";
 import ButtonAddTransactions from "./ButtonAddTransactions.jsx";
 import emptyTransaction from "../../images/emptytransaction.webp";
+import { selectTransactions, selectCategories } from "../../redux/transactions/selectors.js";
+import { deleteTransaction, getCategories } from "../../redux/transactions/operations.js";
+import { optimisticDelete, revertDelete } from "../../redux/transactions/slice.js";
+import "izitoast/dist/css/iziToast.min.css";
+import iziToast from "izitoast";
 
-const TransactionsList = ({ transactions, onEdit, onDelete, onAdd }) => {
+const TransactionsList = () => {
+  const dispatch = useDispatch();
+  const transactions = useSelector(selectTransactions);
+  const categories = useSelector(selectCategories);
   const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
   const isEmpty = !transactions || transactions.length === 0;
+
+  // Component mount olduğunda categories'leri yükle
+  useEffect(() => {
+    dispatch(getCategories());
+  }, [dispatch]);
+
+  // Categories'leri ID'ye göre map'e çevir
+  const categoryMap = categories.reduce((acc, category) => {
+    acc[category.id] = category.name;
+    return acc;
+  }, {});
+
+  // Transactions'ları category name ile birliştir
+  const transactionsWithCategories = transactions?.map(transaction => ({
+    ...transaction,
+    categoryName: categoryMap[transaction.categoryId] || 'Unknown Category'
+  })) || [];
+
+  const handleAdd = () => {
+    // Add transaction logic
+    console.log("Add transaction");
+  };
+
+  const handleEdit = (transaction) => {
+    // Edit transaction logic
+    console.log("Edit transaction:", transaction);
+  };
+
+  const handleDelete = async (id) => {
+    // Silinecek transaction'ı bul
+    const transactionToDelete = transactions.find(t => t.id === id);
+    
+    if (!transactionToDelete) return;
+
+    // Optimistic update - hemen UI'dan kaldır
+    dispatch(optimisticDelete(id));
+
+    try {
+      // API'ye delete isteği gönder
+      await dispatch(deleteTransaction(id)).unwrap();
+      
+      // Başarılı toast mesajı
+      iziToast.success({
+        title: "Başarılı ✅",
+        message: "İşlem silindi",
+        position: "topRight",
+        timeout: 2000,
+        class: "custom-success-toast",
+        theme: "dark",
+      });
+    } catch (error) {
+      // Hata olursa transaction'ı geri ekle
+      dispatch(revertDelete({ id, transaction: transactionToDelete }));
+      
+      // Hata toast mesajı
+      iziToast.error({
+        title: "Hata ❌",
+        message: error.message || "İşlem silinemedi",
+        position: "topRight",
+        timeout: 3000,
+        class: "custom-error-toast",
+        theme: "dark",
+      });
+    }
+  };
 
   return (
     <div className={styles.wrapper}>
@@ -23,12 +97,12 @@ const TransactionsList = ({ transactions, onEdit, onDelete, onAdd }) => {
               </p>
             </div>
           ) : (
-            transactions.map((t) => (
+            transactionsWithCategories.map((t) => (
               <TransactionsItem
                 key={t.id}
                 transaction={t}
-                onEdit={onEdit}
-                onDelete={onDelete}
+                onEdit={handleEdit}
+                onDelete={handleDelete}
               />
             ))
           )}
@@ -56,7 +130,6 @@ const TransactionsList = ({ transactions, onEdit, onDelete, onAdd }) => {
                         alt="page-not-found"
                         width="240"
                       />
-
                       <p className={styles.emptyTitle}>No transactions yet</p>
                       <p className={styles.emptyText}>
                         Start by adding your first record.
@@ -65,12 +138,12 @@ const TransactionsList = ({ transactions, onEdit, onDelete, onAdd }) => {
                   </td>
                 </tr>
               ) : (
-                transactions.map((t) => (
+                transactionsWithCategories.map((t) => (
                   <TransactionsItem
                     key={t.id}
                     transaction={t}
-                    onEdit={onEdit}
-                    onDelete={onDelete}
+                    onEdit={handleEdit}
+                    onDelete={handleDelete}
                   />
                 ))
               )}
@@ -79,26 +152,9 @@ const TransactionsList = ({ transactions, onEdit, onDelete, onAdd }) => {
         </div>
       )}
 
-      <ButtonAddTransactions onClick={onAdd} />
+      <ButtonAddTransactions onClick={handleAdd} />
     </div>
   );
-};
-
-TransactionsList.propTypes = {
-  transactions: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-      transactionDate: PropTypes.string.isRequired,
-      type: PropTypes.oneOf(["INCOME", "EXPENSE"]).isRequired,
-      categoryName: PropTypes.string.isRequired,
-      comment: PropTypes.string,
-      amount: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
-        .isRequired,
-    })
-  ),
-  onEdit: PropTypes.func,
-  onDelete: PropTypes.func,
-  onAdd: PropTypes.func,
 };
 
 export default TransactionsList;

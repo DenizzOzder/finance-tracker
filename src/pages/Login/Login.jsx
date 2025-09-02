@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../redux/auth/operations";
 import { useState, useEffect } from "react";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import { selectIsLoggedIn, selectIsRefreshing } from "../../redux/auth/selectors";
 import logo from "./logo.png";
 import css from "./Login.module.css";
 import { IoMailOutline } from "react-icons/io5";
@@ -11,7 +12,9 @@ import iziToast from "izitoast";
 
 export default function Login() {
   const dispatch = useDispatch();
-  const { isLoggedIn, loading, error } = useSelector((s) => s.auth);
+  const { loading } = useSelector((s) => s.auth);
+  const isLoggedIn = useSelector(selectIsLoggedIn);
+  const isRefreshing = useSelector(selectIsRefreshing);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const loc = useLocation();
@@ -21,6 +24,23 @@ export default function Login() {
   useEffect(() => {
     document.title = "Login";
   }, []);
+
+  // Auth durumu yükleniyorsa loading göster
+  if (isRefreshing) {
+    return (
+      <div style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100vh',
+        background: 'linear-gradient(135deg, #101010 0%, #0E0D12 50%, #0A0A0A 100%)',
+        color: 'white',
+        fontSize: '18px'
+      }}>
+        Loading...
+      </div>
+    );
+  }
 
   if (isLoggedIn) return <Navigate to={from} replace />;
 
