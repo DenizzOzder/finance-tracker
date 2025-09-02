@@ -10,6 +10,8 @@ import { MdPerson2 } from "react-icons/md";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import PassControl from "../../components/PassControl/PassControl";
+import "izitoast/dist/css/iziToast.min.css";
+import iziToast from "izitoast";
 
 // Yup şema
 const RegisterSchema = Yup.object({
@@ -50,8 +52,23 @@ export default function Register() {
     const { username, email, password } = values;
     try {
       await dispatch(register({ username, email, password })).unwrap();
-    } catch (_) {
-      // hata slice.error’da
+      iziToast.success({
+        title: "Başarılı 🎉",
+        message: "Kayıt başarılı!",
+        position: "topRight",
+        timeout: 3000,
+        class: "custom-success-toast",
+        theme: "dark",
+      });
+    } catch (err) {
+      iziToast.error({
+        title: "Hata ❌",
+        message: err.message || "Kayıt başarısız!",
+        position: "topRight",
+        timeout: 3000,
+        class: "custom-error-toast",
+        theme: "dark",
+      });
     } finally {
       setSubmitting(false);
     }
@@ -75,18 +92,23 @@ export default function Register() {
               <img src={logo} alt="Logo" />
 
               <div className={css.inputs}>
-                <MdPerson2 />
-                <Field
-                  name="username"
-                  type="text"
-                  placeholder="Name"
-                  className={css.text}
-                />
+                {/* Username */}
+                <div className={css.inputWrap}>
+                  <MdPerson2 className={css.icon} />
+                  <Field
+                    name="username"
+                    type="text"
+                    placeholder="Name"
+                    className={css.text}
+                  />
+                </div>
                 <div className={css.error}>
                   <ErrorMessage name="username" />
                 </div>
-                <div className={css.kapsam}>
-                  <IoMailOutline className={css.mail} />
+
+                {/* Email */}
+                <div className={css.inputWrap}>
+                  <IoMailOutline className={css.icon} />
                   <Field
                     name="email"
                     type="email"
@@ -98,8 +120,9 @@ export default function Register() {
                   <ErrorMessage name="email" />
                 </div>
 
-                <div className={css.kapsam}>
-                  <RiLockPasswordLine className={css.pass} />
+                {/* Password */}
+                <div className={css.inputWrap}>
+                  <RiLockPasswordLine className={css.icon} />
                   <Field
                     name="password"
                     type="password"
@@ -110,8 +133,10 @@ export default function Register() {
                 <div className={css.error}>
                   <ErrorMessage name="password" />
                 </div>
-                <div className={css.kapsam}>
-                  <RiLockPasswordLine className={css.Confirmpass} />
+
+                {/* Confirm Password */}
+                <div className={css.inputWrap}>
+                  <RiLockPasswordLine className={css.icon} />
                   <Field
                     name="confirmPassword"
                     type="password"
@@ -122,6 +147,7 @@ export default function Register() {
                 <div className={css.error}>
                   <ErrorMessage name="confirmPassword" />
                 </div>
+
                 <PassControl password={values.password} />
               </div>
 

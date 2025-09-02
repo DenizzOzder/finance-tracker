@@ -6,9 +6,10 @@ import logo from "./logo.png";
 import css from "./Login.module.css";
 import { IoMailOutline } from "react-icons/io5";
 import { RiLockPasswordLine } from "react-icons/ri";
+import "izitoast/dist/css/iziToast.min.css";
+import iziToast from "izitoast";
 
 export default function Login() {
-  // --- HOOKLAR EN ÜSTE ---
   const dispatch = useDispatch();
   const { isLoggedIn, loading, error } = useSelector((s) => s.auth);
   const [email, setEmail] = useState("");
@@ -17,17 +18,36 @@ export default function Login() {
   const navigate = useNavigate();
   const from = loc.state?.from || "/dashboard";
 
-  // (opsiyonel) sayfa başlığı
-  useEffect(() => { document.title = "Login"; }, []);
+  useEffect(() => {
+    document.title = "Login";
+  }, []);
 
-  // --- KOŞULLU DÖNÜŞ HOOK'LARDAN SONRA ---
   if (isLoggedIn) return <Navigate to={from} replace />;
 
   const toRegister = () => navigate("/register");
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
-    dispatch(login({ email, password }));
+    try {
+      await dispatch(login({ email, password })).unwrap();
+      iziToast.success({
+        title: "Hoşgeldin 👋",
+        message: "Giriş başarılı!",
+        position: "topRight",
+        timeout: 3000,
+        class: "custom-success-toast",
+        theme: "dark",
+      });
+    } catch (err) {
+      iziToast.error({
+        title: "Hata ❌",
+        message: err?.message || "Giriş başarısız!",
+        position: "topRight",
+        timeout: 3000,
+        class: "custom-error-toast",
+        theme: "dark",
+      });
+    }
   };
 
   return (
@@ -36,24 +56,29 @@ export default function Login() {
       <form className={css.Form} onSubmit={onSubmit}>
         <img src={logo} alt="Logo" />
         <div className={css.inputs}>
-          <IoMailOutline />
-          <input
-            type="email"
-            placeholder="Enter Your Mail"
-            className={css.text}
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-          <RiLockPasswordLine className={css.pass} />
-          <input
-            type="password"
-            className={css.text}
-            placeholder="Password"
-            value={password}          
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
+          <div className={css.inputWrap}>
+            <IoMailOutline className={css.icon} />
+            <input
+              type="email"
+              placeholder="Enter Your Mail"
+              className={css.text}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+
+          <div className={css.inputWrap}>
+            <RiLockPasswordLine className={css.icon} />
+            <input
+              type="password"
+              className={css.text}
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
         </div>
 
         <button className={css.login} type="submit" disabled={loading}>
@@ -64,8 +89,6 @@ export default function Login() {
         <button className={css.reg} type="button" onClick={toRegister}>
           REGISTER
         </button>
-
-        {error && <p style={{ color: "crimson" }}>{error}</p>}
       </form>
     </div>
   );
