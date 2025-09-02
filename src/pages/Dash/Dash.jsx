@@ -1,7 +1,7 @@
 import { useState } from "react";
 import TransactionsList from "../../components/Transactions/TransactionsList.jsx";
 import "../../index.css";
-
+import Header from "../../components/Header/Header.jsx";
 const initial = [
   {
     id: 1,
@@ -52,6 +52,8 @@ export default function Dash() {
       setItems((prev) => prev.filter((x) => x.id !== id));
   
     return (
+      <>
+      <Header />
       <div style={{ margin: "16px" }}>
         <TransactionsList
           transactions={items}
@@ -60,6 +62,7 @@ export default function Dash() {
           onDelete={handleDelete}
         />
       </div>
+      </>
     );
   }
   
