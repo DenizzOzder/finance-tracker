@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { api, setAuthToken } from "../../shared/api";
+import { setToken, removeToken, userTransactionsApi } from "../../shared/api";
 
-const EP = {
+const AUTH_ENDPOINTS = {
   signUp: "/api/auth/sign-up",
   signIn: "/api/auth/sign-in",
   signOut: "/api/auth/sign-out",
@@ -13,9 +13,9 @@ export const register = createAsyncThunk(
   "auth/register",
   async ({ username, email, password }, { rejectWithValue }) => {
     try {
-      const { data } = await api.post(EP.signUp, { username, email, password });
+      const { data } = await userTransactionsApi.post(AUTH_ENDPOINTS.signUp, { username, email, password });
       // Çoğu senaryoda { token, user } döner; bazen direkt user dönebilir.
-      if (data?.token) setAuthToken(data.token);
+      if (data?.token) setToken(data.token);
       return data; // { token, user }  veya  { id, username, email, balance }
     } catch (err) {
       return rejectWithValue(err.response?.data || { message: "Register failed" });
@@ -24,46 +24,51 @@ export const register = createAsyncThunk(
 );
 
 // LOGIN
-export const login = createAsyncThunk(
-  "auth/login",
-  async ({ email, password }, { rejectWithValue }) => {
-    try {
-      const { data } = await api.post(EP.signIn, { email, password });
-      if (data?.token) setAuthToken(data.token);
-      return data; // { token, user }
-    } catch (err) {
-      return rejectWithValue(err.response?.data || { message: "Login failed" });
-    }
+export const login = createAsyncThunk("auth/login", async ({ email, password }, { rejectWithValue }) => {
+  try {
+    const { data } = await userTransactionsApi.post(AUTH_ENDPOINTS.signIn, { email, password });
+    if (data?.token) setToken(data.token);
+    return data; // { token, user }
+  } catch (err) {
+    return rejectWithValue(err.response?.data || { message: "Login failed" });
   }
-);
+});
 
 // LOGOUT
-export const logout = createAsyncThunk(
-  "auth/logout",
-  async (_, { getState, rejectWithValue }) => {
-    try {
-      const token = getState().auth.token;
-      if (token) setAuthToken(token);
-      await api.post(EP.signOut);
-      setAuthToken(null);
-    } catch (err) {
-      return rejectWithValue(err.response?.data || { message: "Logout failed" });
-    }
+export const logout = createAsyncThunk("auth/logout", async (_, { getState, rejectWithValue }) => {
+  try {
+    const token = getState().auth.token;
+    if (token) setToken(token);
+    await userTransactionsApi.delete(AUTH_ENDPOINTS.signOut);
+    removeToken();
+  } catch (err) {
+    return rejectWithValue(err.response?.data || { message: "Logout failed" });
   }
-);
+});
 
-// CURRENT USER →  { id, username, email, balance }
-export const getCurrent = createAsyncThunk(
-  "auth/current",
-  async (_, { getState, rejectWithValue }) => {
-    try {
-      const token = getState().auth.token;
-      if (!token) throw new Error("No token");
-      setAuthToken(token);
-      const { data } = await api.get(EP.current);
-      return data; // { id, username, email, balance }
-    } catch (err) {
-      return rejectWithValue(err.response?.data || { message: "Get current failed" });
-    }
+// REFRESH PAGE -> Refresh yapıldığında token silinmemesi için
+export const getCurrent = createAsyncThunk("auth/refresh", async (_, thunkApi) => {
+  const savedToken = thunkApi.getState().auth.token;
+  if (savedToken) {
+    setToken(savedToken);
+  } else {
+    return thunkApi.rejectWithValue("Token doesn't exist");
   }
-);
+  // CURRENT USER →  { id, username, email, balance }
+  try {
+    const { data } = await userTransactionsApi.get(AUTH_ENDPOINTS.current);
+    return data;
+  } catch (error) {
+    return thunkApi.rejectWithValue(error.message);
+  }
+});
+
+// Userın BALANCE değeri döner
+export const getBalanceThunk = createAsyncThunk("getBalannce", async (_, thunkApi) => {
+  try {
+    const { data } = await userTransactionsApi.get(AUTH_ENDPOINTS.current);
+    return data.balance;
+  } catch (error) {
+    return thunkApi.rejectWithValue(error.message);
+  }
+});
