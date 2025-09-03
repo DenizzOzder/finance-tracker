@@ -22,7 +22,7 @@ import "izitoast/dist/css/iziToast.min.css";
 import iziToast from "izitoast";
 import { useState } from "react";
 import AddTransactionModal from "../Transaction/transaction.jsx";
-import ModalEditTransaction from "./ModalEditTransaction.jsx";
+import ModalEditTransaction from "../ModalEditTransaction/ModalEditTransaction.jsx";
 
 const TransactionsList = () => {
   const dispatch = useDispatch();
@@ -30,6 +30,8 @@ const TransactionsList = () => {
   const categories = useSelector(selectCategories);
   const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
   const isEmpty = !transactions || transactions.length === 0;
+  const [showTransaction, setShowTransaction] = useState(false);
+  const [selectedTransaction, setSelectedTransaction] = useState(null);
 
   // Component mount olduğunda categories'leri yükle
   useEffect(() => {
@@ -91,10 +93,6 @@ const TransactionsList = () => {
         theme: "dark",
       });
     }
-  };
-
-  const handleCloseModal = () => {
-    setSelectedTransaction(null);
   };
 
   return (
@@ -166,18 +164,9 @@ const TransactionsList = () => {
       )}
       <ModalEditTransaction
         isOpen={!!selectedTransaction}
-        onClose={handleCloseModal}
+        onClose={() => setSelectedTransaction(null)}
         transaction={selectedTransaction}
-      >
-        {selectedTransaction && (
-          <div>
-            <h2>Edit Transaction</h2>
-            <p>Date: {selectedTransaction.transactionDate}</p>
-            <p>Amount: {selectedTransaction.amount}</p>
-            {/* Buraya form koyabilirsin */}
-          </div>
-        )}
-      </ModalEditTransaction>
+      />
       <ButtonAddTransactions onClick={() => setShowTransaction(true)} />
 
       {showTransaction && (

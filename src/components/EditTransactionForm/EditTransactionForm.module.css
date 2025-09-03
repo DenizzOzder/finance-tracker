@@ -82,16 +82,17 @@ label {
 
 .inputRow {
     display: flex;
+    gap: 20px;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
     padding: 5px 0;
 }
 
 .inputRow input {
     background: transparent;
     border: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
     color: #fff;
     font-size: 16px;
     outline: none;
@@ -101,28 +102,6 @@ label {
 .date {
     width: 120px;
     text-align: right;
-}
-
-.btn {
-    display: block;
-    width: 100%;
-    padding: 12px;
-    border: none;
-    border-radius: 25px;
-    font-size: 14px;
-    font-weight: bold;
-    cursor: pointer;
-    margin-bottom: 15px;
-}
-
-.save {
-    background: linear-gradient(90deg, #f6b93b, #eb4d90);
-    color: #fff;
-}
-
-.cancel {
-    background: #fff;
-    color: #333;
 }
 
 .close {
@@ -139,4 +118,8 @@ label {
     flex-direction: column;
     align-items: center;
     gap: 20px;
+}
+
+.calendarIcon {
+    color: #734AEF;
 }

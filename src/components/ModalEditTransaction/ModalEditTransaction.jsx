@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import styles from "./ModalEditTransaction.module.css";
-import EditTransactionForm from "./EditTransactionForm";
+import EditTransactionForm from "../EditTransactionForm/EditTransactionForm";
 import { useEffect } from "react";
 
 const ModalEditTransaction = ({ isOpen, onClose, transaction }) => {
