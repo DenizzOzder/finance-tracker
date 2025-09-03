@@ -11,6 +11,8 @@ import { deleteTransaction, getCategories } from "../../redux/transactions/opera
 import { optimisticDelete, revertDelete } from "../../redux/transactions/slice.js";
 import "izitoast/dist/css/iziToast.min.css";
 import iziToast from "izitoast";
+import { useState } from "react";
+import AddTransactionModal from "../Transaction/transaction.jsx";
 
 const TransactionsList = () => {
   const dispatch = useDispatch();
@@ -18,6 +20,7 @@ const TransactionsList = () => {
   const categories = useSelector(selectCategories);
   const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
   const isEmpty = !transactions || transactions.length === 0;
+  const [showTransaction, setShowTransaction] = useState(false);
 
   // Component mount olduğunda categories'leri yükle
   useEffect(() => {
@@ -36,10 +39,7 @@ const TransactionsList = () => {
     categoryName: categoryMap[transaction.categoryId] || 'Unknown Category'
   })) || [];
 
-  const handleAdd = () => {
-    // Add transaction logic
-    console.log("Add transaction");
-  };
+  
 
   const handleEdit = (transaction) => {
     // Edit transaction logic
@@ -152,7 +152,11 @@ const TransactionsList = () => {
         </div>
       )}
 
-      <ButtonAddTransactions onClick={handleAdd} />
+      <ButtonAddTransactions onClick={() => setShowTransaction(true)} />
+
+      {showTransaction && (
+        <AddTransactionModal onClose={() => setShowTransaction(false)} />
+      )}
     </div>
   );
 };
