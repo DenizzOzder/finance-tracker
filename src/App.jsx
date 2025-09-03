@@ -6,6 +6,8 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { getCurrent } from "./redux/auth/operations";
+import Statistics from "./pages/Statistics/Statistics";
+
 
 export default function App() {
   const dispatch = useDispatch();
@@ -23,6 +25,7 @@ export default function App() {
           </ProtectedRoute>
         }
       />
+       <Route path="/statistics" element={<Statistics />} />
       <Route path="*" element={<Login />} />
     </Routes>
   );
