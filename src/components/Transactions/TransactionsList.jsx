@@ -6,11 +6,22 @@ import styles from "./TransactionsList.module.css";
 import TransactionsItem from "./TransactionsItem.jsx";
 import ButtonAddTransactions from "./ButtonAddTransactions.jsx";
 import emptyTransaction from "../../images/emptytransaction.webp";
-import { selectTransactions, selectCategories } from "../../redux/transactions/selectors.js";
-import { deleteTransaction, getCategories } from "../../redux/transactions/operations.js";
-import { optimisticDelete, revertDelete } from "../../redux/transactions/slice.js";
+import {
+  selectTransactions,
+  selectCategories,
+} from "../../redux/transactions/selectors.js";
+import {
+  deleteTransaction,
+  getCategories,
+} from "../../redux/transactions/operations.js";
+import {
+  optimisticDelete,
+  revertDelete,
+} from "../../redux/transactions/slice.js";
 import "izitoast/dist/css/iziToast.min.css";
 import iziToast from "izitoast";
+import ModalEditTransaction from "./ModalEditTransaction.jsx";
+import { useState } from "react";
 
 const TransactionsList = () => {
   const dispatch = useDispatch();
@@ -18,6 +29,8 @@ const TransactionsList = () => {
   const categories = useSelector(selectCategories);
   const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
   const isEmpty = !transactions || transactions.length === 0;
+
+  const [selectedTransaction, setSelectedTransaction] = useState(null);
 
   // Component mount olduğunda categories'leri yükle
   useEffect(() => {
@@ -31,10 +44,11 @@ const TransactionsList = () => {
   }, {});
 
   // Transactions'ları category name ile birliştir
-  const transactionsWithCategories = transactions?.map(transaction => ({
-    ...transaction,
-    categoryName: categoryMap[transaction.categoryId] || 'Unknown Category'
-  })) || [];
+  const transactionsWithCategories =
+    transactions?.map((transaction) => ({
+      ...transaction,
+      categoryName: categoryMap[transaction.categoryId] || "Unknown Category",
+    })) || [];
 
   const handleAdd = () => {
     // Add transaction logic
@@ -42,14 +56,15 @@ const TransactionsList = () => {
   };
 
   const handleEdit = (transaction) => {
+    setSelectedTransaction(transaction);
     // Edit transaction logic
     console.log("Edit transaction:", transaction);
   };
 
   const handleDelete = async (id) => {
     // Silinecek transaction'ı bul
-    const transactionToDelete = transactions.find(t => t.id === id);
-    
+    const transactionToDelete = transactions.find((t) => t.id === id);
+
     if (!transactionToDelete) return;
 
     // Optimistic update - hemen UI'dan kaldır
@@ -58,7 +73,7 @@ const TransactionsList = () => {
     try {
       // API'ye delete isteği gönder
       await dispatch(deleteTransaction(id)).unwrap();
-      
+
       // Başarılı toast mesajı
       iziToast.success({
         title: "Başarılı ✅",
@@ -71,7 +86,7 @@ const TransactionsList = () => {
     } catch (error) {
       // Hata olursa transaction'ı geri ekle
       dispatch(revertDelete({ id, transaction: transactionToDelete }));
-      
+
       // Hata toast mesajı
       iziToast.error({
         title: "Hata ❌",
@@ -82,6 +97,10 @@ const TransactionsList = () => {
         theme: "dark",
       });
     }
+  };
+
+  const handleCloseModal = () => {
+    setSelectedTransaction(null);
   };
 
   return (
@@ -151,7 +170,20 @@ const TransactionsList = () => {
           </table>
         </div>
       )}
-
+      <ModalEditTransaction
+        isOpen={!!selectedTransaction}
+        onClose={handleCloseModal}
+        transaction={selectedTransaction}
+      >
+        {selectedTransaction && (
+          <div>
+            <h2>Edit Transaction</h2>
+            <p>Date: {selectedTransaction.transactionDate}</p>
+            <p>Amount: {selectedTransaction.amount}</p>
+            {/* Buraya form koyabilirsin */}
+          </div>
+        )}
+      </ModalEditTransaction>
       <ButtonAddTransactions onClick={handleAdd} />
     </div>
   );
