@@ -3,9 +3,11 @@ import logo from "../../images/logo.svg";
 import styles from "./Header.module.css";
 import { FiLogOut } from "react-icons/fi";
 import LogOutModal from "../LogOutModal/LogOutModal";
+import { useSelector } from "react-redux";
 
 export default function Header() {
   const { openModal, isOpen, closeModal } = useToggle();
+  const { user } = useSelector((state) => state.auth);
 
   return (
     <header className={styles.header}>
@@ -14,7 +16,7 @@ export default function Header() {
       </div>
 
       <div className={styles.userBox}>
-        <span className={styles.username}>Name</span>
+        <span className={styles.username}>{user.username}</span>
         <button className={styles.exitBtn} onClick={openModal}>
           <FiLogOut className={styles.exitIcon} />
           Exit
