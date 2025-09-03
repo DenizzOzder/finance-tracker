@@ -6,18 +6,19 @@ import TransactionsList from "../../components/Transactions/TransactionsList.jsx
 
 import Header from "../../components/Header/Header.jsx";
 import { getTransactions } from "../../redux/transactions/operations.js";
-import { 
-  selectTransactionsLoading, 
-  selectTransactionsError 
+import {
+  selectTransactionsLoading,
+  selectTransactionsError,
 } from "../../redux/transactions/selectors.js";
-// Auth selectors'ları import et (auth slice'ından)
+// Auth selectors
 import { selectIsLoggedIn, selectToken } from "../../redux/auth/selectors.js";
 import styles from "./Dash.module.css";
+import RuleBotWidget from "../../components/RuleBot/RuleBotWidget.jsx";
 
 export default function DashboardHome() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  
+
   const loading = useSelector(selectTransactionsLoading);
   const error = useSelector(selectTransactionsError);
   const isLoggedIn = useSelector(selectIsLoggedIn);
@@ -26,7 +27,7 @@ export default function DashboardHome() {
   useEffect(() => {
     // Eğer kullanıcı giriş yapmamışsa login'e yönlendir
     if (!isLoggedIn || !token) {
-      navigate('/login');
+      navigate("/login");
       return;
     }
 
@@ -43,21 +44,26 @@ export default function DashboardHome() {
     );
   }
 
+  // Şimdilik test için sahte veri verelim
+  const snapshot = {
+    month: "2025-09",
+    totals: { income: 12000, expense: 9500 },
+    topCategories: [
+      { name: "Market", amount: 3500 },
+      { name: "Faturalar", amount: 2500 },
+      { name: "Ulaşım", amount: 1500 },
+    ],
+  };
+
   return (
     <div className={styles.wrapper}>
       <Header />
-      
+
       <div className={styles.content}>
         <div className={styles.sidebar}>
-          <div className={styles.navigation}>
-            yönlendirme Alanı
-          </div>
-          <div className={styles.balance}>
-            Balance
-          </div>
-          <div className={styles.currencyChart}>
-            parite grafik alanı
-          </div>
+          <div className={styles.navigation}>yönlendirme Alanı</div>
+          <div className={styles.balance}>Balance</div>
+          <div className={styles.currencyChart}>parite grafik alanı</div>
         </div>
 
         <div className={styles.transactionsContainer}>
@@ -66,6 +72,7 @@ export default function DashboardHome() {
           {!loading && !error && <TransactionsList />}
         </div>
       </div>
+      <RuleBotWidget snapshot={snapshot} />
     </div>
   );
 }
