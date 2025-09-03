@@ -53,7 +53,7 @@ export function findBestAnswer(userText, { snapshot, usdRate = 33 } = {}) {
   ) {
     return {
       answer:
-        "💱 Güncel döviz kurları için uygulamada Menü → Kurlar sayfasını açabilirsin.",
+        "💱 Güncel döviz kurları ekranın sol altında bulunan bölümden takip edebilirsiniz.",
     };
   }
   if (q.includes("bakiye") || q.includes("balance")) {

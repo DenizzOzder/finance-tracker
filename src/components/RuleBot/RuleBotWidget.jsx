@@ -1,11 +1,15 @@
+/* filepath: /home/ohhamamcioglu/finance-tracker/src/components/RuleBot/RuleBotWidget.jsx */
 import { useEffect, useRef, useState } from "react";
 import s from "./RuleBotWidget.module.css";
 
 import { findBestAnswer } from "../../bot/matcher";
 import { detectMonthFromText } from "../../features/chat/monthParser";
 import { parseTransactionInput } from "../../bot/nlpTransaction";
+import { parseCurrencyQuery } from "../../bot/currencyParser";
+
 import { createTransaction } from "../../shared/transaction";
-import { useMonthlySnapshot } from "../../features/chat/useMonthlySummary";
+import { getRate, getRatesCached } from "../../shared/rates";
+import { useMonthlySummary } from "../../features/chat/useMonthlySummary";
 
 export default function RuleBotWidget() {
   const [open, setOpen] = useState(false);
@@ -13,21 +17,42 @@ export default function RuleBotWidget() {
     {
       role: "assistant",
       content:
-        'Merhaba! 👋 Örn: "bu ay gider", "geçen ay gelir", "gider 100 tl market", "dün 85 tl ulaşım" yazabilirsin.',
+        'Merhaba! 👋 Örn: "gider 100 tl market", "gelir 2500 maaş", "bu ay gider", "100 usd kaç tl", "usd tl", "kur"',
     },
   ]);
   const [input, setInput] = useState("");
   const [unread, setUnread] = useState(0);
   const [month, setMonth] = useState(() =>
     new Date().toISOString().slice(0, 7)
-  ); // aktif dönem
+  );
   const panelRef = useRef(null);
+  const messagesRef = useRef(null); // 👈 mesaj container için ref
 
-  const { data: snapshot, loading, error, refetch } = useMonthlySnapshot(month);
+  const { data: snapshot, loading, error, refetch } = useMonthlySummary(month);
+
+  // otomatik scroll helper
+  function scrollToBottom() {
+    requestAnimationFrame(() => {
+      const el = messagesRef.current;
+      if (!el) return;
+      el.scrollTop = el.scrollHeight;
+    });
+  }
+
+  // panel açıldığında en alta kaydır
+  useEffect(() => {
+    if (open) scrollToBottom();
+  }, [open]);
+
+  // her yeni mesajda kaydır
+  useEffect(() => {
+    scrollToBottom();
+  }, [msgs]);
 
   useEffect(() => {
     const onDown = (e) => {
-      if (open && panelRef.current && !panelRef.current.contains(e.target))
+      if (!open) return;
+      if (panelRef.current && !panelRef.current.contains(e.target))
         setOpen(false);
     };
     window.addEventListener("mousedown", onDown);
@@ -53,27 +78,34 @@ export default function RuleBotWidget() {
     const q = input.trim();
     if (!q) return;
 
-    const userMsg = { role: "user", content: q };
-    push(userMsg);
+    push({ role: "user", content: q });
     setInput("");
 
-    // 1) Doğal dilden işlem dene
-    const parsed = parseTransactionInput(q);
-    if (parsed) {
-      const detectedMonth = parsed.transactionDate.slice(0, 7);
+    // 1) Doğal dilden gider/gelir
+    const parsedTx = parseTransactionInput(q);
+    if (parsedTx) {
+      const detectedMonth = parsedTx.transactionDate.slice(0, 7);
       if (detectedMonth !== month) setMonth(detectedMonth);
 
       push({ role: "assistant", content: "🔄 İşlemi ekliyorum..." });
       try {
-        await createTransaction(parsed);
-        refetch();
+        await createTransaction(parsedTx);
+        refetch(); // yalnızca widget verisini yenile
+
+        const cleanLabel =
+          (parsedTx.category || "Other").charAt(0).toUpperCase() +
+          (parsedTx.category || "Other").slice(1);
+        const displayTL = new Intl.NumberFormat("tr-TR", {
+          style: "currency",
+          currency: "TRY",
+          maximumFractionDigits: 0,
+        }).format(Math.abs(parsedTx.amount));
+
         push({
           role: "assistant",
           content: `✅ ${
-            parsed.type === "expense" ? "Gider" : "Gelir"
-          } eklendi: ${parsed.amount} TL — ${parsed.category} (${
-            parsed.transactionDate
-          })`,
+            parsedTx.type === "expense" ? "Gider" : "Gelir"
+          } eklendi: ${cleanLabel} ${displayTL} (${parsedTx.transactionDate})`,
         });
       } catch (e) {
         const msg =
@@ -83,7 +115,77 @@ export default function RuleBotWidget() {
       return;
     }
 
-    // 2) Dönem algıla
+    // 2) Döviz/çevrim
+    const cq = parseCurrencyQuery(q);
+    if (cq) {
+      try {
+        if (cq.kind === "convert") {
+          const r = await getRate(cq.from, cq.to);
+          const out = cq.amount * r;
+          const fmt = (val, code, max = 4) =>
+            new Intl.NumberFormat("tr-TR", {
+              maximumFractionDigits: max,
+            }).format(val) +
+            " " +
+            code;
+          push({
+            role: "assistant",
+            content: `💱 ${fmt(cq.amount, cq.from)} ≈ ${fmt(out, cq.to)}  (1 ${
+              cq.from
+            } ≈ ${fmt(r, cq.to, 6)})`,
+          });
+        } else if (cq.kind === "rate") {
+          const { base } = await getRatesCached();
+          if (cq.base && cq.quote) {
+            const r = await getRate(cq.base, cq.quote);
+            const fmt = (val, code) =>
+              new Intl.NumberFormat("tr-TR", {
+                maximumFractionDigits: 6,
+              }).format(val) +
+              " " +
+              code;
+            push({
+              role: "assistant",
+              content: `💹 1 ${cq.base} ≈ ${fmt(r, cq.quote)}  (baz: ${base})`,
+            });
+          } else {
+            const pairs = [
+              ["USD", "TRY"],
+              ["EUR", "TRY"],
+              ["GBP", "TRY"],
+            ];
+            const lines = [];
+            for (const [a, b] of pairs) {
+              try {
+                const r = await getRate(a, b);
+                lines.push(
+                  `• 1 ${a} ≈ ${new Intl.NumberFormat("tr-TR", {
+                    maximumFractionDigits: 4,
+                  }).format(r)} ${b}`
+                );
+              } catch {}
+            }
+            if (lines.length)
+              push({
+                role: "assistant",
+                content: `💱 Güncel kurlar:\n${lines.join("\n")}`,
+              });
+            else
+              push({
+                role: "assistant",
+                content: "💱 Kur bilgisi şu an alınamadı.",
+              });
+          }
+        }
+      } catch (e) {
+        const msg =
+          e?.response?.data?.message || e?.message || "Kur bilgisi alınamadı.";
+        push({ role: "assistant", content: `❌ ${msg}` });
+      }
+      return;
+    }
+
+    // 3) Dönem algılama
     const detected = detectMonthFromText(q);
     if (detected && detected !== month) {
       setMonth(detected);
@@ -94,7 +196,7 @@ export default function RuleBotWidget() {
       return;
     }
 
-    // 3) Q&A
+    // 4) Snapshot tabanlı Q&A
     if (loading)
       return push({
         role: "assistant",
@@ -107,21 +209,23 @@ export default function RuleBotWidget() {
         "Verilerini çekerken bir hata oluştu.";
       return push({ role: "assistant", content: `❌ ${msg}` });
     }
-    if (!snapshot)
+    if (!snapshot) {
       return push({
         role: "assistant",
         content:
           "ℹ️ Bu dönem için veriye erişemedim. Giriş yaptıktan sonra tekrar dener misin?",
       });
+    }
 
-    const usdRate = 33;
-    const best = findBestAnswer(q, { snapshot, usdRate });
+    const usdRateFallback = 33;
+    const best = findBestAnswer(q, { snapshot, usdRate: usdRateFallback });
     push(
       best
         ? { role: "assistant", content: best.answer }
         : {
             role: "assistant",
-            content: `🤔 Anlayamadım. Örn: "gider 100 tl market", "gelir 2500 maaş", "geçen ay gider".`,
+            content:
+              '🤔 Anlayamadım. Örn: "gider 100 tl market", "gelir 2500 maaş", "geçen ay gider", "100 usd kaç tl", "usd tl", "kur"',
           }
     );
   };
@@ -181,7 +285,8 @@ export default function RuleBotWidget() {
             </button>
           </div>
 
-          <div className={s.messages}>
+          {/* 👇 otomatik scroll için ref bağladık */}
+          <div className={s.messages} ref={messagesRef}>
             {msgs.map((m, i) => (
               <div
                 key={i}
@@ -201,7 +306,7 @@ export default function RuleBotWidget() {
           <div className={s.inputBar}>
             <input
               className={s.input}
-              placeholder='Örn: "gider 100 tl market", "gelir 2500 maaş", "geçen ay gider"'
+              placeholder='Örn: "gider 100 tl market", "gelir 2500 maaş", "geçen ay gider", "100 usd kaç tl", "usd tl"'
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && send()}

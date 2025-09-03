@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import TransactionsList from "../../components/Transactions/TransactionsList.jsx";
-
+import RuleBotWidget from "../../components/RuleBot/RuleBotWidget";
 import Header from "../../components/Header/Header.jsx";
 import { getTransactions } from "../../redux/transactions/operations.js";
 import {
@@ -13,7 +13,6 @@ import {
 // Auth selectors
 import { selectIsLoggedIn, selectToken } from "../../redux/auth/selectors.js";
 import styles from "./Dash.module.css";
-import RuleBotWidget from "../../components/RuleBot/RuleBotWidget.jsx";
 
 export default function DashboardHome() {
   const dispatch = useDispatch();
@@ -30,7 +29,6 @@ export default function DashboardHome() {
       navigate("/login");
       return;
     }
-
     // Giriş yapmışsa API isteklerini yap
     dispatch(getTransactions());
   }, [dispatch, isLoggedIn, token, navigate]);
@@ -43,17 +41,6 @@ export default function DashboardHome() {
       </div>
     );
   }
-
-  // Şimdilik test için sahte veri verelim
-  const snapshot = {
-    month: "2025-09",
-    totals: { income: 12000, expense: 9500 },
-    topCategories: [
-      { name: "Market", amount: 3500 },
-      { name: "Faturalar", amount: 2500 },
-      { name: "Ulaşım", amount: 1500 },
-    ],
-  };
 
   return (
     <div className={styles.wrapper}>
@@ -72,7 +59,7 @@ export default function DashboardHome() {
           {!loading && !error && <TransactionsList />}
         </div>
       </div>
-      <RuleBotWidget snapshot={snapshot} />
+      <RuleBotWidget />
     </div>
   );
 }
