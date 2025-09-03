@@ -12,18 +12,19 @@ const initialState = {
   isRefreshing: false,
 };
 
-// payload farklı şekillerde dönebilir: 
+// payload farklı şekillerde dönebilir:
 // A) { token, user: { id, username, email, balance } }
 // B) { id, username, email, balance } (token yoksa)
 // Bu yardımcı, hangisi geldiyse uygun user’ı çıkarır:
 const pickUser = (payload) => {
   if (!payload) return emptyUser;
-  if (payload.user) return {
-    id: payload.user.id ?? null,
-    username: payload.user.username ?? null,
-    email: payload.user.email ?? null,
-    balance: typeof payload.user.balance === "number" ? payload.user.balance : 0,
-  };
+  if (payload.user)
+    return {
+      id: payload.user.id ?? null,
+      username: payload.user.username ?? null,
+      email: payload.user.email ?? null,
+      balance: typeof payload.user.balance === "number" ? payload.user.balance : 0,
+    };
   return {
     id: payload.id ?? null,
     username: payload.username ?? null,
@@ -36,7 +37,9 @@ const slice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    resetAuthError: (s) => { s.error = null; },
+    resetAuthError: (s) => {
+      s.error = null;
+    },
   },
   extraReducers: (b) => {
     // --- addCase'ler ÖNCE ---
@@ -57,41 +60,30 @@ const slice = createSlice({
     });
 
     // logout
-    b.addCase(logout.fulfilled, (s) => {
-      s.user = emptyUser;
-      s.token = null;
-      s.isLoggedIn = false;
-      s.error = null;
+    b.addCase(logout.fulfilled, () => {
+      return initialState;
     });
 
     // --- addMatcher'lar SONRA ---
+
     // register/login pending
-    b.addMatcher(
-      isAnyOf(register.pending, login.pending),
-      (s) => {
-        s.loading = true;
-        s.error = null;
-      }
-    );
+    b.addMatcher(isAnyOf(register.pending, login.pending), (s) => {
+      s.loading = true;
+      s.error = null;
+    });
     // register/login fulfilled
-    b.addMatcher(
-      isAnyOf(register.fulfilled, login.fulfilled),
-      (s, { payload }) => {
-        s.loading = false;
-        s.error = null;
-        s.user = pickUser(payload);
-        s.token = payload?.token ?? s.token; // bazı signup’larda token gelmeyebilir
-        s.isLoggedIn = Boolean(s.token);
-      }
-    );
+    b.addMatcher(isAnyOf(register.fulfilled, login.fulfilled), (s, { payload }) => {
+      s.loading = false;
+      s.error = null;
+      s.user = pickUser(payload);
+      s.token = payload?.token ?? s.token; // bazı signup’larda token gelmeyebilir
+      s.isLoggedIn = Boolean(s.token);
+    });
     // register/login rejected
-    b.addMatcher(
-      isAnyOf(register.rejected, login.rejected),
-      (s, { payload }) => {
-        s.loading = false;
-        s.error = payload?.message || "Auth error";
-      }
-    );
+    b.addMatcher(isAnyOf(register.rejected, login.rejected), (s, { payload }) => {
+      s.loading = false;
+      s.error = payload?.message || "Auth error";
+    });
   },
 });
 

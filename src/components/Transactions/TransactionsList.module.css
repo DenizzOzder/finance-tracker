@@ -1,0 +1,127 @@
+.wrapper { 
+  position: relative; 
+  width: 100%;
+  max-width: 100%;
+}
+
+.tableContainer {
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.15);
+  width: 100%;
+  margin: 0 auto;
+  overflow: hidden; /* Border radius'un düzgün çalışması için */
+  /* max-height ve overflow kaldırıldı - sayfa scroll kullanacak */
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed; /* Tablo genişliğini sabitler */
+}
+
+.table thead th {
+  text-align: left; 
+  padding: 16px 20px;
+  color: #E0E0E0;
+  font-weight: 600;
+  font-size: 14px;
+  white-space: nowrap; /* Alt satıra geçmeyi önle */
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Alternatif başlık renkleri */
+.table thead th:nth-child(odd) {
+  background: rgba(70, 50, 100, 0.95); /* Koyu */
+}
+
+.table thead th:nth-child(even) {
+  background: rgba(85, 65, 120, 0.95); /* Açık */
+}
+
+/* İlk ve son köşe radius'ları */
+.table thead th:first-child {
+  border-top-left-radius: 12px;
+}
+
+.table thead th:last-child {
+  border-top-right-radius: 12px;
+}
+
+.table tbody td {
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  color: #fff;
+}
+
+/* Son satır alt köşe radius'ları */
+.table tbody tr:last-child td:first-child {
+  border-bottom-left-radius: 12px;
+}
+
+.table tbody tr:last-child td:last-child {
+  border-bottom-right-radius: 12px;
+}
+
+.table tbody tr:last-child td {
+  border-bottom: none; /* Son satırda alt border kaldır */
+}
+
+/* Type sütunu (2. sütun) için dar genişlik */
+.table th:nth-child(2),
+.table td:nth-child(2) {
+  width: 60px;
+  text-align: center;
+}
+
+/* Date sütunu (1. sütun) için dar genişlik */
+.table th:nth-child(1),
+.table td:nth-child(1) {
+  width: 100px;
+}
+
+/* Category sütunu (3. sütun) için geniş alan */
+.table th:nth-child(3),
+.table td:nth-child(3) {
+  width: 180px;
+}
+
+.mobileContainer {
+  padding-right: 4px;
+  width: 100%;
+  /* max-height ve overflow kaldırıldı - sayfa scroll kullanacak */
+}
+
+/* Responsive düzenlemeler */
+@media (max-width: 768px) {
+  .tableContainer {
+    margin: 0;
+    border-radius: 8px;
+    overflow-x: hidden; /* Yatay scroll engelle */
+  }
+  
+  .table thead th {
+    font-size: 14px; /* Mobile için daha küçük font */
+    padding: 8px 4px; /* Mobile için daha compact padding */
+  }
+  
+  .table tbody td {
+    font-size: 14px; /* Mobile için daha küçük font */
+    padding: 8px 4px; /* Mobile için daha compact padding */
+    word-break: break-word; /* Uzun metinleri kes */
+  }
+}
+
+.empty {
+  text-align: center; 
+  padding: 24px 12px; 
+  color: rgba(255,255,255,.85);
+}
+.emptyTitle { 
+  font-weight: 700; 
+  margin: 0 0 6px 0; 
+}
+.emptyText { 
+  margin: 0; 
+  opacity: .8; 
+}
