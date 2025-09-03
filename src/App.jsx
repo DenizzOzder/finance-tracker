@@ -9,17 +9,19 @@ import { getCurrent } from "./redux/auth/operations";
 
 export default function App() {
   const dispatch = useDispatch();
-  useEffect(() => { dispatch(getCurrent()); }, [dispatch]);
+  useEffect(() => {
+    dispatch(getCurrent());
+  }, [dispatch]);
 
   return (
     <Routes>
-      <Route path="/login" element={<Login/>} />
-      <Route path="/register" element={<Register/>} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
       <Route
         path="/dashboard"
         element={
           <ProtectedRoute>
-            <Dash/>
+            <Dash />
           </ProtectedRoute>
         }
       />
@@ -27,4 +29,3 @@ export default function App() {
     </Routes>
   );
 }
-
