@@ -151,6 +151,9 @@
   place-items: center;
   cursor: pointer;
   color: var(--text);
+  display: flex;
+  justify-content: center;
+  padding: 0;
 }
 .iconBtn:hover {
   background: rgba(255, 255, 255, 0.06);
@@ -233,6 +236,7 @@
   font-size: 14px;
   cursor: pointer;
   transition: filter 0.15s ease, transform 0.05s ease;
+  border-right: none;
 }
 .sendBtn:hover {
   filter: brightness(1.05);
