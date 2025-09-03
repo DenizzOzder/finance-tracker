@@ -136,6 +136,7 @@
 
 .buttons {
   display: flex;
+  align-items: center;
   flex-direction: column;
   gap: 12px;
   margin-top: 24px;
@@ -191,4 +192,12 @@
   align-items: center;
   justify-content: center;
   padding: 24px;
+}
+
+:global(.react-calendar) {
+  background: #6727CD;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 10px;
 }

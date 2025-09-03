@@ -127,4 +127,8 @@ button:focus-visible {
   border: none !important;
 }
 
-
+.react-calendar__tile {
+  background: transparent;
+  color: black;
+  border-radius: 6px;
+}
