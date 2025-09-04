@@ -20,8 +20,6 @@ const DashboardPage = () => {
 
   return (
     <div>
-      <Header />
-     
       <section className={s.main_container}>
         <div className={isTablet || isDesktop ? s.nav_container : undefined}>
           <div

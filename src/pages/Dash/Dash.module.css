@@ -6,25 +6,7 @@
   display: flex;
   flex-direction: column;
   position: relative;
-  background:
-    radial-gradient(600px 580px at 90% 68%,
-      rgba(109, 84, 235, 0.60) 0%,
-      rgba(101, 35, 146, 0.30) 45%,
-      rgba(101, 35, 146, 0.00) 70%),
-    radial-gradient(220px 220px at 66% 80%,
-      rgba(109, 28, 119, 0.35) 0%,
-      rgba(109, 28, 119, 0.00) 60%),
-    radial-gradient(520px 520px at 12% 19%,
-      rgba(109, 84, 235, 0.60) 0%,
-      rgba(101, 35, 146, 0.30) 45%,
-      rgba(101, 35, 146, 0.00) 70%),
-    radial-gradient(180px 180px at 102% 31%,
-      rgba(48, 46, 142, 0.50) 0%,
-      rgba(48, 46, 142, 0.00) 60%),
-    radial-gradient(530px 530px at 14% 60%,
-      rgba(52, 31, 160, 0.35) 0%,
-      rgba(101, 35, 146, 0.00) 70%),
-    linear-gradient(135deg, #101010 0%, #0E0D12 50%, #0A0A0A 100%);
+
   background-blend-mode: screen, screen, screen, screen, screen, normal;
 }
 .loading, .error {

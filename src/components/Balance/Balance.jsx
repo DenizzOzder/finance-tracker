@@ -27,6 +27,15 @@ const Balance = () => {
     }
   }, [dispatch]);
 
+  useEffect(() => {
+  fetch("https://api.monobank.ua/bank/currency")
+    .then((res) => res.json())
+    .then((data) => {
+      console.log("Monobank dönen tüm kurlar:", data);
+    });
+}, []);
+
+
   const formattedUAH = balance.toLocaleString("uk-UA", {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
