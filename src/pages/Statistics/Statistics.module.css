@@ -6,9 +6,12 @@
   box-sizing: border-box;
 }
 
-
-
-.leftSide { flex: 1; display: flex; flex-direction: column; align-items: end; }
+.leftSide {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+}
 
 .chartContainer {
   position: relative;
@@ -25,14 +28,14 @@
   text-align: center;
 }
 
-
 .filterContainer {
   display: flex;
   gap: 32px;
   margin-bottom: 2rem;
 }
 
-.selectDark, .selectLight {
+.selectDark,
+.selectLight {
   width: 182px;
   height: 50px;
   padding: 0.5rem 1rem;
@@ -57,12 +60,10 @@
   content: "";
   position: absolute;
   bottom: 0;
-  left: -20px;  /* sola taşır */
-  width: 435px;  /* sağa taşır, toplam uzunluk = width + sol + sağ */
-  border-bottom: 1px solid rgba(255,255,255,0.2);
+  left: -20px; /* sola taşır */
+  width: 435px; /* sağa taşır, toplam uzunluk = width + sol + sağ */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
-
-
 
 .transactionInfo {
   display: flex;
@@ -95,32 +96,41 @@
   font-size: 1rem;
 }
 
-
 @media (max-width: 1024px) {
-  .container { flex-direction: column; padding: 1rem; }
-  .leftSide, .rightSide { width: 100%; }
-  .chartContainer { width: 250px; height: 250px; margin: 0 auto 2rem auto; }
+  .container {
+    flex-direction: row;
+    padding: 1rem;
+  }
+  .leftSide,
+  .rightSide {
+    width: 100%;
+  }
+  .chartContainer {
+    width: 250px;
+    height: 250px;
+    margin: 0 auto 2rem auto;
+  }
 }
 
 body {
-  background-color: #6D1C77;
-  background: linear-gradient(355deg,#2e1746, #4B1E7C 19%, #302E8E );
+  background-color: #6d1c77;
+  background: linear-gradient(355deg, #2e1746, #4b1e7c 19%, #302e8e);
 }
 
 .chartWrapper {
-  width: 280px;       /* çarkın normal boyutu */
-  height: 280px;
+  width: 320px; /* 280 yerine biraz daha büyük */
+  height: 320px;
   position: relative;
-  overflow: visible;  /* slice taşsa görünür */
-  margin-bottom: 1rem; /* legend için boşluk */
+  overflow: visible; /* taşmayı göster */
+  margin-bottom: 1rem;
 }
 
-.stat{
+.stat {
   font-size: 30px;
-  text-align: center;
+  text-align: left;
   position: relative;
-  left: 150px;
-  margin: 32px;
+  left: 260px;
+  margin: 40px;
 }
 
 .selectDark {
@@ -138,20 +148,20 @@ body {
 
 /* Açılan seçenekler */
 .selectDark option {
-  background-color: #6A46A5; /* default seçenekler beyaz */
+  background-color: #6a46a5; /* default seçenekler beyaz */
   color: #fff; /* default yazı rengi */
 }
 
 /* Seçili olan */
 .selectDark option:checked {
-  background-color: #6A46A5;
-  color: #FF868D;
+  background-color: #6a46a5;
+  color: #ff868d;
 }
 
 /* Üstüne gelince (hover) */
 .selectDark option:hover {
   background-color: #5a3a8f; /* #6A46A5’in daha koyusu */
-  color: #FF868D; /* okunaklı olsun diye yazı beyaz */
+  color: #ff868d; /* okunaklı olsun diye yazı beyaz */
 }
 .selectWrapper {
   position: relative;
@@ -173,4 +183,20 @@ body {
   color: #fff; /* ikon rengi */
   width: 25px;
   height: 25px;
+}
+
+.emptyChartMessage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  text-align: center;
+  color: #bbb;
+  font-size: 18px;
+  padding: 1rem;
+}
+
+.emptyChartMessage span + span {
+  margin-top: 4px; /* yazılar arasındaki boşluk */
 }

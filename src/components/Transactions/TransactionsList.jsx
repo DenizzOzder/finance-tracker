@@ -21,8 +21,9 @@ const TransactionsList = () => {
   const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
   const isEmpty = !transactions || transactions.length === 0;
   const [showTransaction, setShowTransaction] = useState(false);
-  const items = useSelector(selectTransactions);
-  console.log("SELECTED TRANSACTIONS:", items);
+  console.log("SELECTED TRANSACTIONS:", transactions);
+  console.log("SELECTED Categories:", categories);
+
   // Component mount olduğunda categories'leri yükle
   useEffect(() => {
     dispatch(getCategories());
@@ -35,12 +36,14 @@ const TransactionsList = () => {
   }, {});
 
   // Transactions'ları category name ile birliştir
-  const transactionsWithCategories = transactions?.map(transaction => ({
-    ...transaction,
-    categoryName: categoryMap[transaction.categoryId] || 'Unknown Category'
-  })) || [];
+  const transactionsWithCategories =
+    transactions?.map((transaction) => ({
+      ...transaction,
+      categoryName: categoryMap[transaction.categoryId] || "Unknown Category",
+    })) || [];
 
-  
+  console.log("transaction categories map:", categoryMap);
+  console.log("transactions categories:", transactionsWithCategories);
 
   const handleEdit = (transaction) => {
     // Edit transaction logic
@@ -49,8 +52,8 @@ const TransactionsList = () => {
 
   const handleDelete = async (id) => {
     // Silinecek transaction'ı bul
-    const transactionToDelete = transactions.find(t => t.id === id);
-    
+    const transactionToDelete = transactions.find((t) => t.id === id);
+
     if (!transactionToDelete) return;
 
     // Optimistic update - hemen UI'dan kaldır
@@ -59,7 +62,7 @@ const TransactionsList = () => {
     try {
       // API'ye delete isteği gönder
       await dispatch(deleteTransaction(id)).unwrap();
-      
+
       // Başarılı toast mesajı
       iziToast.success({
         title: "Başarılı ✅",
@@ -72,7 +75,7 @@ const TransactionsList = () => {
     } catch (error) {
       // Hata olursa transaction'ı geri ekle
       dispatch(revertDelete({ id, transaction: transactionToDelete }));
-      
+
       // Hata toast mesajı
       iziToast.error({
         title: "Hata ❌",
@@ -93,18 +96,11 @@ const TransactionsList = () => {
             <div className={styles.empty}>
               <img src={emptyTransaction} alt="page-not-found" width="240" />
               <p className={styles.emptyTitle}>No transactions yet</p>
-              <p className={styles.emptyText}>
-                Start by adding your first record.
-              </p>
+              <p className={styles.emptyText}>Start by adding your first record.</p>
             </div>
           ) : (
             transactionsWithCategories.map((t) => (
-              <TransactionsItem
-                key={t.id}
-                transaction={t}
-                onEdit={handleEdit}
-                onDelete={handleDelete}
-              />
+              <TransactionsItem key={t.id} transaction={t} onEdit={handleEdit} onDelete={handleDelete} />
             ))
           )}
         </div>
@@ -126,26 +122,15 @@ const TransactionsList = () => {
                 <tr>
                   <td colSpan="6">
                     <div className={styles.empty}>
-                      <img
-                        src={emptyTransaction}
-                        alt="page-not-found"
-                        width="240"
-                      />
+                      <img src={emptyTransaction} alt="page-not-found" width="240" />
                       <p className={styles.emptyTitle}>No transactions yet</p>
-                      <p className={styles.emptyText}>
-                        Start by adding your first record.
-                      </p>
+                      <p className={styles.emptyText}>Start by adding your first record.</p>
                     </div>
                   </td>
                 </tr>
               ) : (
                 transactionsWithCategories.map((t) => (
-                  <TransactionsItem
-                    key={t.id}
-                    transaction={t}
-                    onEdit={handleEdit}
-                    onDelete={handleDelete}
-                  />
+                  <TransactionsItem key={t.id} transaction={t} onEdit={handleEdit} onDelete={handleDelete} />
                 ))
               )}
             </tbody>
@@ -155,9 +140,7 @@ const TransactionsList = () => {
 
       <ButtonAddTransactions onClick={() => setShowTransaction(true)} />
 
-      {showTransaction && (
-        <AddTransactionModal onClose={() => setShowTransaction(false)} />
-      )}
+      {showTransaction && <AddTransactionModal onClose={() => setShowTransaction(false)} />}
     </div>
   );
 };
