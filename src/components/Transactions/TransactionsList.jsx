@@ -21,7 +21,8 @@ const TransactionsList = () => {
   const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
   const isEmpty = !transactions || transactions.length === 0;
   const [showTransaction, setShowTransaction] = useState(false);
-
+  const items = useSelector(selectTransactions);
+  console.log("SELECTED TRANSACTIONS:", items);
   // Component mount olduğunda categories'leri yükle
   useEffect(() => {
     dispatch(getCategories());

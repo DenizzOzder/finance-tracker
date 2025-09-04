@@ -103,7 +103,8 @@
 }
 
 body {
-background: linear-gradient(276deg, #2e1746 3.19%, #2e225f);
+  background-color: #6D1C77;
+  background: linear-gradient(355deg,#2e1746, #4B1E7C 19%, #302E8E );
 }
 
 .chartWrapper {
@@ -151,4 +152,25 @@ background: linear-gradient(276deg, #2e1746 3.19%, #2e225f);
 .selectDark option:hover {
   background-color: #5a3a8f; /* #6A46A5’in daha koyusu */
   color: #FF868D; /* okunaklı olsun diye yazı beyaz */
+}
+.selectWrapper {
+  position: relative;
+  display: inline-block;
+  margin-right: 12px; /* yan yana boşluk için */
+}
+
+.selectWrapper select {
+  appearance: none; /* tarayıcı default ok’u kaldırır */
+  padding-right: 24px; /* ikon için boşluk */
+}
+
+.selectIcon {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none; /* ikon tıklanamaz */
+  color: #fff; /* ikon rengi */
+  width: 25px;
+  height: 25px;
 }

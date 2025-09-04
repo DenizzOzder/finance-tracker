@@ -1,4 +1,9 @@
-@import "tailwindcss";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
 
 .iziToast.custom-success-toast {
   background: radial-gradient(80% 120% at 20% 0%, #3a0d6f, transparent 60%),
