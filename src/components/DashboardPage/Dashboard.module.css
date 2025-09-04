@@ -1,0 +1,64 @@
+.main_container {
+  background-color: #101010;
+  background-image: url(../../assets/img/bg_mobile_dashboard.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.navHome {
+  margin-bottom: 12px;
+}
+
+.navCurrency {
+  margin-bottom: 24px;
+}
+
+.nav_container {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+@media screen and (min-width: 768px) {
+  .main_container {
+    background-image: url(../../assets/img/bg_tablet_dashboard.png);
+    height: calc(100vh - 68px);
+  }
+
+  .outlet_container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+@media screen and (min-width: 1280px) {
+  .main_container {
+    background-image: url(../../assets/img/bg_desktop_dashboard.png);
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    flex-direction: row;
+  }
+
+  .nav_container {
+    display: block;
+    max-width: 480px;
+    box-shadow: 1px 4px 10px 0 rgba(0, 0, 0, 0.25);
+    height: 100%;
+    border-right: 1px solid #d9d9d9;
+  }
+
+  .outlet_container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+}

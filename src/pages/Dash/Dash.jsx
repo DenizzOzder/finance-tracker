@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import TransactionsList from "../../components/Transactions/TransactionsList.jsx";
+import DashboardPage from "../../components/DashboardPage/DashboardPage.jsx"
 
 import Header from "../../components/Header/Header.jsx";
 import { getTransactions } from "../../redux/transactions/operations.js";
@@ -48,7 +49,7 @@ export default function DashboardHome() {
       <Header />
       
       <div className={styles.content}>
-        <div className={styles.sidebar}>
+        {/* <div className={styles.sidebar}>
           <div className={styles.navigation}>
             yönlendirme Alanı
           </div>
@@ -58,8 +59,8 @@ export default function DashboardHome() {
           <div className={styles.currencyChart}>
             parite grafik alanı
           </div>
-        </div>
-
+        </div> */}
+         <DashboardPage/>
         <div className={styles.transactionsContainer}>
           {loading && <div className={styles.loading}>Loading...</div>}
           {error && <div className={styles.error}>Error: {error}</div>}

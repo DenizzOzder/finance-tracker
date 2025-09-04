@@ -1,0 +1,134 @@
+/* .navigation {
+  box-shadow: 0 4px 40px 0 rgba(0, 0, 0, 0.25),
+    inset 0 -3px 2px 0 rgba(0, 0, 0, 0.1);
+  background: linear-gradient(276deg, #2e1746 3.19%, #2e225f 100%);
+} */
+
+.navElements {
+  display: flex;
+  flex-direction: row;
+  padding: 12px 20px 0 20px;
+  gap: 38px;
+  align-items: center;
+  justify-content: center;
+}
+
+.transactions,
+.statistics,
+.currency {
+  width: 38px;
+  height: 38px;
+  border-radius: 6px;
+  box-shadow: 0 3px 10px 0 rgba(74, 86, 226, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease, background-color 0.3s ease;
+}
+
+.navLinkActive .transactions,
+.navLinkActive .statistics,
+.navLinkActive .currency {
+  background-color: var(--icon-violet);
+}
+.navLink .transactions,
+.navLink .statistics,
+.navLink .currency {
+  background-color: var(--white-400);
+}
+
+.navLink:hover .transactions,
+.navLink:hover .statistics,
+.navLink:hover .currency {
+  transform: scale(1.1);
+}
+
+.homeIcon {
+  font-size: 32px;
+}
+.statsIcon {
+  font-size: 32px;
+}
+.currIcon {
+  font-size: 25px;
+}
+.navLinkActive .homeIcon,
+.navLinkActive .statsIcon,
+.navLinkActive .currIcon {
+  color: #fff;
+}
+.navLink .homeIcon,
+.navLink .statsIcon,
+.navLink .currIcon {
+  color: #2e1e53;
+}
+
+.linkText {
+  display: none;
+}
+
+@media screen and (min-width: 768px) {
+  .navElements {
+    flex-direction: column;
+    padding: 40px 0 0 32px;
+    gap: 21px;
+    align-items: flex-start;
+    font-family: var(--font-family);
+  }
+  .navLinkActive,
+  .navLink {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 23px;
+  }
+  .currency {
+    display: none;
+  }
+  .linkText {
+    display: block;
+    font-weight: 400;
+    font-size: 18px;
+    color: var(--white);
+  }
+
+  .navLink:hover .linkText {
+    transform: scale(1.1);
+  }
+  .navLinkActive .linkText {
+    font-weight: 700;
+    font-size: 18px;
+  }
+
+  .transactions,
+  .statistics {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+  }
+
+  .transactions,
+  .statistics,
+  .currency {
+    width: 24px;
+    height: 24px;
+    border-radius: 2px;
+  }
+
+  .homeIcon {
+    font-size: 20px;
+  }
+  .statsIcon {
+    font-size: 22px;
+  }
+}
+
+@media screen and (min-width: 1280px) {
+	.navigation {
+		margin-bottom: 28px;
+	}
+  .navElements {
+    padding: 40px 0 0 32px;
+    gap: 12px;
+  }
+}
