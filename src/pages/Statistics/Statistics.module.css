@@ -1,63 +1,68 @@
 .container {
   display: flex;
-  gap: 2rem;
   padding: 2rem;
+  gap: 150px;
   min-height: 100vh;
   box-sizing: border-box;
 }
 
-.dark { background-color: #121212; color: #fff; }
-.light { background-color: #f5f5f5; color: #000; }
 
-.leftSide { flex: 1; display: flex; flex-direction: column; align-items: center; }
+
+.leftSide { flex: 1; display: flex; flex-direction: column; align-items: end; }
 
 .chartContainer {
   position: relative;
-  width: 300px;
-  height: 300px;
+  width: 280px;
+  overflow: visible !important;
 }
 
 .circleTotal {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -100%);
   font-weight: 700;
   text-align: center;
 }
 
-.rightSide { flex: 1; display: flex; flex-direction: column; }
 
 .filterContainer {
   display: flex;
-  gap: 1rem;
+  gap: 32px;
   margin-bottom: 2rem;
 }
 
 .selectDark, .selectLight {
+  width: 182px;
+  height: 50px;
   padding: 0.5rem 1rem;
   border-radius: 8px;
   border: 1px solid #555;
 }
 
 .transactionList {
-  max-height: 400px;
   overflow-y: auto;
 }
 
 .transactionItem {
-  width: 298px; /* Figma ölçüsü */
-  padding: 0 12px;
+  width: 395px; /* Figma ölçüsü */
   display: flex;
   flex-direction: column;
   justify-content: center;
+  position: relative;
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+}
+.transactionItem::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: -20px;  /* sola taşır */
+  width: 435px;  /* sağa taşır, toplam uzunluk = width + sol + sağ */
   border-bottom: 1px solid rgba(255,255,255,0.2);
-  margin-bottom: 4px;
 }
 
-.container.light .transactionItem {
-  border-bottom: 1px solid rgba(0,0,0,0.1);
-}
+
 
 .transactionInfo {
   display: flex;
@@ -85,7 +90,7 @@
   justify-content: space-between; /* kategori solda, miktar sağda */
   align-items: center;
   padding: 0 12px; /* Figma’ya göre boşluk */
-  width: 298px; /* Figma ölçüsü */
+  width: 395px; /* Figma ölçüsü */
   font-weight: 700;
   font-size: 1rem;
 }
@@ -99,4 +104,51 @@
 
 body {
 background: linear-gradient(276deg, #2e1746 3.19%, #2e225f);
+}
+
+.chartWrapper {
+  width: 280px;       /* çarkın normal boyutu */
+  height: 280px;
+  position: relative;
+  overflow: visible;  /* slice taşsa görünür */
+  margin-bottom: 1rem; /* legend için boşluk */
+}
+
+.stat{
+  font-size: 30px;
+  text-align: center;
+  position: relative;
+  left: 150px;
+  margin: 32px;
+}
+
+.selectDark {
+  width: 182px;
+  height: 50px;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #fff; /* dışına beyaz border */
+  background: transparent; /* input arka planı yok */
+  color: #fff; /* placeholder vs için */
+  outline: none;
+  appearance: none; /* tarayıcı varsayılan ok stilini kaldırır */
+  cursor: pointer;
+}
+
+/* Açılan seçenekler */
+.selectDark option {
+  background-color: #6A46A5; /* default seçenekler beyaz */
+  color: #fff; /* default yazı rengi */
+}
+
+/* Seçili olan */
+.selectDark option:checked {
+  background-color: #6A46A5;
+  color: #FF868D;
+}
+
+/* Üstüne gelince (hover) */
+.selectDark option:hover {
+  background-color: #5a3a8f; /* #6A46A5’in daha koyusu */
+  color: #FF868D; /* okunaklı olsun diye yazı beyaz */
 }

@@ -27,8 +27,16 @@ export const mockTransactions = [
     id: 4,
     transactionDate: "2025-09-05",
     type: "gelir",
-    categoryName: "eğlence",
+    categoryName: "asdfas",
     comment: "Sinema",
     amount: 1520,
+  }, {
+    id: 5,
+    transactionDate: "2025-10-05",
+    type: "gelir",
+    categoryName: "sanafgdganse",
+    comment: "Sinema",
+    amount: 2222,
   },
+
 ];
