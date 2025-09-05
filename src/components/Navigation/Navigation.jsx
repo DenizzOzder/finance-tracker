@@ -18,12 +18,13 @@ const Navigation = () => {
             </div>
             <p className={s.linkText}>Home</p>
           </NavLink>
-          <NavLink to="/dashboard/statistic" className={getNavLinkClass}>
-            <div className={s.statistics}>
-              <TbTimeline className={s.statsIcon} />
-            </div>
-            <p className={s.linkText}>Statistics</p>
-          </NavLink>
+          <NavLink to="/statistics" className={getNavLinkClass}>
+  <div className={s.statistics}>
+    <TbTimeline className={s.statsIcon} />
+  </div>
+  <p className={s.linkText}>Statistics</p>
+</NavLink>
+
           <NavLink to="/dashboard/currency" className={getNavLinkClass}>
             <div className={s.currency}>
               <BsCurrencyDollar className={s.currIcon} />

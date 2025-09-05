@@ -1,14 +1,19 @@
 .container {
   display: flex;
-  padding: 2rem;
-  gap: 150px;
+  padding: 1rem;
   min-height: 100vh;
   box-sizing: border-box;
-   background-color: #6d1c77;
-  background: linear-gradient(355deg, #2e1746, #4b1e7c 19%, #302e8e);
+  width: 100%;
 }
-
-
+.mainWrapper{
+  display: flex;
+}
+.leftPanel{
+  border-right: 1px solid lightgray;
+}
+.leftSide{
+  align-items: center;
+}
 .rightSide {
   margin-top: 50px;
 }
