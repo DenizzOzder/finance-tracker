@@ -2,8 +2,10 @@ import PropTypes from "prop-types";
 import styles from "./ModalEditTransaction.module.css";
 import EditTransactionForm from "../EditTransactionForm/EditTransactionForm";
 import { useEffect } from "react";
+import { useMediaQuery } from "react-responsive";
 
 const ModalEditTransaction = ({ isOpen, onClose, transaction }) => {
+  const isMobile = useMediaQuery({ query: "(max-width: 320px)" });
   useEffect(() => {
     const handleEsc = (e) => {
       if (e.key === "Escape") {
@@ -27,18 +29,20 @@ const ModalEditTransaction = ({ isOpen, onClose, transaction }) => {
   return (
     <div className={styles.overlay} onClick={handleOverlayClick}>
       <div className={styles.modalContent}>
-        <button onClick={onClose} className={styles.closeBtn}>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="18"
-            height="18"
-            viewBox="0 0 18 18"
-            fill="none"
-          >
-            <path d="M1 1L17 17" stroke="#FBFBFB" />
-            <path d="M1 17L17 0.999999" stroke="#FBFBFB" />
-          </svg>
-        </button>
+        {!isMobile && (
+          <button onClick={onClose} className={styles.closeBtn}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="18"
+              height="18"
+              viewBox="0 0 18 18"
+              fill="none"
+            >
+              <path d="M1 1L17 17" stroke="#FBFBFB" />
+              <path d="M1 17L17 0.999999" stroke="#FBFBFB" />
+            </svg>
+          </button>
+        )}
 
         <EditTransactionForm
           onClose={onClose}

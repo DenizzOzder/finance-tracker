@@ -30,6 +30,7 @@ const EditTransactionForm = ({ onClose, transaction }) => {
   } = useForm({
     defaultValues: {
       amount: Math.abs(transaction.amount),
+      categoryName: transaction.categoryName,
       transactionDate: transaction.transactionDate
         ? new Date(transaction.transactionDate)
         : new Date(), // eğer boşsa bugünün tarihi
@@ -102,15 +103,26 @@ const EditTransactionForm = ({ onClose, transaction }) => {
 
         {/* Form */}
         <form onSubmit={handleSubmit(customSubmit)}>
+          {transaction.type === "EXPENSE" && (
+            <div className={styles.inputRow}>
+              <input
+                className={styles.input}
+                type="text"
+                placeholder=""
+                {...register("categoryName")}
+                readOnly
+              />
+            </div>
+          )}
           <div className={styles.inputRow}>
             <input
+              className={styles.input}
               type="number"
-              placeholder="Amount"
+              placeholder="00.0"
+              step="0.01"
+              min="0"
               {...register("amount", { valueAsNumber: true })}
             />
-            {errors.amount && (
-              <p className={styles.error}>{errors.amount.message}</p>
-            )}
 
             <Controller
               control={control}
@@ -130,18 +142,31 @@ const EditTransactionForm = ({ onClose, transaction }) => {
                 />
               )}
             />
-            {errors.transactionDate && (
-              <p className={styles.error}>{errors.transactionDate.message}</p>
-            )}
           </div>
+          {errors.amount && (
+            <div className={styles.error}>
+              <p>{errors.amount.message}</p>
+            </div>
+          )}
+          {errors.transactionDate && (
+            <div className={styles.error}>
+              <p>{errors.transactionDate.message}</p>
+            </div>
+          )}
 
           <div className={styles.inputRow}>
-            <input type="text" placeholder="Comment" {...register("comment")} />
-            {errors.comment && (
-              <p className={styles.error}>{errors.comment.message}</p>
-            )}
+            <input
+              className={styles.input}
+              type="text"
+              placeholder="Comment"
+              {...register("comment")}
+            />
           </div>
-
+          {errors.comment && (
+            <div className={styles.error}>
+              <p>{errors.comment.message}</p>
+            </div>
+          )}
           <div className={styles.buttonsWrapper}>
             <FormButton type="submit" text="Save" variant="multiColorButton" />
             <FormButton
