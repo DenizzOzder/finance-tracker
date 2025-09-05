@@ -1,3 +1,4 @@
+/* filepath: src/components/RuleBot/RuleBotWidget.jsx */
 import { useEffect, useRef, useState } from "react";
 import s from "./RuleBotWidget.module.css";
 import { findBestAnswer } from "../../bot/matcher";
@@ -9,13 +10,26 @@ import { createTransaction } from "../../shared/transaction";
 import { getRate, getRatesCached } from "../../shared/rates";
 import { useMonthlySummary } from "../../features/chat/useMonthlySummary";
 
+// Redux + thunks
+import { useDispatch, useSelector } from "react-redux";
+import {
+  deleteTransaction,
+  getTransactions,
+} from "../../redux/transactions/operations";
+
+// 🔹 Dönem özeti için doğrudan API çağrısı yapacağız
+import { userTransactionsApi } from "../../shared/api";
+
 export default function RuleBotWidget() {
+  const dispatch = useDispatch();
+  const items = useSelector((s) => s.transactions.items);
+
   const [open, setOpen] = useState(false);
   const [msgs, setMsgs] = useState([
     {
       role: "assistant",
       content:
-        'Merhaba! 👋 Örn: "gider 100 tl market", "gelir 2500 maaş", "bu ay gider", "100 usd kaç tl", "usd tl", "kur"',
+        'Merhaba! 👋 Örn: "gider 100 tl market", "gelir 2500 maaş", "bu ay gider", "100 usd kaç tl", "usd tl", "kur", "son işlemi sil"',
     },
   ]);
   const [input, setInput] = useState("");
@@ -24,11 +38,10 @@ export default function RuleBotWidget() {
     new Date().toISOString().slice(0, 7)
   );
   const panelRef = useRef(null);
-  const messagesRef = useRef(null); // 👈 mesaj container için ref
+  const messagesRef = useRef(null);
 
   const { data: snapshot, loading, error, refetch } = useMonthlySummary(month);
 
-  // otomatik scroll helper
   function scrollToBottom() {
     requestAnimationFrame(() => {
       const el = messagesRef.current;
@@ -37,12 +50,10 @@ export default function RuleBotWidget() {
     });
   }
 
-  // panel açıldığında en alta kaydır
   useEffect(() => {
     if (open) scrollToBottom();
   }, [open]);
 
-  // her yeni mesajda kaydır
   useEffect(() => {
     scrollToBottom();
   }, [msgs]);
@@ -79,7 +90,38 @@ export default function RuleBotWidget() {
     push({ role: "user", content: q });
     setInput("");
 
-    // 1) Doğal dilden gider/gelir
+    /* 0) Son işlemi sil */
+    if (/son\s*i(?:ş|s)lemi\s*sil/i.test(q)) {
+      if (!items || items.length === 0) {
+        push({ role: "assistant", content: "ℹ️ Silinecek işlem bulunamadı." });
+        return;
+      }
+      const lastTx = items.reduce((acc, cur) => {
+        const da = Date.parse(acc?.transactionDate || acc?.createdAt || 0);
+        const db = Date.parse(cur?.transactionDate || cur?.createdAt || 0);
+        return db >= da ? cur : acc;
+      }, items[0]);
+
+      push({
+        role: "assistant",
+        content: `🔄 Son işlem siliniyor: ${lastTx?.comment ?? "(isimsiz)"} ${
+          lastTx?.amount ?? ""
+        }`,
+      });
+
+      try {
+        await dispatch(deleteTransaction(lastTx.id)).unwrap();
+        await dispatch(getTransactions()).unwrap();
+        await refetch();
+        push({ role: "assistant", content: "✅ Son işlem başarıyla silindi." });
+      } catch (e) {
+        const msg = e?.message || "Silme işlemi başarısız.";
+        push({ role: "assistant", content: `❌ ${msg}` });
+      }
+      return;
+    }
+
+    /* 1) Doğal dilden gider/gelir ekleme */
     const parsedTx = parseTransactionInput(q);
     if (parsedTx) {
       const detectedMonth = parsedTx.transactionDate.slice(0, 7);
@@ -88,7 +130,8 @@ export default function RuleBotWidget() {
       push({ role: "assistant", content: "🔄 İşlemi ekliyorum..." });
       try {
         await createTransaction(parsedTx);
-        refetch(); // yalnızca widget verisini yenile
+        await refetch(); // özet
+        await dispatch(getTransactions()).unwrap(); // liste
 
         const cleanLabel =
           (parsedTx.category || "Other").charAt(0).toUpperCase() +
@@ -112,7 +155,8 @@ export default function RuleBotWidget() {
       }
       return;
     }
-    // 2) Döviz/çevrim
+
+    /* 2) Döviz/çevrim */
     const cq = parseCurrencyQuery(q);
     if (cq) {
       try {
@@ -162,16 +206,17 @@ export default function RuleBotWidget() {
                 );
               } catch {}
             }
-            if (lines.length)
+            if (lines.length) {
               push({
                 role: "assistant",
                 content: `💱 Güncel kurlar:\n${lines.join("\n")}`,
               });
-            else
+            } else {
               push({
                 role: "assistant",
                 content: "💱 Kur bilgisi şu an alınamadı.",
               });
+            }
           }
         }
       } catch (e) {
@@ -182,37 +227,112 @@ export default function RuleBotWidget() {
       return;
     }
 
-    // 3) Dönem algılama
+    /* 3) Dönem algılama → ÖZET MESAJ YAZ */
     const detected = detectMonthFromText(q);
-    if (detected && detected !== month) {
-      setMonth(detected);
+    if (detected) {
       push({
         role: "assistant",
         content: `🗓️ ${detected} dönemi için verileri getiriyorum…`,
       });
+
+      try {
+        // detected => "YYYY-MM"
+        const [yStr, mStr] = detected.split("-");
+        const year = Number(yStr) || new Date().getFullYear();
+        const monthNum = Number(mStr) || new Date().getMonth() + 1;
+
+        const { data: s } = await userTransactionsApi.get(
+          `/api/transactions-summary?month=${monthNum}&year=${year}`
+        );
+
+        // Toplamlar
+        const income =
+          typeof s?.incomeTotal === "number"
+            ? s.incomeTotal
+            : typeof s?.incomeSummary === "number"
+            ? s.incomeSummary
+            : 0;
+
+        const expense =
+          typeof s?.expenseTotal === "number"
+            ? s.expenseTotal
+            : typeof s?.expenseSummary === "number"
+            ? s.expenseSummary
+            : 0;
+
+        // Kategori bazlı giderler
+        let catList = Array.isArray(s?.topCategories)
+          ? s.topCategories.map((c) => ({ name: c.name, amount: c.amount }))
+          : Array.isArray(s?.categoriesSummary)
+          ? s.categoriesSummary
+              .filter((c) => String(c.type || "").toUpperCase() === "EXPENSE")
+              .map((c) => ({ name: c.name, amount: c.total }))
+          : [];
+
+        catList = catList
+          .slice()
+          .sort((a, b) => (b.amount || 0) - (a.amount || 0))
+          .slice(0, 5);
+
+        const fmt = (n) =>
+          new Intl.NumberFormat("tr-TR", {
+            style: "currency",
+            currency: "TRY",
+            maximumFractionDigits: 0,
+          }).format(Math.abs(Number(n) || 0));
+
+        const lines = [
+          `📊 ${detected} özeti:`,
+          `• Toplam Harcanan: ${fmt(expense)}`,
+          `• Toplam Gelir: ${fmt(income)}`,
+        ];
+
+        if (catList.length) {
+          lines.push("• Kategori Bazında Harcama:");
+          for (const c of catList) {
+            lines.push(`   - ${c.name}: ${fmt(c.amount)}`);
+          }
+        } else {
+          lines.push("• Kategori Bazında Harcama: veri yok");
+        }
+
+        push({ role: "assistant", content: lines.join("\n") });
+        setMonth(detected); // UI'daki (YYYY-MM) etiketi güncellensin
+      } catch (e) {
+        const msg =
+          e?.response?.data?.message ||
+          e?.message ||
+          "Bu dönem verileri alınamadı.";
+        push({ role: "assistant", content: `❌ ${msg}` });
+      }
       return;
     }
 
-    // 4) Snapshot tabanlı Q&A
-    if (loading)
-      return push({
+    /* 4) Snapshot tabanlı Q&A */
+    if (loading) {
+      push({
         role: "assistant",
         content: `🗓️ ${month} verilerini getiriyorum…`,
       });
+      return;
+    }
     if (error) {
       const msg =
         error?.response?.data?.message ||
         error?.message ||
         "Verilerini çekerken bir hata oluştu.";
-      return push({ role: "assistant", content: `❌ ${msg}` });
+      push({ role: "assistant", content: `❌ ${msg}` });
+      return;
     }
     if (!snapshot) {
-      return push({
+      push({
         role: "assistant",
         content:
           "ℹ️ Bu dönem için veriye erişemedim. Giriş yaptıktan sonra tekrar dener misin?",
       });
+      return;
     }
+
     const usdRateFallback = 33;
     const best = findBestAnswer(q, { snapshot, usdRate: usdRateFallback });
     push(
@@ -221,10 +341,11 @@ export default function RuleBotWidget() {
         : {
             role: "assistant",
             content:
-              '🤔 Anlayamadım. Örn: "gider 100 tl market", "gelir 2500 maaş", "geçen ay gider", "100 usd kaç tl", "usd tl", "kur"',
+              '🤔 Anlayamadım. Örn: "gider 100 tl market", "gelir 2500 maaş", "geçen ay gider", "100 usd kaç tl", "usd tl", "kur", "son işlemi sil"',
           }
     );
   };
+
   return (
     <>
       {!open && (
@@ -248,6 +369,7 @@ export default function RuleBotWidget() {
           {unread > 0 && <span className={s.badge}>{unread}</span>}
         </button>
       )}
+
       {open && (
         <div
           ref={panelRef}
@@ -279,7 +401,6 @@ export default function RuleBotWidget() {
             </button>
           </div>
 
-          {/* 👇 otomatik scroll için ref bağladık */}
           <div className={s.messages} ref={messagesRef}>
             {msgs.map((m, i) => (
               <div
@@ -300,7 +421,7 @@ export default function RuleBotWidget() {
           <div className={s.inputBar}>
             <input
               className={s.input}
-              placeholder='Örn: "gider 100 tl market", "gelir 2500 maaş", "geçen ay gider", "100 usd kaç tl", "usd tl"'
+              placeholder='Örn: "gider 100 tl market", "gelir 2500 maaş", "geçen ay gider", "100 usd kaç tl", "usd tl", "son işlemi sil"'
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && send()}
