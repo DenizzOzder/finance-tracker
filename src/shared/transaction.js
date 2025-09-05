@@ -77,12 +77,12 @@ export async function createTransaction(parsedTR) {
   const mapped = await resolveCategoryFor(apiType, parsedTR.category);
 
   // Yorum: mümkünse mapped.name, değilse TR kategori ya da tip etiketi
-  const label =
+  const labelRaw =
+    (parsedTR.category && parsedTR.category.trim()) ||
     mapped?.name ||
-    parsedTR.category ||
     (apiType === "EXPENSE" ? "Other" : "Gelir");
 
-  const shortComment = `${capitalize(label)} ${fmtTRY(Math.abs(rawAmount))}`;
+  const shortComment = `${capitalize(labelRaw)}`;
 
   // 💾 payload — categoryId HER ZAMAN gönderiliyor
   const payload = {

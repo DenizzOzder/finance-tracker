@@ -1,7 +1,5 @@
-/* filepath: /home/ohhamamcioglu/finance-tracker/src/components/RuleBot/RuleBotWidget.jsx */
 import { useEffect, useRef, useState } from "react";
 import s from "./RuleBotWidget.module.css";
-
 import { findBestAnswer } from "../../bot/matcher";
 import { detectMonthFromText } from "../../features/chat/monthParser";
 import { parseTransactionInput } from "../../bot/nlpTransaction";
@@ -114,7 +112,6 @@ export default function RuleBotWidget() {
       }
       return;
     }
-
     // 2) Döviz/çevrim
     const cq = parseCurrencyQuery(q);
     if (cq) {
@@ -216,7 +213,6 @@ export default function RuleBotWidget() {
           "ℹ️ Bu dönem için veriye erişemedim. Giriş yaptıktan sonra tekrar dener misin?",
       });
     }
-
     const usdRateFallback = 33;
     const best = findBestAnswer(q, { snapshot, usdRate: usdRateFallback });
     push(
@@ -229,7 +225,6 @@ export default function RuleBotWidget() {
           }
     );
   };
-
   return (
     <>
       {!open && (
@@ -253,7 +248,6 @@ export default function RuleBotWidget() {
           {unread > 0 && <span className={s.badge}>{unread}</span>}
         </button>
       )}
-
       {open && (
         <div
           ref={panelRef}
@@ -263,7 +257,7 @@ export default function RuleBotWidget() {
         >
           <div className={s.header}>
             <div className={s.title}>
-              💬 BudgetBot{" "}
+              💬 FakirBot{" "}
               <span style={{ color: "#A1A1AA", fontWeight: 400 }}>
                 ({month})
               </span>

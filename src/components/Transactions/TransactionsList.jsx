@@ -6,9 +6,19 @@ import styles from "./TransactionsList.module.css";
 import TransactionsItem from "./TransactionsItem.jsx";
 import ButtonAddTransactions from "./ButtonAddTransactions.jsx";
 import emptyTransaction from "../../images/emptytransaction.webp";
-import { selectTransactions, selectCategories } from "../../redux/transactions/selectors.js";
-import { deleteTransaction, getCategories } from "../../redux/transactions/operations.js";
-import { optimisticDelete, revertDelete } from "../../redux/transactions/slice.js";
+import Transaction from "../Transaction/Transaction.jsx";
+import {
+  selectTransactions,
+  selectCategories,
+} from "../../redux/transactions/selectors.js";
+import {
+  deleteTransaction,
+  getCategories,
+} from "../../redux/transactions/operations.js";
+import {
+  optimisticDelete,
+  revertDelete,
+} from "../../redux/transactions/slice.js";
 import "izitoast/dist/css/iziToast.min.css";
 import iziToast from "izitoast";
 
@@ -31,16 +41,11 @@ const TransactionsList = () => {
   }, {});
 
   // Transactions'ları category name ile birliştir
-  const transactionsWithCategories = transactions?.map(transaction => ({
-    ...transaction,
-    categoryName: categoryMap[transaction.categoryId] || 'Unknown Category'
-  })) || [];
-
-  const handleAdd = () => {
-    // Add transaction logic
-    console.log("Add transaction");
-  };
-
+  const transactionsWithCategories =
+    transactions?.map((transaction) => ({
+      ...transaction,
+      categoryName: categoryMap[transaction.categoryId] || "Unknown Category",
+    })) || [];
   const handleEdit = (transaction) => {
     // Edit transaction logic
     console.log("Edit transaction:", transaction);
@@ -48,8 +53,8 @@ const TransactionsList = () => {
 
   const handleDelete = async (id) => {
     // Silinecek transaction'ı bul
-    const transactionToDelete = transactions.find(t => t.id === id);
-    
+    const transactionToDelete = transactions.find((t) => t.id === id);
+
     if (!transactionToDelete) return;
 
     // Optimistic update - hemen UI'dan kaldır
@@ -58,7 +63,7 @@ const TransactionsList = () => {
     try {
       // API'ye delete isteği gönder
       await dispatch(deleteTransaction(id)).unwrap();
-      
+
       // Başarılı toast mesajı
       iziToast.success({
         title: "Başarılı ✅",
@@ -71,7 +76,7 @@ const TransactionsList = () => {
     } catch (error) {
       // Hata olursa transaction'ı geri ekle
       dispatch(revertDelete({ id, transaction: transactionToDelete }));
-      
+
       // Hata toast mesajı
       iziToast.error({
         title: "Hata ❌",
@@ -151,8 +156,6 @@ const TransactionsList = () => {
           </table>
         </div>
       )}
-
-      <ButtonAddTransactions onClick={handleAdd} />
     </div>
   );
 };
