@@ -1,11 +1,10 @@
 import { Routes, Route } from "react-router-dom";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-
 import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
 import Dash from "./pages/Dash/Dash";
-import Statistics from "./pages/Statistics/Statistics";
+import StatisticsDashboard from "./pages/Statistics/StatisticsDashboard/StatisticsDashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { getCurrent } from "./redux/auth/operations";
 
@@ -34,7 +33,7 @@ export default function App() {
         path="/statistics"
         element={
           <ProtectedRoute>
-            <Statistics />
+            <StatisticsDashboard />
           </ProtectedRoute>
         }
       />
