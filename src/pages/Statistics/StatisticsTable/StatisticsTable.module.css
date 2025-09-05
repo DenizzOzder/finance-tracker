@@ -1,7 +1,8 @@
 .filterContainer {
   display: flex;
-  margin-left: 15px;
-  gap: 40px;
+  justify-content: flex-start;
+  gap: 41px;
+  margin-left: 10px;
 }
 
 .selectDark,
@@ -44,7 +45,6 @@
 .selectWrapper {
   position: relative;
   display: inline-block;
-  margin-right: 12px;
 }
 
 .selectWrapper select {
@@ -62,6 +62,7 @@
   color: #fff;
   width: 25px;
   height: 25px;
+  
 }
 
 .transactionList {
@@ -110,15 +111,21 @@
   flex-direction: column;
   gap: 4px;
   margin-bottom: 2rem;
+  position: relative;
+  right: 30px;
+  padding: 0 -20px;
 }
 
 .summary .transactionInfo {
   display: flex;
-  justify-content: space-between; /* kategori solda, miktar sağda */
+  justify-content: space-around; /* kategori solda, miktar sağda */
   align-items: center;
   font-weight: 700;
   font-size: 17px;
-  margin-left: 20px;
+  margin: 0;
+  gap: 20px;
+  padding: 0;
+  position: relative;
 }
 
 .categ {
@@ -221,13 +228,14 @@ body {
     right: 700px;
   }
   .summary {
-    padding: 0 35px;
+    padding: 0 65px;
+    
   }
   .summary .transactionInfo {
     margin-left: 0;
-    width: 100%;
     padding: 0;
     justify-content: space-between;
+    right: 10px;
   }
 
   .selectWrapper {
@@ -246,14 +254,15 @@ body {
   }
 
   .filterContainer {
-    margin-left: 25px;
+    margin-left: 55px;
   }
-  .summer {
+  .summary {
     position: relative;
     bottom: 20px;
+    right: 5px;
   }
   .selectDark {
-    width: 140px;
+    width: 180px;
   }
 }
 
