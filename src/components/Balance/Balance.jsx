@@ -47,7 +47,7 @@ const Balance = () => {
       : "0.00";
 
   const getDisplayedBalance = () => {
-    if (selectedCurrency === "UAH") return `☼ ${formattedUAH}`;
+    if (selectedCurrency === "UAH") return `₺  ${formattedUAH}`;
     if (selectedCurrency === "USD") return `$ ${balanceInUSD}`;
     if (selectedCurrency === "EUR") return `€ ${balanceInEUR}`;
     return "₴ 0.00";
