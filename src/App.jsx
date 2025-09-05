@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, lazy } from "react";
 import { useDispatch } from "react-redux";
 import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
@@ -8,7 +8,6 @@ import StatisticsDashboard from "./pages/Statistics/StatisticsDashboard/Statisti
 import ProtectedRoute from "./components/ProtectedRoute";
 import { getCurrent } from "./redux/auth/operations";
 
-import { lazy } from "react";
 import CurrencyLayout from "./components/Currency/CurrencyLayout/CurrencyLayout";
 
 const CurrencyTab = lazy(() => import("./components/Currency/CurrencyLayout/CurrencyLayout"));

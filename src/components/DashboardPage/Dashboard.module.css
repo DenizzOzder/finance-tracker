@@ -2,7 +2,7 @@
   background-image: url(../../assets/img/bg_mobile_dashboard.png);
   background-repeat: no-repeat;
   background-size: cover;
-  background-attachment: fixed; 
+  background-attachment: fixed;
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
@@ -23,9 +23,11 @@
   align-items: center;
   gap: 32px;
 }
-.currency{
+
+.currency {
   align-self: flex-end;
 }
+
 @media screen and (min-width: 768px) {
   .outlet_container {
     width: 100%;
