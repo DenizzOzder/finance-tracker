@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux";
 import { Navigate, useLocation } from "react-router-dom";
 import { selectIsLoggedIn, selectIsRefreshing } from "../redux/auth/selectors";
+import Loader from "./Loader/Loader";
 
 export default function ProtectedRoute({ children }) {
   const isLoggedIn = useSelector(selectIsLoggedIn);
@@ -8,7 +9,7 @@ export default function ProtectedRoute({ children }) {
   const location = useLocation();
 
   if (isRefreshing) {
-    return <div style={{ color: "white", textAlign: "center", marginTop: "40vh" }}>Loading...</div>;
+    return <Loader />;
   }
 
   if (!isLoggedIn) {

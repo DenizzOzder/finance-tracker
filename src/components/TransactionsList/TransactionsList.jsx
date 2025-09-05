@@ -1,22 +1,22 @@
-/* filepath: /home/ohhamamcioglu/finance-tracker/src/components/Transactions/TransactionsList.jsx */
 import { useSelector, useDispatch } from "react-redux";
 import { useMediaQuery } from "react-responsive";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import styles from "./TransactionsList.module.css";
 import TransactionsItem from "../TransactionsItem/TransactionsItem.jsx";
 import ButtonAddTransactions from "../ButtonAddTransactions/ButtonAddTransactions.jsx";
 import emptyTransaction from "../../images/emptytransaction.webp";
-import { selectTransactions, selectCategories } from "../../redux/transactions/selectors.js";
+import { selectTransactions, selectCategories, selectTransactionsLoading } from "../../redux/transactions/selectors.js";
 import { deleteTransaction, getCategories } from "../../redux/transactions/operations.js";
 import { optimisticDelete, revertDelete } from "../../redux/transactions/slice.js";
 import "izitoast/dist/css/iziToast.min.css";
 import iziToast from "izitoast";
-import { useState } from "react";
 import AddTransactionModal from "../AddTransactionModal/AddTransactionModal.jsx";
 import ModalEditTransaction from "../ModalEditTransaction/ModalEditTransaction.jsx";
+import Loader from "../Loader/Loader";
 
 const TransactionsList = () => {
   const dispatch = useDispatch();
+  const isLoading = useSelector(selectTransactionsLoading);
   const transactions = useSelector(selectTransactions);
   const categories = useSelector(selectCategories);
   const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
@@ -35,32 +35,26 @@ const TransactionsList = () => {
     return acc;
   }, {});
 
-  // Transactions'ları category name ile birliştir
+  // Transactions'ları category name ile birleştir
   const transactionsWithCategories =
     transactions?.map((transaction) => ({
       ...transaction,
       categoryName: categoryMap[transaction.categoryId] || "Unknown Category",
     })) || [];
+
   const handleEdit = (transaction) => {
     setSelectedTransaction(transaction);
-    // Edit transaction logic
     console.log("Edit transaction:", transaction);
   };
 
   const handleDelete = async (id) => {
-    // Silinecek transaction'ı bul
     const transactionToDelete = transactions.find((t) => t.id === id);
-
     if (!transactionToDelete) return;
 
-    // Optimistic update - hemen UI'dan kaldır
     dispatch(optimisticDelete(id));
 
     try {
-      // API'ye delete isteği gönder
       await dispatch(deleteTransaction(id)).unwrap();
-
-      // Başarılı toast mesajı
       iziToast.success({
         title: "Başarılı ✅",
         message: "İşlem silindi",
@@ -70,10 +64,7 @@ const TransactionsList = () => {
         theme: "dark",
       });
     } catch (error) {
-      // Hata olursa transaction'ı geri ekle
       dispatch(revertDelete({ id, transaction: transactionToDelete }));
-
-      // Hata toast mesajı
       iziToast.error({
         title: "Hata ❌",
         message: error.message || "İşlem silinemedi",
@@ -87,7 +78,11 @@ const TransactionsList = () => {
 
   return (
     <div className={styles.wrapper}>
-      {isMobile ? (
+      {isLoading ? (
+        <div className={styles.loaderWrapper}>
+          <Loader />
+        </div>
+      ) : isMobile ? (
         <div className={styles.mobileContainer}>
           {isEmpty ? (
             <div className={styles.empty}>
@@ -134,6 +129,7 @@ const TransactionsList = () => {
           </table>
         </div>
       )}
+
       <ModalEditTransaction
         isOpen={!!selectedTransaction}
         onClose={() => setSelectedTransaction(null)}

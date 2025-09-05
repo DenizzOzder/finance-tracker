@@ -1,5 +1,4 @@
 .main_container {
-  background-image: url(../../assets/img/bg_mobile_dashboard.png);
   background-repeat: no-repeat;
   background-size: cover;
   background-attachment: fixed;
@@ -20,12 +19,17 @@
 
 .nav_container {
   display: flex;
-  align-items: center;
+  align-items: end;
   gap: 32px;
 }
 
 .currency {
   align-self: flex-end;
+
+@media screen and (max-width: 767px) {
+  .main_container {
+    padding: 30px;
+  }
 }
 
 @media screen and (min-width: 768px) {
@@ -39,7 +43,6 @@
 
 @media screen and (min-width: 1280px) {
   .main_container {
-    background-image: url(../../assets/img/bg_desktop_dashboard.png);
     display: flex;
     justify-content: space-between;
     align-items: start;
