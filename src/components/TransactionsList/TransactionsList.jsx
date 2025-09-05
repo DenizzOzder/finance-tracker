@@ -6,25 +6,6 @@ import styles from "./TransactionsList.module.css";
 import TransactionsItem from "../TransactionsItem/TransactionsItem.jsx";
 import ButtonAddTransactions from "../ButtonAddTransactions/ButtonAddTransactions.jsx";
 import emptyTransaction from "../../images/emptytransaction.webp";
-<<<<<<< HEAD:src/components/Transactions/TransactionsList.jsx
-import Transaction from "../Transaction/Transaction.jsx";
-import {
-  selectTransactions,
-  selectCategories,
-} from "../../redux/transactions/selectors.js";
-import {
-  deleteTransaction,
-  getCategories,
-} from "../../redux/transactions/operations.js";
-import {
-  optimisticDelete,
-  revertDelete,
-} from "../../redux/transactions/slice.js";
-import "izitoast/dist/css/iziToast.min.css";
-import iziToast from "izitoast";
-import { useState } from "react";
-import AddTransactionModal from "../Transaction/Transaction.jsx";
-=======
 import { selectTransactions, selectCategories } from "../../redux/transactions/selectors.js";
 import { deleteTransaction, getCategories } from "../../redux/transactions/operations.js";
 import { optimisticDelete, revertDelete } from "../../redux/transactions/slice.js";
@@ -32,7 +13,6 @@ import "izitoast/dist/css/iziToast.min.css";
 import iziToast from "izitoast";
 import { useState } from "react";
 import AddTransactionModal from "../AddTransactionModal/AddTransactionModal.jsx";
->>>>>>> main:src/components/TransactionsList/TransactionsList.jsx
 import ModalEditTransaction from "../ModalEditTransaction/ModalEditTransaction.jsx";
 
 const TransactionsList = () => {

@@ -9,6 +9,7 @@ import Balance from "../../../components/Balance/Balance";
 import Header from "../../../components/Header/Header";
 import Currency from "../../../components/Currency/Currency";
 import Navigation from "../../../components/Navigation/Navigation";
+import RuleBotWidget from "../../../components/RuleBot/RuleBotWidget";
 
 const StatisticsDashboard = () => {
   const dispatch = useDispatch();
@@ -62,6 +63,7 @@ const StatisticsDashboard = () => {
         />
       </div>
     </div>
+    <RuleBotWidget />
   </>
   );
 };
