@@ -4,17 +4,18 @@ import { useDispatch } from "react-redux";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { getCurrent } from "./redux/auth/operations";
 import Loader from "./components/Loader/Loader";
-
 const Login = lazy(() => import("./pages/Login/Login"));
 const Register = lazy(() => import("./pages/Register/Register"));
 const Dash = lazy(() => import("./pages/Dash/Dash"));
-const StatisticsDashboard = lazy(() => import("./pages/Statistics/StatisticsDashboard/StatisticsDashboard"));
+const StatisticsDashboard = lazy(() =>
+  import("./pages/Statistics/StatisticsDashboard/StatisticsDashboard")
+);
 
-import { lazy } from "react";
 import CurrencyLayout from "./components/Currency/CurrencyLayout/CurrencyLayout";
 
-const CurrencyTab = lazy(() => import("./components/Currency/CurrencyLayout/CurrencyLayout"));
-
+const CurrencyTab = lazy(() =>
+  import("./components/Currency/CurrencyLayout/CurrencyLayout")
+);
 
 export default function App() {
   const dispatch = useDispatch();
@@ -47,14 +48,14 @@ export default function App() {
           }
         />
 
-
         <Route
-  path="/currency"
-  element={
-    <ProtectedRoute>
-      <CurrencyLayout />
-    </ProtectedRoute>
-  }></Route>
+          path="/currency"
+          element={
+            <ProtectedRoute>
+              <CurrencyLayout />
+            </ProtectedRoute>
+          }
+        ></Route>
         <Route path="*" element={<Login />} />
       </Routes>
     </Suspense>
