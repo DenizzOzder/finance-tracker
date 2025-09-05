@@ -27,27 +27,27 @@ export default function App() {
 
   return (
     <Suspense fallback={<Loader />}>
-    <Routes>
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-      
-      <Route
-        path="/dashboard"
-        element={
-          <ProtectedRoute>
-            <Dash />
-          </ProtectedRoute>
-        }
-      />
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
 
-      <Route
-        path="/statistics"
-        element={
-          <ProtectedRoute>
-            <StatisticsDashboard />
-          </ProtectedRoute>
-        }
-      />
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dash />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/statistics"
+          element={
+            <ProtectedRoute>
+              <StatisticsDashboard />
+            </ProtectedRoute>
+          }
+        />
 
 
         <Route
@@ -57,8 +57,8 @@ export default function App() {
       <CurrencyLayout />
     </ProtectedRoute>
   }></Route>
-      <Route path="*" element={<Login />} />
-    </Routes>
+        <Route path="*" element={<Login />} />
+      </Routes>
     </Suspense>
   );
 }
