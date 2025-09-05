@@ -34,7 +34,7 @@
     "redux-persist": "^6.0.0",
     "yup": "^1.7.0"
   },
- "engines": { "node": "20.x" }
+ "engines": { "node": "20.x" },
   "devDependencies": {
     "@eslint/js": "^9.33.0",
     "@tailwindcss/postcss": "^4.1.12",
