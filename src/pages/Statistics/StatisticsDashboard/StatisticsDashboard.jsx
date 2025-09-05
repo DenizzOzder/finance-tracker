@@ -5,6 +5,10 @@ import { selectTransactions, selectCategories } from "../../../redux/transaction
 import { getTransactions, getCategories } from "../../../redux/transactions/operations";
 import Chart from "../Chart/Chart";
 import StatisticsTable from "../StatisticsTable/StatisticsTable";
+import Balance from "../../../components/Balance/Balance";
+import Header from "../../../components/Header/Header";
+import Currency from "../../../components/Currency/Currency";
+import Navigation from "../../../components/Navigation/Navigation";
 
 const StatisticsDashboard = () => {
   const dispatch = useDispatch();
@@ -37,17 +41,28 @@ const StatisticsDashboard = () => {
   });
 
   return (
-    <div className={styles.container}>
-      <Chart filteredList={filteredList} />
-      <StatisticsTable
-        filteredList={filteredList}
-        categories={categories}
-        selectYear={selectYear}
-        setSelectYear={setSelectYear}
-        selectMonth={selectMonth}
-        setSelectMonth={setSelectMonth}
-      />
+
+    <>
+    <Header />
+    <div className={styles.mainWrapper}>
+      <div className={styles.leftPanel}>
+        <Navigation />
+        <Balance />
+        <Currency />
+      </div>
+      <div className={styles.container}>
+        <Chart filteredList={filteredList} />
+        <StatisticsTable
+          filteredList={filteredList}
+          categories={categories}
+          selectYear={selectYear}
+          setSelectYear={setSelectYear}
+          selectMonth={selectMonth}
+          setSelectMonth={setSelectMonth}
+        />
+      </div>
     </div>
+  </>
   );
 };
 

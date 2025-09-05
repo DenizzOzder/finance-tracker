@@ -71,21 +71,21 @@
 }
 
 .transactionItem {
-  width: 395px; /* Figma ölçüsü */
+  width: calc(100% - 10px); /* Figma ölçüsü */
   display: flex;
   flex-direction: column;
   justify-content: center;
   position: relative;
   margin-bottom: 16px;
   padding-bottom: 16px;
-  font-size: 16px;
+  font-size: 18px;
 }
 .transactionItem::after {
   content: "";
   position: absolute;
   bottom: 0;
   left: -20px; /* sola taşır */
-  width: 435px; /* sağa taşır, toplam uzunluk = width + sol + sağ */
+  width: calc(100% + 20px); /* sağa taşır, toplam uzunluk = width + sol + sağ */
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
@@ -143,6 +143,7 @@
   position: relative;
   left: -20px;
   padding: 0 20px;
+  font-size: 18px;
 }
 
 
@@ -196,7 +197,7 @@
 
 .categDiv {
   background-color: #523B7E;
-  width: 395px; /* transactionItem ile aynı */
+  width: calc(100% - 20px); /* transactionItem ile aynı */
   height: 56px;
   border-radius: 8px;
   margin: 20px 0;
@@ -206,6 +207,7 @@
 }
 .rightSide {
   margin-top: 50px;
+  width: 50%;
 }
 
 @media screen and (max-width: 1024px){
@@ -318,7 +320,7 @@
   }
 
  .categDiv {
-  width: 280px;
+  width: calc(100% - 20px);
   padding: 0px;
   margin-left: 20px;
  }
