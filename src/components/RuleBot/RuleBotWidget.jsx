@@ -34,9 +34,12 @@ export default function RuleBotWidget() {
   ]);
   const [input, setInput] = useState("");
   const [unread, setUnread] = useState(0);
-  const [month, setMonth] = useState(() =>
-    new Date().toISOString().slice(0, 7)
-  );
+  const [month, setMonth] = useState(() => {
+    const d = new Date();
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, "0");
+    return `${y}-${m}`;
+  });
   const panelRef = useRef(null);
   const messagesRef = useRef(null);
 

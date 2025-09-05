@@ -22,7 +22,7 @@ import {
 import "izitoast/dist/css/iziToast.min.css";
 import iziToast from "izitoast";
 import { useState } from "react";
-import AddTransactionModal from "../Transaction/transaction.jsx";
+import AddTransactionModal from "../Transaction/Transaction.jsx";
 import ModalEditTransaction from "../ModalEditTransaction/ModalEditTransaction.jsx";
 
 const TransactionsList = () => {
