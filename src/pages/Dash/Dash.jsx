@@ -7,10 +7,7 @@ import DashboardPage from "../../components/DashboardPage/DashboardPage.jsx"
 
 import Header from "../../components/Header/Header.jsx";
 import { getTransactions } from "../../redux/transactions/operations.js";
-import { 
-  selectTransactionsLoading, 
-  selectTransactionsError 
-} from "../../redux/transactions/selectors.js";
+import { selectTransactionsLoading, selectTransactionsError } from "../../redux/transactions/selectors.js";
 // Auth selectors'ları import et (auth slice'ından)
 import { selectIsLoggedIn, selectToken } from "../../redux/auth/selectors.js";
 import styles from "./Dash.module.css";
@@ -18,7 +15,7 @@ import styles from "./Dash.module.css";
 export default function DashboardHome() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  
+
   const loading = useSelector(selectTransactionsLoading);
   const error = useSelector(selectTransactionsError);
   const isLoggedIn = useSelector(selectIsLoggedIn);
@@ -27,7 +24,7 @@ export default function DashboardHome() {
   useEffect(() => {
     // Eğer kullanıcı giriş yapmamışsa login'e yönlendir
     if (!isLoggedIn || !token) {
-      navigate('/login');
+      navigate("/login");
       return;
     }
     document.title = "Dashboard";
@@ -47,7 +44,7 @@ export default function DashboardHome() {
   return (
     <div className={styles.wrapper}>
       <Header />
-      <div className={styles.content}>
+        <div className={styles.content}>
          <DashboardPage/>
         <div className={styles.transactionsContainer}>
           {loading && <div className={styles.loading}>Loading...</div>}
