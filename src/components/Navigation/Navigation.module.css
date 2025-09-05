@@ -25,7 +25,9 @@
 .navLinkActive .transactions,
 .navLinkActive .statistics,
 .navLinkActive .currency {
-  background-color: var(--icon-violet);
+  color: white;
+  box-shadow: 0 3px 10px 0 rgba(74, 86, 226, 0.5);
+  background-color: #734aef;;
 }
 .navLink .transactions,
 .navLink .statistics,
@@ -51,6 +53,9 @@
 .navLink .statsIcon,
 .navLink .currIcon {
   color: #2e1e53;
+  width: 44px;
+  height: 44px;
+    
 }
 
 .linkText {

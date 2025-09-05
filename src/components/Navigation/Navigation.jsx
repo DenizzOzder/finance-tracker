@@ -12,7 +12,7 @@ const Navigation = () => {
     <section className={s.navigation}>
       <div className="container">
         <nav className={s.navElements}>
-          <NavLink to="/dashboard/home" className={getNavLinkClass}>
+          <NavLink to="/dashboard" className={getNavLinkClass}>
             <div className={s.transactions}>
               <IoMdHome className={s.homeIcon} />
             </div>
@@ -25,7 +25,7 @@ const Navigation = () => {
   <p className={s.linkText}>Statistics</p>
 </NavLink>
 
-          <NavLink to="currency" className={getNavLinkClass}>
+          <NavLink to="/currency" className={getNavLinkClass}>
             <div className={s.currency}>
               <BsCurrencyDollar className={s.currIcon} />
             </div>

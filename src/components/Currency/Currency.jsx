@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useMediaQuery } from "react-responsive";
+//import { useMediaQuery } from "react-responsive";
 import { useDispatch, useSelector } from "react-redux";
 import {
   selectCurrencyData,
@@ -10,7 +10,7 @@ import styles from "./Currency.module.css";
 import CustomChart from "./Chart/Chart";
 
 const Currency = () => {
-  const isTablet = useMediaQuery({ query: "(max-width: 1279px)" });
+  //const isTablet = useMediaQuery({ query: "(max-width: 1279px)" });
   const dispatch = useDispatch();
   const currencyData = useSelector(selectCurrencyData);
   const isLoading = useSelector(selectCurrencyLoading);

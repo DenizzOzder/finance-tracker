@@ -47,7 +47,7 @@ const Balance = () => {
       : "0.00";
 
   const getDisplayedBalance = () => {
-    if (selectedCurrency === "UAH") return `₴ ${formattedUAH}`;
+    if (selectedCurrency === "UAH") return `☼ ${formattedUAH}`;
     if (selectedCurrency === "USD") return `$ ${balanceInUSD}`;
     if (selectedCurrency === "EUR") return `€ ${balanceInEUR}`;
     return "₴ 0.00";
@@ -96,7 +96,7 @@ const Balance = () => {
             className={clsx(s.button, selectedCurrency === "UAH" && s.active)}
             onClick={() => setSelectedCurrency("UAH")}
           >
-            ₴ UAH
+            ₺ TRY
           </button>
           <button
             className={clsx(s.button, selectedCurrency === "USD" && s.active)}
