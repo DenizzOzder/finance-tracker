@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import styles from "./StatisticsDashBoard.module.css";
+import styles from "./StatisticsDashboard.module.css";
 import { selectTransactions, selectCategories } from "../../../redux/transactions/selectors";
 import { getTransactions, getCategories } from "../../../redux/transactions/operations";
 import Chart from "../Chart/Chart";
