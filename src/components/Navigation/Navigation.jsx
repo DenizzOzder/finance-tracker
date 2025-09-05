@@ -25,7 +25,7 @@ const Navigation = () => {
   <p className={s.linkText}>Statistics</p>
 </NavLink>
 
-          <NavLink to="/dashboard/currency" className={getNavLinkClass}>
+          <NavLink to="currency" className={getNavLinkClass}>
             <div className={s.currency}>
               <BsCurrencyDollar className={s.currIcon} />
             </div>

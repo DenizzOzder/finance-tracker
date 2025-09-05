@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import { useEffect } from "react";
+import { lazy, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
@@ -7,7 +7,7 @@ import Dash from "./pages/Dash/Dash";
 import StatisticsDashboard from "./pages/Statistics/StatisticsDashboard/StatisticsDashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { getCurrent } from "./redux/auth/operations";
-
+const CurrencyTab = lazy(() => import("./components/Currency/Currency"));
 export default function App() {
   const dispatch = useDispatch();
 
@@ -37,7 +37,15 @@ export default function App() {
           </ProtectedRoute>
         }
       />
-
+     <Route
+        path="currency"
+        element={
+          <ProtectedRoute>
+            <CurrencyTab />
+          </ProtectedRoute>
+        }
+      />
+     
       <Route path="*" element={<Login />} />
     </Routes>
   );
