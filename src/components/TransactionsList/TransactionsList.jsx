@@ -3,9 +3,10 @@ import { useSelector, useDispatch } from "react-redux";
 import { useMediaQuery } from "react-responsive";
 import { useEffect } from "react";
 import styles from "./TransactionsList.module.css";
-import TransactionsItem from "./TransactionsItem.jsx";
-import ButtonAddTransactions from "./ButtonAddTransactions.jsx";
+import TransactionsItem from "../TransactionsItem/TransactionsItem.jsx";
+import ButtonAddTransactions from "../ButtonAddTransactions/ButtonAddTransactions.jsx";
 import emptyTransaction from "../../images/emptytransaction.webp";
+<<<<<<< HEAD:src/components/Transactions/TransactionsList.jsx
 import Transaction from "../Transaction/Transaction.jsx";
 import {
   selectTransactions,
@@ -23,6 +24,15 @@ import "izitoast/dist/css/iziToast.min.css";
 import iziToast from "izitoast";
 import { useState } from "react";
 import AddTransactionModal from "../Transaction/Transaction.jsx";
+=======
+import { selectTransactions, selectCategories } from "../../redux/transactions/selectors.js";
+import { deleteTransaction, getCategories } from "../../redux/transactions/operations.js";
+import { optimisticDelete, revertDelete } from "../../redux/transactions/slice.js";
+import "izitoast/dist/css/iziToast.min.css";
+import iziToast from "izitoast";
+import { useState } from "react";
+import AddTransactionModal from "../AddTransactionModal/AddTransactionModal.jsx";
+>>>>>>> main:src/components/TransactionsList/TransactionsList.jsx
 import ModalEditTransaction from "../ModalEditTransaction/ModalEditTransaction.jsx";
 
 const TransactionsList = () => {
@@ -103,18 +113,11 @@ const TransactionsList = () => {
             <div className={styles.empty}>
               <img src={emptyTransaction} alt="page-not-found" width="240" />
               <p className={styles.emptyTitle}>No transactions yet</p>
-              <p className={styles.emptyText}>
-                Start by adding your first record.
-              </p>
+              <p className={styles.emptyText}>Start by adding your first record.</p>
             </div>
           ) : (
             transactionsWithCategories.map((t) => (
-              <TransactionsItem
-                key={t.id}
-                transaction={t}
-                onEdit={handleEdit}
-                onDelete={handleDelete}
-              />
+              <TransactionsItem key={t.id} transaction={t} onEdit={handleEdit} onDelete={handleDelete} />
             ))
           )}
         </div>
@@ -136,26 +139,15 @@ const TransactionsList = () => {
                 <tr>
                   <td colSpan="6">
                     <div className={styles.empty}>
-                      <img
-                        src={emptyTransaction}
-                        alt="page-not-found"
-                        width="240"
-                      />
+                      <img src={emptyTransaction} alt="page-not-found" width="240" />
                       <p className={styles.emptyTitle}>No transactions yet</p>
-                      <p className={styles.emptyText}>
-                        Start by adding your first record.
-                      </p>
+                      <p className={styles.emptyText}>Start by adding your first record.</p>
                     </div>
                   </td>
                 </tr>
               ) : (
                 transactionsWithCategories.map((t) => (
-                  <TransactionsItem
-                    key={t.id}
-                    transaction={t}
-                    onEdit={handleEdit}
-                    onDelete={handleDelete}
-                  />
+                  <TransactionsItem key={t.id} transaction={t} onEdit={handleEdit} onDelete={handleDelete} />
                 ))
               )}
             </tbody>
@@ -169,9 +161,7 @@ const TransactionsList = () => {
       />
       <ButtonAddTransactions onClick={() => setShowTransaction(true)} />
 
-      {showTransaction && (
-        <AddTransactionModal onClose={() => setShowTransaction(false)} />
-      )}
+      {showTransaction && <AddTransactionModal onClose={() => setShowTransaction(false)} />}
     </div>
   );
 };

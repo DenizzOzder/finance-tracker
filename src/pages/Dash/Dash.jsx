@@ -2,6 +2,7 @@
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+<<<<<<< HEAD
 import TransactionsList from "../../components/Transactions/TransactionsList.jsx";
 import RuleBotWidget from "../../components/RuleBot/RuleBotWidget";
 import Header from "../../components/Header/Header.jsx";
@@ -11,6 +12,15 @@ import {
   selectTransactionsError,
 } from "../../redux/transactions/selectors.js";
 // Auth selectors
+=======
+import TransactionsList from "../../components/TransactionsList/TransactionsList.jsx";
+import DashboardPage from "../../components/DashboardPage/DashboardPage.jsx"
+
+import Header from "../../components/Header/Header.jsx";
+import { getTransactions } from "../../redux/transactions/operations.js";
+import { selectTransactionsLoading, selectTransactionsError } from "../../redux/transactions/selectors.js";
+// Auth selectors'ları import et (auth slice'ından)
+>>>>>>> main
 import { selectIsLoggedIn, selectToken } from "../../redux/auth/selectors.js";
 import styles from "./Dash.module.css";
 
@@ -46,6 +56,7 @@ export default function DashboardHome() {
   return (
     <div className={styles.wrapper}>
       <Header />
+<<<<<<< HEAD
 
       <div className={styles.content}>
         <div className={styles.sidebar}>
@@ -54,6 +65,10 @@ export default function DashboardHome() {
           <div className={styles.currencyChart}>parite grafik alanı</div>
         </div>
 
+=======
+        <div className={styles.content}>
+         <DashboardPage/>
+>>>>>>> main
         <div className={styles.transactionsContainer}>
           {loading && <div className={styles.loading}>Loading...</div>}
           {error && <div className={styles.error}>Error: {error}</div>}

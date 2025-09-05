@@ -1,0 +1,131 @@
+.container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: #17158a00;
+  height: calc(100vh - 134px);
+	box-shadow: 0 4px 60px 0 rgba(0, 0, 0, 0.25);
+}
+
+.currencyPeaks {
+  display: none;
+}
+
+.currencyTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.currencyTable th {
+  background: rgba(255, 255, 255, 0.2);
+  font-family: var(--font-family);
+  font-weight: 500;
+  font-size: 16px;
+  color: #fff;
+  text-align: left;
+  height: 50px;
+}
+
+.currencyTable th:first-child,
+.currencyTable td:first-child {
+  text-align: left;
+  padding-left: 20px;
+}
+
+.currencyTable th:nth-child(2),
+.currencyTable td:nth-child(2) {
+  text-align: center;
+  padding-right: 30px;
+}
+
+.currencyTable th:last-child,
+.currencyTable td:last-child {
+  text-align: right;
+  padding-right: 20px;
+}
+
+.currencyTable tr {
+  height: 40px;
+}
+
+.currencyTable td {
+  text-align: left;
+  font-family: var(--font-family);
+  font-weight: 400;
+  font-size: 16px;
+  color: #fff;
+  margin-top: 8px;
+}
+
+.currencyTableGraph {
+  width: 100%;
+  height: 100%;
+}
+
+.currencyTableGraph img {
+  width: 100%;
+  height: 100%;
+}
+
+@media (max-width: 767px) {
+  .loading {
+    font-size: 14px;
+    text-align: center;
+    color: #fff;
+    padding: 20px 0;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1279px) {
+  .container {
+    width: 336px;
+max-height: 214px;
+backdrop-filter: blur(100px);
+box-shadow: 0 4px 60px 0 rgba(0, 0, 0, 0.25);
+  }
+  .currencyTableGraph {
+    width: 100%;
+    height: 93px;
+  }
+}
+
+@media (min-width: 1279px) {
+  .container {
+    width: 480px;
+    height: 380px;
+  }
+  .currencyPeaks {
+    display: block;
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 16px;
+    background-color: #8a5715c9;
+  }
+
+  .currencyPeaks p:first-child {
+    position: absolute;
+    top: 44px;
+    left: 45px;
+    font-family: var(--font-family);
+    font-weight: 400;
+    font-size: 16px;
+    color: #fff;
+  }
+
+  .currencyPeaks p:last-child {
+    position: absolute;
+    top: 10px;
+    right: 90px;
+    font-family: var(--font-family);
+    font-weight: 400;
+    font-size: 16px;
+    color: #fff;
+  }
+  .currencyTableGraph {
+    width: 100%;
+    height: 100%;
+    margin-top: 32px;
+  }
+}

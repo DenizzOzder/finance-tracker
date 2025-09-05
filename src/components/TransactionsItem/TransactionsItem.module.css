@@ -2,7 +2,6 @@
   color: #ffb627;
   font-weight: 600;
 }
-
 .expense {
   color: #ff868d;
   font-weight: 600;
@@ -13,17 +12,15 @@
   gap: 8px;
   justify-content: flex-end;
 }
-
 .editIcon {
   background: transparent;
   border: none;
   padding: 6px 8px;
   cursor: pointer;
-  color: rgba(255, 255, 255, .6);
+  color: #fff;
 }
-
 .editIcon:hover {
-  background: rgba(255, 255, 255, .08);
+  background: rgba(255, 255, 255, 0.08);
   border-radius: 6px;
 }
 
@@ -33,40 +30,30 @@
   padding: 6px 12px;
   cursor: pointer;
   font-size: 14px;
-  transition: .2s;
-  background: linear-gradient(96.76deg,
-      #ffc727 -16.42%,
-      #9e40ba 97.04%,
-      #7000ff 150.71%);
+  transition: 0.2s;
+  background: linear-gradient(96.76deg, #ffc727 -16.42%, #9e40ba 97.04%, #7000ff 150.71%);
   box-shadow: 1px 9px 15px 0 rgba(0, 0, 0, 0.2);
 }
-
 .deleteBtn:hover {
   transform: scale(1.05);
-  background-image: linear-gradient(to right,
-      #7000ff 0%,
-      #9e40ba 31%,
-      #ffc727 100%);
+  background-image: linear-gradient(to right, #7000ff 0%, #9e40ba 31%, #ffc727 100%);
   background-size: 200%;
   background-position: right center;
   transition: all 1s ease 0s;
 }
-
 .deleteBtn:active {
   transform: scale(1.08);
 }
-
 .editBtn {
   background: transparent;
-  color: rgba(255, 255, 255, .85);
-  border: 1px solid rgba(255, 255, 255, .2);
+  color: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 18px;
   padding: 6px 12px;
   cursor: pointer;
 }
-
 .editBtn:hover {
-  background: rgba(255, 255, 255, .08);
+  background: rgba(255, 255, 255, 0.08);
 }
 
 /* mobile card */
@@ -78,30 +65,25 @@
   border-radius: 10px;
   overflow: hidden;
   backdrop-filter: blur(50px);
-  box-shadow: 0 4px 60px rgba(0, 0, 0, .25);
-  border: 1px solid rgba(255, 255, 255, .2);
+  box-shadow: 0 4px 60px rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-left: 5px solid transparent;
 }
 
 .incomeBorder {
   border-left-color: #ffb627;
-}
-
-/* turuncu */
+} /* turuncu */
 .expenseBorder {
   border-left-color: #e57075;
-}
-
-/* mercan */
+} /* mercan */
 
 .row {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 12px 16px;
-  border-bottom: 1px solid rgba(255, 255, 255, .1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
-
 .row:last-child {
   border-bottom: none;
 }
@@ -112,13 +94,11 @@
   margin: 0;
   min-width: 92px;
 }
-
 .value {
   color: #fff;
   text-align: right;
   flex: 1;
 }
-
 .sum {
   font-weight: 700;
 }
