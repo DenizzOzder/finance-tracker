@@ -1,18 +1,21 @@
+/* filepath: /src/pages/Login/Login.jsx */
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../redux/auth/operations";
 import { useState, useEffect } from "react";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { selectIsLoggedIn, selectIsRefreshing } from "../../redux/auth/selectors";
+import { selectTransactionsLoading } from "../../redux/transactions/selectors.js";
 import logo from "./logo.png";
 import css from "./Login.module.css";
 import { IoMailOutline } from "react-icons/io5";
 import { RiLockPasswordLine } from "react-icons/ri";
 import "izitoast/dist/css/iziToast.min.css";
 import iziToast from "izitoast";
+import Loader from "../../components/Loader/Loader.jsx";
 
 export default function Login() {
   const dispatch = useDispatch();
-  const { loading } = useSelector((s) => s.auth);
+  const isLoading = useSelector(selectTransactionsLoading);
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const isRefreshing = useSelector(selectIsRefreshing);
   const [email, setEmail] = useState("");
@@ -25,19 +28,19 @@ export default function Login() {
     document.title = "Login";
   }, []);
 
-  // Auth durumu yükleniyorsa loading göster
+  // Auth durumu yükleniyorsa loader göster
   if (isRefreshing) {
     return (
-      <div style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100vh',
-        background: 'linear-gradient(135deg, #101010 0%, #0E0D12 50%, #0A0A0A 100%)',
-        color: 'white',
-        fontSize: '18px'
-      }}>
-        Loading...
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+          background: "linear-gradient(135deg, #101010 0%, #0E0D12 50%, #0A0A0A 100%)",
+        }}
+      >
+        <Loader />
       </div>
     );
   }
@@ -101,11 +104,10 @@ export default function Login() {
           </div>
         </div>
 
-        <button className={css.login} type="submit" disabled={loading}>
-          LOG IN
+        <button className={css.login} type="submit" disabled={isLoading}>
+          {isLoading ? <Loader /> : "LOG IN"}
         </button>
 
-        {/* submit etmesin diye type="button" */}
         <button className={css.reg} type="button" onClick={toRegister}>
           REGISTER
         </button>
