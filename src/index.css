@@ -39,8 +39,7 @@ body {
 
 /* SUCCESS */
 .iziToast.custom-success-toast {
-  box-shadow: 0 10px 30px rgba(10, 6, 23, 0.55),
-    0 0 0 1px rgba(34, 197, 94, 0.25) inset !important;
+  box-shadow: 0 10px 30px rgba(10, 6, 23, 0.55), 0 0 0 1px rgba(34, 197, 94, 0.25) inset !important;
   border-left: 4px solid var(--accent-success) !important;
 }
 
@@ -53,14 +52,13 @@ body {
   color: lightgreen !important;
 }
 
-.iziToast.custom-success-toast .iziToast-progressbar>div {
+.iziToast.custom-success-toast .iziToast-progressbar > div {
   background: linear-gradient(90deg, #16a34a, var(--accent-success)) !important;
 }
 
 /* ERROR */
 .iziToast.custom-error-toast {
-  box-shadow: 0 10px 30px rgba(10, 6, 23, 0.55),
-    0 0 0 1px rgba(255, 88, 113, 0.25) inset !important;
+  box-shadow: 0 10px 30px rgba(10, 6, 23, 0.55), 0 0 0 1px rgba(255, 88, 113, 0.25) inset !important;
   border-left: 4px solid var(--accent-error) !important;
 }
 
@@ -74,7 +72,7 @@ body {
   font-weight: 700;
 }
 
-.iziToast.custom-error-toast .iziToast-progressbar>div {
+.iziToast.custom-error-toast .iziToast-progressbar > div {
   background: linear-gradient(90deg, #ef4444, #f97316) !important;
 }
 
@@ -92,7 +90,6 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
 
 a {
   font-weight: 500;
@@ -140,7 +137,7 @@ button:focus-visible {
 
 @media (prefers-color-scheme: light) {
   :root {
-    color: #213547;
+    color: #ffffff;
     background-color: #ffffff;
   }
 
@@ -152,7 +149,6 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
-
 
 .react-date-picker__wrapper {
   border: none !important;
