@@ -31,7 +31,7 @@ const Balance = () => {
   fetch("https://api.monobank.ua/bank/currency")
     .then((res) => res.json())
     .then((data) => {
-      console.log("Monobank dönen tüm kurlar:", data);
+      void data;
     });
 }, []);
 

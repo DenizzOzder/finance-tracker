@@ -19,7 +19,7 @@ const DashboardPage = () => {
   const isCurrency = location.pathname === "/dashboard/currency";
 
   return (
-    <div>
+    <>
       <section className={s.main_container}>
         <div className={isTablet || isDesktop ? s.nav_container : undefined}>
           <div
@@ -36,7 +36,7 @@ const DashboardPage = () => {
           <Outlet />
         </div>
       </section>
-    </div>
+    </>
   );
 };
 

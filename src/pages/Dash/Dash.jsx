@@ -47,19 +47,7 @@ export default function DashboardHome() {
   return (
     <div className={styles.wrapper}>
       <Header />
-      
       <div className={styles.content}>
-        {/* <div className={styles.sidebar}>
-          <div className={styles.navigation}>
-            yönlendirme Alanı
-          </div>
-          <div className={styles.balance}>
-            Balance
-          </div>
-          <div className={styles.currencyChart}>
-            parite grafik alanı
-          </div>
-        </div> */}
          <DashboardPage/>
         <div className={styles.transactionsContainer}>
           {loading && <div className={styles.loading}>Loading...</div>}
