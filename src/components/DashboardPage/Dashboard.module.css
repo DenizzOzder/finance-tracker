@@ -1,10 +1,9 @@
 .main_container {
-  background-image: url(../../assets/img/bg_mobile_dashboard.png);
   background-repeat: no-repeat;
   background-size: cover;
-  background-attachment: fixed; 
-  min-height: 100vh;
+  background-attachment: fixed;
   display: flex;
+  flex-wrap: wrap;
   flex-direction: column;
   align-items: center;
   height: fit-content;
@@ -20,15 +19,18 @@
 
 .nav_container {
   display: flex;
-  align-items: center;
+  align-items: end;
   gap: 32px;
 }
-
-@media screen and (min-width: 768px) {
+.currency{
+  align-self: flex-end;
+}
+@media screen and (max-width: 767px) {
   .main_container {
-    height: calc(100vh - 68px);
+    padding: 30px;
   }
-
+}
+@media screen and (min-width: 768px) {
   .outlet_container {
     width: 100%;
     display: flex;
@@ -39,11 +41,12 @@
 
 @media screen and (min-width: 1280px) {
   .main_container {
-    background-image: url(../../assets/img/bg_desktop_dashboard.png);
     display: flex;
     justify-content: space-between;
     align-items: start;
     flex-direction: row;
+    min-height: 100vh;
+    border-right: 3px solid white;
   }
 
   .nav_container {

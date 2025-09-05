@@ -22,7 +22,8 @@
 
 /* SUCCESS */
 .iziToast.custom-success-toast {
-  box-shadow: 0 10px 30px rgba(10, 6, 23, 0.55), 0 0 0 1px rgba(34, 197, 94, 0.25) inset !important;
+  box-shadow: 0 10px 30px rgba(10, 6, 23, 0.55),
+    0 0 0 1px rgba(34, 197, 94, 0.25) inset !important;
   border-left: 4px solid var(--accent-success) !important;
 }
 
@@ -41,7 +42,8 @@
 
 /* ERROR */
 .iziToast.custom-error-toast {
-  box-shadow: 0 10px 30px rgba(10, 6, 23, 0.55), 0 0 0 1px rgba(255, 88, 113, 0.25) inset !important;
+  box-shadow: 0 10px 30px rgba(10, 6, 23, 0.55),
+    0 0 0 1px rgba(255, 88, 113, 0.25) inset !important;
   border-left: 4px solid var(--accent-error) !important;
 }
 
