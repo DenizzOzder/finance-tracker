@@ -307,6 +307,8 @@
     padding: 0;         /* çok yapışmasın */
     box-sizing: border-box; 
     gap: 16px;
+    margin-bottom: 45px;
+
   }
    .summary .transactionInfo {
     width: 280px;
