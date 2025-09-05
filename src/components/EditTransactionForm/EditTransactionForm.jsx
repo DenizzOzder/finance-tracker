@@ -6,6 +6,9 @@ import "react-date-picker/dist/DatePicker.css";
 import FormButton from "../common/FormButton/FormButton";
 import styles from "./EditTransactionForm.module.css";
 import { Calendar } from "lucide-react";
+import { useDispatch } from "react-redux";
+import { updateTransaction } from "../../redux/transactions/operations";
+import iziToast from "izitoast";
 
 //Yup schema
 const schema = Yup.object().shape({
@@ -16,6 +19,8 @@ const schema = Yup.object().shape({
   comment: Yup.string().max(50, "Comment can be max 50 characters"),
 });
 const EditTransactionForm = ({ onClose, transaction }) => {
+  const dispatch = useDispatch();
+
   const {
     register,
     handleSubmit,
@@ -24,7 +29,7 @@ const EditTransactionForm = ({ onClose, transaction }) => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      amount: transaction.amount,
+      amount: Math.abs(transaction.amount),
       transactionDate: transaction.transactionDate
         ? new Date(transaction.transactionDate)
         : new Date(), // eğer boşsa bugünün tarihi
@@ -33,11 +38,38 @@ const EditTransactionForm = ({ onClose, transaction }) => {
   });
   //custom submit, yup validate kullanıyor
   const customSubmit = async (data) => {
+    data.amount = transaction.type === "INCOME" ? data.amount : 0 - data.amount;
     try {
       await schema.validate(data, { abortEarly: false });
-      onSubmit(data); // valid data ile callback
+      // dispatch ile API'ye gönder
+      dispatch(updateTransaction({ id: transaction.id, data }))
+        .unwrap()
+        .then(() => {
+          // Başarılı toast mesajı
+          iziToast.success({
+            title: "Başarılı ✅",
+            message: "Kaydedildi",
+            position: "topRight",
+            timeout: 2000,
+            class: "custom-success-toast",
+            theme: "dark",
+          });
+          onClose(); // modal kapat
+        })
+        .catch((err) => {
+          // Hata toast mesajı
+          iziToast.error({
+            title: "Hata ❌",
+            message: error.message || "Kayıt başarısız",
+            position: "topRight",
+            timeout: 3000,
+            class: "custom-error-toast",
+            theme: "dark",
+          });
+          console.error("Update failed", err);
+        });
     } catch (validationErrors) {
-      // Yup hatalarını react-hook-form’a aktar
+      // Yup hatalarını react-hook-form'a aktar
       validationErrors.inner.forEach((err) => {
         setError(err.path, { type: "manual", message: err.message });
       });
@@ -71,7 +103,11 @@ const EditTransactionForm = ({ onClose, transaction }) => {
         {/* Form */}
         <form onSubmit={handleSubmit(customSubmit)}>
           <div className={styles.inputRow}>
-            <input type="text" placeholder="Amount" {...register("amount")} />
+            <input
+              type="number"
+              placeholder="Amount"
+              {...register("amount", { valueAsNumber: true })}
+            />
             {errors.amount && (
               <p className={styles.error}>{errors.amount.message}</p>
             )}
