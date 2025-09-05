@@ -5,8 +5,14 @@ import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import styles from "./Statistics.module.css";
 import { ChevronDown } from "lucide-react";
-import { selectTransactions, selectCategories } from "../../redux/transactions/selectors";
-import { getCategories, getTransactions } from "../../redux/transactions/operations";
+import {
+  selectTransactions,
+  selectCategories,
+} from "../../redux/transactions/selectors";
+import {
+  getCategories,
+  getTransactions,
+} from "../../redux/transactions/operations";
 
 // Chart.js'in gerekli parçalarını kayıt ediyoruz
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -65,17 +71,12 @@ const Statistics = () => {
     return acc;
   }, {});
 
-  console.log("transactions:", transactions);
-  console.log("transaction categories map:", categoryMap);
-
   // transactions içine categoryName ekliyoruz
   const transactionsWithCategories =
     transactions?.map((transaction) => ({
       ...transaction,
       categoryName: categoryMap[transaction.categoryId] || "Unknown Category",
     })) || [];
-
-  console.log("transaction categories:", transactionsWithCategories);
 
   // Select kutularının state'leri
   const [selectYear, setSelectYear] = useState("");
@@ -84,25 +85,31 @@ const Statistics = () => {
   // Filtreleme işlemi
   const filteredList = transactionsWithCategories.filter((item) => {
     const date = new Date(item.transactionDate);
-    const matchYear = selectYear !== "" ? date.getFullYear() === Number(selectYear) : true;
-    const matchMonth = selectMonth !== "" ? date.getMonth() === Number(selectMonth) : true;
+    const matchYear =
+      selectYear !== "" ? date.getFullYear() === Number(selectYear) : true;
+    const matchMonth =
+      selectMonth !== "" ? date.getMonth() === Number(selectMonth) : true;
     return matchYear && matchMonth;
   });
-
-  console.log("transactions filteredList:", filteredList);
 
   // Giderleri alıyoruz
   const chartDataItems = filteredList.filter((item) => item.type === "EXPENSE");
 
   // Toplam gelir ve gider
-  const totalIncome = filteredList.filter((i) => i.type === "INCOME").reduce((acc, i) => acc + Number(i.amount), 0);
+  const totalIncome = filteredList
+    .filter((i) => i.type === "INCOME")
+    .reduce((acc, i) => acc + Number(i.amount), 0);
 
-  const totalExpense = chartDataItems.reduce((acc, i) => acc + Number(i.amount), 0);
+  const totalExpense = chartDataItems.reduce(
+    (acc, i) => acc + Math.abs(Number(i.amount)),
+    0
+  );
 
   // Kategorilere göre gruplama
   const categoriesGrouped = {};
   chartDataItems.forEach((item) => {
-    if (!categoriesGrouped[item.categoryName]) categoriesGrouped[item.categoryName] = 0;
+    if (!categoriesGrouped[item.categoryName])
+      categoriesGrouped[item.categoryName] = 0;
     categoriesGrouped[item.categoryName] += Number(item.amount);
   });
 
@@ -122,7 +129,9 @@ const Statistics = () => {
     "#8C33FF",
     "#33FF8C",
   ];
-  const colors = labels.map((_, idx) => defaultColors[idx % defaultColors.length]);
+  const colors = labels.map(
+    (_, idx) => defaultColors[idx % defaultColors.length]
+  );
   const hoverColors = colors.map((c) => lightenColor(c, 15));
 
   // Chart verileri
@@ -163,10 +172,11 @@ const Statistics = () => {
 
   return (
     <>
-      <p className={styles.stat}>Statistics</p>
       <div className={styles.container}>
         {/* Sol taraf: Chart */}
         <div className={styles.leftSide}>
+      <p className={styles.stat}>Statistics</p>
+
           <div className={styles.chartWrapper}>
             {chartDataItems.length === 0 ? (
               <div className={styles.emptyChartMessage}>
@@ -176,7 +186,10 @@ const Statistics = () => {
             ) : (
               <>
                 <Doughnut data={data} options={options} />
-                <div className={styles.circleTotal}>{totalExpense} </div>
+                <div className={styles.circleTotal}>
+                  {" "}
+                  ₺ {Math.abs(totalExpense)}{" "}
+                </div>
               </>
             )}
           </div>
@@ -185,19 +198,6 @@ const Statistics = () => {
         {/* Sağ taraf: filtre + liste */}
         <div className={styles.rightSide}>
           <div className={styles.filterContainer}>
-            {/* Year Select */}
-            <div className={styles.selectWrapper}>
-              <select value={selectYear} onChange={(e) => setSelectYear(e.target.value)} className={styles.selectDark}>
-                <option value="">Year</option>
-                {Array.from({ length: 6 }, (_, i) => 2020 + i).map((year) => (
-                  <option key={year} value={year}>
-                    {year}
-                  </option>
-                ))}
-              </select>
-              <ChevronDown className={styles.selectIcon} />
-            </div>
-
             {/* Month Select */}
             <div className={styles.selectWrapper}>
               <select
@@ -214,44 +214,80 @@ const Statistics = () => {
               </select>
               <ChevronDown className={styles.selectIcon} />
             </div>
+
+            {/* Year Select */}
+            <div className={styles.selectWrapper}>
+              <select
+                value={selectYear}
+                onChange={(e) => setSelectYear(e.target.value)}
+                className={styles.selectDark}
+              >
+                <option value="">Year</option>
+                {Array.from({ length: 6 }, (_, i) => 2020 + i).map((year) => (
+                  <option key={year} value={year}>
+                    {year}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown className={styles.selectIcon} />
+            </div>
           </div>
 
           {/* Transaction List */}
           <div className={styles.transactionList}>
+            <div className={styles.categDiv}>
+              <h3 className={styles.categ}>
+                Category <span className={styles.sum}>Sum</span>
+              </h3>
+            </div>
             {filteredList.length === 0 ? (
               <div>Transactions not found</div>
             ) : (
               filteredList.map((item, idx) => (
                 <div key={idx} className={styles.transactionItem}>
                   <div className={styles.transactionInfo}>
-                    <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "12px",
+                      }}
+                    >
                       <div
                         className={styles.colorBox}
                         style={{
                           backgroundColor:
                             item.type === "EXPENSE"
                               ? colors[labels.indexOf(item.categoryName)]
-                              : defaultColors[Math.floor(Math.random() * defaultColors.length)],
+                              : defaultColors[
+                                  Math.floor(
+                                    Math.random() * defaultColors.length
+                                  )
+                                ],
                         }}
                       />
                       <span>{item.categoryName}</span>
                     </div>
-                    <span>{item.amount} </span>
+                    <span>{item.amount} ₺</span>
                   </div>
                 </div>
               ))
             )}
           </div>
 
-          {/* Summary */}
+          {/* Summary kısmındaki toplamlar */}
           <div className={styles.summary}>
             <div className={styles.transactionInfo}>
-              <span>Expense</span>
-              <span style={{ color: "#FF0000", fontWeight: 700 }}>{totalExpense} </span>
+              <span>Expense:</span>
+              <span style={{ color: "#FF868D ", fontWeight: 700 }}>
+                {Math.abs(totalExpense)} ₺{" "}
+              </span>
             </div>
             <div className={styles.transactionInfo}>
-              <span>Income</span>
-              <span style={{ color: "#FFD700", fontWeight: 700 }}>{totalIncome} </span>
+              <span>Income:</span>
+              <span style={{ color: "#FFB627", fontWeight: 700 }}>
+                {Math.abs(totalIncome)} ₺{" "}
+              </span>
             </div>
           </div>
         </div>
