@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import TransactionsList from "../../components/TransactionsList/TransactionsList.jsx";
 import DashboardPage from "../../components/DashboardPage/DashboardPage.jsx"
-
+import RuleBotWidget from "../../components/RuleBot/RuleBotWidget.jsx"
 import Header from "../../components/Header/Header.jsx";
 import { getTransactions } from "../../redux/transactions/operations.js";
 import { selectTransactionsLoading, selectTransactionsError } from "../../redux/transactions/selectors.js";
@@ -52,6 +52,7 @@ export default function DashboardHome() {
           {!loading && !error && <TransactionsList />}
         </div>
       </div>
+      <RuleBotWidget />
     </div>
   );
 }

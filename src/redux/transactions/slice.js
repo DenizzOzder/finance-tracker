@@ -1,10 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { 
-  getTransactions, 
-  deleteTransaction, 
-  addTransaction, 
+import {
+  getTransactions,
+  deleteTransaction,
+  addTransaction,
   updateTransaction,
-  getCategories 
+  getCategories,
 } from "./operations";
 
 const initialState = {
@@ -26,13 +26,15 @@ const transactionsSlice = createSlice({
     optimisticDelete: (state, action) => {
       const id = action.payload;
       state.deletingIds.push(id);
-      state.items = state.items.filter(item => item.id !== id);
+      state.items = state.items.filter((item) => item.id !== id);
     },
     // Delete başarısızsa geri ekle
     revertDelete: (state, action) => {
       const { id, transaction } = action.payload;
-      state.deletingIds = state.deletingIds.filter(delId => delId !== id);
-      if (transaction) state.items.push(transaction);
+      state.deletingIds = state.deletingIds.filter((delId) => delId !== id);
+      if (transaction) {
+        state.items.push(transaction);
+      }
     },
   },
   extraReducers: (builder) => {
@@ -83,7 +85,13 @@ const transactionsSlice = createSlice({
       })
       .addCase(updateTransaction.fulfilled, (state, action) => {
         state.loading = false;
-        const index = state.items.findIndex(item => item.id === action.payload.id);
+        const index = state.items.findIndex(
+          (item) => item.id === action.payload.id
+        );
+        if (index !== -1) {
+          state.items[index] = action.payload;
+        }
+        state.error = null;
         if (index !== -1) state.items[index] = action.payload;
       })
       .addCase(updateTransaction.rejected, (state, action) => {
@@ -91,19 +99,22 @@ const transactionsSlice = createSlice({
         state.error = action.payload?.message || "Failed to update transaction";
       })
 
-      // DELETE Transaction (optimistic update)
+      // Delete Transaction (optimistic, burada sadece cleanup)
       .addCase(deleteTransaction.pending, (state) => {
         state.error = null;
       })
       .addCase(deleteTransaction.fulfilled, (state, action) => {
         const id = action.payload.id;
-        state.deletingIds = state.deletingIds.filter(delId => delId !== id);
+        state.deletingIds = state.deletingIds.filter((delId) => delId !== id);
+        state.error = null;
       })
       .addCase(deleteTransaction.rejected, (state, action) => {
         state.error = action.payload?.message || "Failed to delete transaction";
+        // revertDelete action'ı component tarafından dispatch edilecek
       });
   },
 });
 
-export const { clearError, optimisticDelete, revertDelete } = transactionsSlice.actions;
+export const { clearError, optimisticDelete, revertDelete } =
+  transactionsSlice.actions;
 export const transactionsReducer = transactionsSlice.reducer;

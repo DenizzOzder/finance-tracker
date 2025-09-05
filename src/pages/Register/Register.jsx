@@ -4,7 +4,10 @@ import css from "./Register.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { register } from "../../redux/auth/operations";
 import { Navigate, useNavigate } from "react-router-dom";
-import { selectIsLoggedIn, selectIsRefreshing } from "../../redux/auth/selectors";
+import {
+  selectIsLoggedIn,
+  selectIsRefreshing,
+} from "../../redux/auth/selectors";
 import { IoMailOutline } from "react-icons/io5";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { MdPerson2 } from "react-icons/md";
@@ -13,12 +16,12 @@ import * as Yup from "yup";
 import PassControl from "../../components/PassControl/PassControl";
 import "izitoast/dist/css/iziToast.min.css";
 import iziToast from "izitoast";
-
+const PASSWORD_REGEX = /^[A-Za-z0-9!@#$%^&*()_\-+=\[\]{};:'",.<>/?\\|`~.]+$/;
 // Yup şema
 const RegisterSchema = Yup.object({
   username: Yup.string()
     .trim()
-    .min(1, "Kullanıcı adı boş olamaz")
+    .min(3, "En az 3 Karakter")
     .max(30, "En fazla 30 karakter")
     .required("Zorunlu"),
   email: Yup.string().email("Geçerli bir e-posta gir").required("Zorunlu"),
@@ -27,7 +30,7 @@ const RegisterSchema = Yup.object({
     .max(18, "En fazla 18 karakter")
     .required("Zorunlu")
     .matches(
-      /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)[A-Za-z\d]{6,18}$/,
+      PASSWORD_REGEX,
       "Şifre en az 1 büyük harf, 1 küçük harf ve 1 rakam içermelidir"
     ),
   confirmPassword: Yup.string()
@@ -45,15 +48,18 @@ export default function Register() {
   // Auth durumu yükleniyorsa loading göster
   if (isRefreshing) {
     return (
-      <div style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100vh',
-        background: 'linear-gradient(135deg, #101010 0%, #0E0D12 50%, #0A0A0A 100%)',
-        color: 'white',
-        fontSize: '18px'
-      }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+          background:
+            "linear-gradient(135deg, #101010 0%, #0E0D12 50%, #0A0A0A 100%)",
+          color: "white",
+          fontSize: "18px",
+        }}
+      >
         Loading...
       </div>
     );

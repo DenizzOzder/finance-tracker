@@ -41,7 +41,6 @@ const TransactionsList = () => {
       ...transaction,
       categoryName: categoryMap[transaction.categoryId] || "Unknown Category",
     })) || [];
-
   const handleEdit = (transaction) => {
     setSelectedTransaction(transaction);
     // Edit transaction logic
