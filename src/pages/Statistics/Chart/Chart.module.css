@@ -48,6 +48,8 @@
 }
 .stat {
   font-size: 35px;
+  position: relative;
+  right: 50px;
 }
 
 

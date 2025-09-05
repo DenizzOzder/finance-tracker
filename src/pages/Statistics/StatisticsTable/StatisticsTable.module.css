@@ -7,16 +7,15 @@
 
 .selectDark,
 .selectLight {
-  width: 182px;
-  height: 50px;
-  padding: 0.5rem 1rem;
+  padding: 0px 1rem;
   border-radius: 8px;
   border: 1px solid #555;
   font-size: 17px;
+  
 }
 
 .selectDark {
-  width: 182px;
+  width: 240px;
   height: 50px;
   padding: 0.5rem 1rem;
   border-radius: 8px;
@@ -52,6 +51,7 @@
 .selectWrapper select {
   appearance: none;
   padding-right: 24px;
+  
 }
 
 .selectIcon {
@@ -67,7 +67,10 @@
 
 .transactionList {
   overflow-y: auto;
+  width: 75%;
   padding: 30px;
+  overflow: hidden;
+  
 }
 
 .transactionItem {
@@ -108,17 +111,17 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
+  margin: 0;
+  margin-left: 20px;
+  width: 75%;
 }
 
 .summary .transactionInfo {
   display: flex;
   justify-content: space-between; /* kategori solda, miktar sağda */
   align-items: center;
-  padding: 0 12px; /* Figma’ya göre boşluk */
-  width: 395px; /* Figma ölçüsü */
   font-weight: 700;
   font-size: 17px;
-  margin-left: 20px;
   
 }
 
@@ -194,6 +197,9 @@
 .sum {
   font-weight: 600;
 }
+body {
+  color: white;
+}
 
 .categDiv {
   background-color: #523B7E;
@@ -215,15 +221,16 @@
     text-align: left;
   }
   .container {
-    gap: 0px;
     padding: 0;
-
+    width: calc(100% - 2rem);
     max-width: 100%;
+    position: relative;
+    top: 500px;
+    right: 700px;
   }
 
 
 .selectWrapper{
-  max-width: 160px;
   gap: 16px;
 }
 .rightSide{
@@ -236,23 +243,29 @@
 }
 .transactionList {
   padding: 0 auto;
-  margin: 0 auto;
+  width: 350px;
+  position: relative;
 }
 
-.filterContainer {
-  margin-left: 25px;
-}
-.summer {
+
+.summary {
   position: relative;
-  bottom: 20px;
+  width: 90%;
 }
+
+.selectDark {
+  width: 155px;
+  position: relative;
+}
+
+
 }
 
 @media screen and (max-width: 767px){
    .container {
     display: flex;
     flex-direction: column;
-    max-width: 320px;
+   width: calc(100% - 2rem);
     align-items: center;
     padding: 0 20px; /* kenarlardan boşluk */
     width: 100%;
