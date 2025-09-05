@@ -2,7 +2,7 @@
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import TransactionsList from "../../components/Transactions/TransactionsList.jsx";
+import TransactionsList from "../../components/TransactionsList/TransactionsList.jsx";
 import DashboardPage from "../../components/DashboardPage/DashboardPage.jsx"
 
 import Header from "../../components/Header/Header.jsx";

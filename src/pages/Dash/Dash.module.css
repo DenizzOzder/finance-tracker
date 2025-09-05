@@ -68,8 +68,8 @@
 }
 
 .transactionsContainer {
-  width: 83%;
-  padding-right: 24px;
+  width: calc(100% - 481px);
+  padding: 0 12px;
   flex-shrink: 0;
   box-sizing: border-box;
   min-width: 0;
