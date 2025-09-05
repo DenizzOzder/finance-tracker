@@ -10,7 +10,6 @@ const Register = lazy(() => import("./pages/Register/Register"));
 const Dash = lazy(() => import("./pages/Dash/Dash"));
 const StatisticsDashboard = lazy(() => import("./pages/Statistics/StatisticsDashboard/StatisticsDashboard"));
 
-import { lazy } from "react";
 import CurrencyLayout from "./components/Currency/CurrencyLayout/CurrencyLayout";
 
 const CurrencyTab = lazy(() => import("./components/Currency/CurrencyLayout/CurrencyLayout"));

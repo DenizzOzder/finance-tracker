@@ -32,6 +32,8 @@
   height: fit-content;
 }
 @media screen and (max-width: 1024px) {
+
+
   .stat {
     text-align: left;
   }
@@ -52,6 +54,7 @@
     max-width: 100%;
     margin: 0;
   }
+  
   .leftSide {
     width: 100%;
     margin-right: 0;
