@@ -6,13 +6,23 @@ import styles from "./TransactionsList.module.css";
 import TransactionsItem from "./TransactionsItem.jsx";
 import ButtonAddTransactions from "./ButtonAddTransactions.jsx";
 import emptyTransaction from "../../images/emptytransaction.webp";
-import { selectTransactions, selectCategories } from "../../redux/transactions/selectors.js";
-import { deleteTransaction, getCategories } from "../../redux/transactions/operations.js";
-import { optimisticDelete, revertDelete } from "../../redux/transactions/slice.js";
+import {
+  selectTransactions,
+  selectCategories,
+} from "../../redux/transactions/selectors.js";
+import {
+  deleteTransaction,
+  getCategories,
+} from "../../redux/transactions/operations.js";
+import {
+  optimisticDelete,
+  revertDelete,
+} from "../../redux/transactions/slice.js";
 import "izitoast/dist/css/iziToast.min.css";
 import iziToast from "izitoast";
 import { useState } from "react";
 import AddTransactionModal from "../Transaction/transaction.jsx";
+import ModalEditTransaction from "../ModalEditTransaction/ModalEditTransaction.jsx";
 
 const TransactionsList = () => {
   const dispatch = useDispatch();
@@ -21,8 +31,7 @@ const TransactionsList = () => {
   const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
   const isEmpty = !transactions || transactions.length === 0;
   const [showTransaction, setShowTransaction] = useState(false);
-  console.log("SELECTED TRANSACTIONS:", transactions);
-  console.log("SELECTED Categories:", categories);
+  const [selectedTransaction, setSelectedTransaction] = useState(null);
 
   // Component mount olduğunda categories'leri yükle
   useEffect(() => {
@@ -42,10 +51,8 @@ const TransactionsList = () => {
       categoryName: categoryMap[transaction.categoryId] || "Unknown Category",
     })) || [];
 
-  console.log("transaction categories map:", categoryMap);
-  console.log("transactions categories:", transactionsWithCategories);
-
   const handleEdit = (transaction) => {
+    setSelectedTransaction(transaction);
     // Edit transaction logic
     console.log("Edit transaction:", transaction);
   };
@@ -137,7 +144,11 @@ const TransactionsList = () => {
           </table>
         </div>
       )}
-
+      <ModalEditTransaction
+        isOpen={!!selectedTransaction}
+        onClose={() => setSelectedTransaction(null)}
+        transaction={selectedTransaction}
+      />
       <ButtonAddTransactions onClick={() => setShowTransaction(true)} />
 
       {showTransaction && <AddTransactionModal onClose={() => setShowTransaction(false)} />}
