@@ -12,7 +12,7 @@ const initialState = {
   categories: [],
   loading: false,
   error: null,
-  deletingIds: [], // Silinmekte olan transaction ID'leri
+  deletingIds: [], // Optimistic delete için
 };
 
 const transactionsSlice = createSlice({
@@ -22,7 +22,7 @@ const transactionsSlice = createSlice({
     clearError: (state) => {
       state.error = null;
     },
-    // Optimistic delete - hemen UI'dan kaldır
+    // Optimistic delete - UI'dan hemen kaldır
     optimisticDelete: (state, action) => {
       const id = action.payload;
       state.deletingIds.push(id);
@@ -39,7 +39,7 @@ const transactionsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      // Get Transactions
+      // GET Transactions
       .addCase(getTransactions.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -47,24 +47,24 @@ const transactionsSlice = createSlice({
       .addCase(getTransactions.fulfilled, (state, action) => {
         state.loading = false;
         state.items = action.payload;
-        state.error = null;
       })
       .addCase(getTransactions.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload?.message || "Failed to fetch transactions";
       })
-      // Get Categories
+
+      // GET Categories
       .addCase(getCategories.pending, (state) => {
         state.error = null;
       })
       .addCase(getCategories.fulfilled, (state, action) => {
         state.categories = action.payload;
-        state.error = null;
       })
       .addCase(getCategories.rejected, (state, action) => {
         state.error = action.payload?.message || "Failed to fetch categories";
       })
-      // Add Transaction
+
+      // ADD Transaction
       .addCase(addTransaction.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -72,13 +72,13 @@ const transactionsSlice = createSlice({
       .addCase(addTransaction.fulfilled, (state, action) => {
         state.loading = false;
         state.items.push(action.payload);
-        state.error = null;
       })
       .addCase(addTransaction.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload?.message || "Failed to add transaction";
       })
-      // Update Transaction
+
+      // UPDATE Transaction
       .addCase(updateTransaction.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -92,11 +92,13 @@ const transactionsSlice = createSlice({
           state.items[index] = action.payload;
         }
         state.error = null;
+        if (index !== -1) state.items[index] = action.payload;
       })
       .addCase(updateTransaction.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload?.message || "Failed to update transaction";
       })
+
       // Delete Transaction (optimistic, burada sadece cleanup)
       .addCase(deleteTransaction.pending, (state) => {
         state.error = null;
