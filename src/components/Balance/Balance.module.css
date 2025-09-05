@@ -15,6 +15,8 @@
   background: rgba(82, 59, 126, 0.6);
   border-radius: 8px;
   max-width: 280px;
+  margin: 0 auto;
+  gap:14px
 }
 
 span {
@@ -36,7 +38,7 @@ span {
 .balance {
   font-family: var(--font-family);
   font-weight: 700;
-  font-size: 30px;
+  font-size: 22px;
   padding: 2px 8px;
   color: white;
   transition: transform 0.3s ease, opacity 0.3s ease;

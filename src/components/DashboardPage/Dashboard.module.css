@@ -3,6 +3,7 @@
   background-size: cover;
   background-attachment: fixed;
   display: flex;
+  flex-wrap: wrap;
   flex-direction: column;
   align-items: center;
   height: fit-content;
@@ -21,6 +22,9 @@
   align-items: end;
   gap: 32px;
 }
+.currency{
+  align-self: flex-end;
+
 @media screen and (max-width: 767px) {
   .main_container {
     padding: 30px;
@@ -41,6 +45,8 @@
     justify-content: space-between;
     align-items: start;
     flex-direction: row;
+    min-height: 100vh;
+    border-right: 3px solid white;
   }
 
   .nav_container {

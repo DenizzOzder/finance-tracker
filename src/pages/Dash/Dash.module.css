@@ -36,8 +36,8 @@
 
 .content {
   display: flex;
-  flex: 1;
   width: 100%;
+  flex-wrap: wrap;
   padding-top: 10px; /* Header altında boşluk bırak */
   
 }
@@ -68,7 +68,8 @@
 }
 
 .transactionsContainer {
-  width: calc(100% - 481px);
+  flex: 1;
+  min-width: 769px;
   padding: 0 12px;
   flex-shrink: 0;
   box-sizing: border-box;
@@ -81,6 +82,7 @@
 @media (max-width: 1024px) and (min-width: 768px) {
   .content {
     flex-direction: column;
+    flex:1;
   }
   
   .sidebar {
@@ -111,6 +113,7 @@
   .transactionsContainer {
     width: 100%; 
     padding: 16px;
+    margin-top: 80px;
     overflow-x: hidden; /* Yatay scroll engelle */
   }
   
@@ -122,6 +125,7 @@
 /* Mobile - below 768px */
 @media (max-width: 767px) {
   .content {
+    width: 100%;
     flex-direction: column;
   }
   
