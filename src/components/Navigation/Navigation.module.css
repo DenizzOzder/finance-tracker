@@ -1,14 +1,13 @@
-
-
 .navElements {
   display: flex;
   flex-direction: row;
-  padding: 12px 20px 0 20px;
   gap: 38px;
   align-items: center;
   justify-content: center;
 }
-
+.navigation .container {
+  padding: 0px;
+}
 .transactions,
 .statistics,
 .currency {
@@ -64,8 +63,7 @@
 @media screen and (min-width: 768px) {
   .navElements {
     flex-direction: column;
-    padding: 40px 0 0 32px;
-    gap: 21px;
+    gap: 0;
     align-items: flex-start;
     font-family: var(--font-family);
   }
@@ -85,7 +83,9 @@
     font-size: 18px;
     color: wheat;
   }
-
+  .navigation {
+    padding: 20px;
+  }
   .navLink:hover .linkText {
     transform: scale(1.1);
   }
@@ -118,9 +118,9 @@
 }
 
 @media screen and (min-width: 1280px) {
-	.navigation {
-		margin-bottom: 28px;
-	}
+  .navigation {
+    margin-bottom: 28px;
+  }
   .navElements {
     padding: 40px 0 0 32px;
     gap: 12px;
