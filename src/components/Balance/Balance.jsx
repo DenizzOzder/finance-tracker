@@ -3,51 +3,46 @@ import { useEffect, useState } from "react";
 import { selectUserBalance } from "../../redux/auth/selectors";
 import { selectCurrencyData } from "../../redux/currency/selectors";
 import { getBalanceThunk } from "../../redux/auth/operations";
+import { getCurrency } from "../../redux/currency/operations";
 import useMedia from "../../hooks/useMedia";
 import clsx from "clsx";
 import s from "./Balance.module.css";
-import { getCurrency } from "../../redux/currency/operations";
 
 const Balance = () => {
   const dispatch = useDispatch();
-  const balance = useSelector(selectUserBalance) ?? 0;
+  const rawBalance = useSelector(selectUserBalance);
+  const balance = Number(rawBalance ?? 0); // her zaman number
   const currencyData = useSelector(selectCurrencyData);
   const { isMobile } = useMedia();
 
-  const usdRateBuy = currencyData?.usd?.buy;
-  const euroRateBuy = currencyData?.euro?.buy;
+  const usdRateBuy = Number(currencyData?.usd?.buy ?? 0);
+  const euroRateBuy = Number(currencyData?.euro?.buy ?? 0);
 
   const [selectedCurrency, setSelectedCurrency] = useState("UAH");
 
+  // İlk açılışta bakiye ve kur bilgilerini çek
   useEffect(() => {
-		dispatch(getBalanceThunk());
-		
-		if (!currencyData?.usd || !currencyData?.euro) {
-      dispatch(getCurrency());
-    }
+    dispatch(getBalanceThunk());
+    dispatch(getCurrency());
   }, [dispatch]);
 
-  useEffect(() => {
-  fetch("https://api.monobank.ua/bank/currency")
-    .then((res) => res.json())
-    .then((data) => {
-      void data;
-    });
-}, []);
+  // UAH formatı (toLocaleString öncesi güvenlik)
+  const formattedUAH = (Number.isFinite(balance) ? balance : 0).toLocaleString(
+    "uk-UA",
+    {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }
+  );
 
-
-  const formattedUAH = balance.toLocaleString("uk-UA", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  });
-
+  // USD/EUR dönüşümleri (NaN ve 0 bölmeye karşı güvenli)
   const balanceInUSD =
-    typeof usdRateBuy === "number" && usdRateBuy > 0
+    usdRateBuy > 0 && Number.isFinite(balance)
       ? (balance / usdRateBuy).toFixed(2)
       : "0.00";
 
   const balanceInEUR =
-    typeof euroRateBuy === "number" && euroRateBuy > 0
+    euroRateBuy > 0 && Number.isFinite(balance)
       ? (balance / euroRateBuy).toFixed(2)
       : "0.00";
 
@@ -58,6 +53,7 @@ const Balance = () => {
     return "₴ 0.00";
   };
 
+  // Mobil swipe
   let touchStartX = 0;
   let touchEndX = 0;
 
@@ -116,6 +112,7 @@ const Balance = () => {
           </button>
         </div>
       )}
+
       {isMobile && <p className={s.swipeHint}>Swipe to change currency</p>}
     </div>
   );
