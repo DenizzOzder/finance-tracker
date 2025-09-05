@@ -1,8 +1,7 @@
 .main_container {
   background-repeat: no-repeat;
   background-size: cover;
-  background-attachment: fixed; 
-  min-height: 100vh;
+  background-attachment: fixed;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -19,15 +18,15 @@
 
 .nav_container {
   display: flex;
-  align-items: center;
+  align-items: end;
   gap: 32px;
 }
-
-@media screen and (min-width: 768px) {
+@media screen and (max-width: 767px) {
   .main_container {
-    height: calc(100vh - 68px);
+    padding: 30px;
   }
-
+}
+@media screen and (min-width: 768px) {
   .outlet_container {
     width: 100%;
     display: flex;

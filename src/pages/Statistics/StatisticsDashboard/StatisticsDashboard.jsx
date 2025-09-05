@@ -1,8 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./StatisticsDashboard.module.css";
-import { selectTransactions, selectCategories } from "../../../redux/transactions/selectors";
-import { getTransactions, getCategories } from "../../../redux/transactions/operations";
+import {
+  selectTransactions,
+  selectCategories,
+} from "../../../redux/transactions/selectors";
+import {
+  getTransactions,
+  getCategories,
+} from "../../../redux/transactions/operations";
 import Chart from "../Chart/Chart";
 import StatisticsTable from "../StatisticsTable/StatisticsTable";
 import Balance from "../../../components/Balance/Balance";
@@ -36,35 +42,38 @@ const StatisticsDashboard = () => {
 
   const filteredList = transactionsWithCategories.filter((item) => {
     const date = new Date(item.transactionDate);
-    const matchYear = selectYear !== "" ? date.getFullYear() === Number(selectYear) : true;
-    const matchMonth = selectMonth !== "" ? date.getMonth() === Number(selectMonth) : true;
+    const matchYear =
+      selectYear !== "" ? date.getFullYear() === Number(selectYear) : true;
+    const matchMonth =
+      selectMonth !== "" ? date.getMonth() === Number(selectMonth) : true;
     return matchYear && matchMonth;
   });
 
   return (
-
     <>
-    <Header />
-    <div className={styles.mainWrapper}>
-      <div className={styles.leftPanel}>
-        <Navigation />
-        <Balance />
-        <Currency />
+      <Header />
+      <div className={styles.mainWrapper}>
+        <div className={styles.leftPanel}>
+          <Navigation />
+          <div className={styles.balanceCurrency}>
+            <Balance />
+            <Currency />
+          </div>
+        </div>
+        <div className={styles.container}>
+          <Chart filteredList={filteredList} />
+          <StatisticsTable
+            filteredList={filteredList}
+            categories={categories}
+            selectYear={selectYear}
+            setSelectYear={setSelectYear}
+            selectMonth={selectMonth}
+            setSelectMonth={setSelectMonth}
+          />
+        </div>
       </div>
-      <div className={styles.container}>
-        <Chart filteredList={filteredList} />
-        <StatisticsTable
-          filteredList={filteredList}
-          categories={categories}
-          selectYear={selectYear}
-          setSelectYear={setSelectYear}
-          selectMonth={selectMonth}
-          setSelectMonth={setSelectMonth}
-        />
-      </div>
-    </div>
-    <RuleBotWidget />
-  </>
+      <RuleBotWidget />
+    </>
   );
 };
 

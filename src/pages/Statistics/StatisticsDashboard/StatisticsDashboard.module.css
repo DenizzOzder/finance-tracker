@@ -4,36 +4,53 @@
   min-height: 100vh;
   box-sizing: border-box;
   width: 100%;
+  margin: 0;
 }
-.mainWrapper{
+.mainWrapper {
   display: flex;
 }
-.leftPanel{
+.leftPanel {
   border-right: 1px solid lightgray;
 }
-.leftSide{
+.leftSide {
   align-items: center;
 }
 .rightSide {
   margin-top: 50px;
 }
-
 .filterContainer {
   display: flex;
   margin-left: 15px;
   gap: 40px;
 }
-
-
-
+.balanceCurrency {
+  display: flex;
+  justify-content: space-around;
+  flex-direction: column;
+  height: fit-content;
+  align-items: center;
+  height: fit-content;
+}
 @media screen and (max-width: 1024px) {
   .stat {
     text-align: left;
+  }
+  .balanceCurrency {
+    display: flex;
+    justify-content: space-around;
+    height: fit-content;
+    align-items: center;
+    height: fit-content;
+    flex-direction: row;
+  }
+  .mainWrapper {
+    flex-direction: column;
   }
   .container {
     gap: 0px;
     padding: 0;
     max-width: 100%;
+    margin: 0;
   }
   .leftSide {
     width: 100%;
@@ -57,10 +74,12 @@
     align-items: center;
     padding: 0 20px;
     width: 100%;
-    margin: 0 auto;
     box-sizing: border-box;
+    margin: auto;
   }
-
+  .balanceCurrency {
+    display: none;
+  }
   .leftSide,
   .rightSide {
     gap: 20px;
@@ -69,16 +88,17 @@
     flex-direction: column;
     align-items: center;
   }
-
+  .leftPanel {
+    padding: 30px;
+  }
   .filterContainer {
     display: flex;
     flex-direction: column;
     gap: 12px;
     width: 100%;
     max-width: 280px;
-    margin: 0 auto;
+    margin: 0;
   }
-
   .rightSide {
     padding-top: 20px;
   }
