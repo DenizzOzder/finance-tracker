@@ -5,16 +5,26 @@ import styles from "./TransactionsList.module.css";
 import TransactionsItem from "../TransactionsItem/TransactionsItem.jsx";
 import ButtonAddTransactions from "../ButtonAddTransactions/ButtonAddTransactions.jsx";
 import emptyTransaction from "../../images/emptytransaction.webp";
-import { selectTransactions, selectCategories, selectTransactionsLoading } from "../../redux/transactions/selectors.js";
-import { deleteTransaction, getCategories } from "../../redux/transactions/operations.js";
-import { optimisticDelete, revertDelete } from "../../redux/transactions/slice.js";
+import {
+  selectTransactions,
+  selectCategories,
+  selectTransactionsLoading,
+} from "../../redux/transactions/selectors.js";
+import {
+  deleteTransaction,
+  getCategories,
+} from "../../redux/transactions/operations.js";
+import {
+  optimisticDelete,
+  revertDelete,
+} from "../../redux/transactions/slice.js";
 import "izitoast/dist/css/iziToast.min.css";
 import iziToast from "izitoast";
 import AddTransactionModal from "../AddTransactionModal/AddTransactionModal.jsx";
 import ModalEditTransaction from "../ModalEditTransaction/ModalEditTransaction.jsx";
 import Loader from "../Loader/Loader";
 
-const TransactionsList = ({setBalance}) => {
+const TransactionsList = ({ setBalance }) => {
   const dispatch = useDispatch();
   const isLoading = useSelector(selectTransactionsLoading);
   const transactions = useSelector(selectTransactions);
@@ -43,15 +53,13 @@ const TransactionsList = ({setBalance}) => {
     })) || [];
 
   useEffect(() => {
-  if (!transactions) return;
+    if (!transactions) return;
 
-  const total = transactions.reduce((acc, t) => acc + Number(t.amount), 0);
-  setBalance(total);
-
-}, [transactions, setBalance]);
+    const total = transactions.reduce((acc, t) => acc + Number(t.amount), 0);
+    setBalance(total);
+  }, [transactions, setBalance]);
   const handleEdit = (transaction) => {
     setSelectedTransaction(transaction);
-    console.log("Edit transaction:", transaction);
   };
 
   const handleDelete = async (id) => {
@@ -95,11 +103,18 @@ const TransactionsList = ({setBalance}) => {
             <div className={styles.empty}>
               <img src={emptyTransaction} alt="page-not-found" width="240" />
               <p className={styles.emptyTitle}>No transactions yet</p>
-              <p className={styles.emptyText}>Start by adding your first record.</p>
+              <p className={styles.emptyText}>
+                Start by adding your first record.
+              </p>
             </div>
           ) : (
             transactionsWithCategories.map((t) => (
-              <TransactionsItem key={t.id} transaction={t} onEdit={handleEdit} onDelete={handleDelete} />
+              <TransactionsItem
+                key={t.id}
+                transaction={t}
+                onEdit={handleEdit}
+                onDelete={handleDelete}
+              />
             ))
           )}
         </div>
@@ -121,15 +136,26 @@ const TransactionsList = ({setBalance}) => {
                 <tr>
                   <td colSpan="6">
                     <div className={styles.empty}>
-                      <img src={emptyTransaction} alt="page-not-found" width="240" />
+                      <img
+                        src={emptyTransaction}
+                        alt="page-not-found"
+                        width="240"
+                      />
                       <p className={styles.emptyTitle}>No transactions yet</p>
-                      <p className={styles.emptyText}>Start by adding your first record.</p>
+                      <p className={styles.emptyText}>
+                        Start by adding your first record.
+                      </p>
                     </div>
                   </td>
                 </tr>
               ) : (
                 transactionsWithCategories.map((t) => (
-                  <TransactionsItem key={t.id} transaction={t} onEdit={handleEdit} onDelete={handleDelete} />
+                  <TransactionsItem
+                    key={t.id}
+                    transaction={t}
+                    onEdit={handleEdit}
+                    onDelete={handleDelete}
+                  />
                 ))
               )}
             </tbody>
@@ -144,7 +170,9 @@ const TransactionsList = ({setBalance}) => {
       />
       <ButtonAddTransactions onClick={() => setShowTransaction(true)} />
 
-      {showTransaction && <AddTransactionModal onClose={() => setShowTransaction(false)} />}
+      {showTransaction && (
+        <AddTransactionModal onClose={() => setShowTransaction(false)} />
+      )}
     </div>
   );
 };
