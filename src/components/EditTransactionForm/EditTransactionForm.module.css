@@ -1,0 +1,87 @@
+.editForm {
+    background-color: transparent;
+}
+
+.modal h2 {
+    text-align: center;
+    font-size: 30px;
+    margin-bottom: 20px;
+}
+
+.tabs {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.tabs span {
+    margin: 0 5px;
+}
+
+.type {
+    color: #E0E0E0;
+}
+
+.typeactive {
+    color: #FFB627;
+}
+
+label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 5px;
+    opacity: 0.8;
+}
+
+.inputRow {
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding: 5px 0;
+}
+
+.inputRow input {
+    background: transparent;
+    color: #fff;
+    font-size: 16px;
+    outline: none;
+    width: 100%;
+}
+
+.input {
+    border: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.date {
+    text-align: right;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 20px;
+    cursor: pointer;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.buttonsWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.calendarIcon {
+    color: #734AEF;
+}
+
+.error {
+    color: red;
+    font-size: 12px;
+    font-weight: 700;
+}

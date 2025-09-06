@@ -1,0 +1,348 @@
+.filterContainer {
+  display: flex;
+  justify-content: flex-start;
+  gap: 41px;
+  margin-left: 10px;
+}
+
+.selectDark,
+.selectLight {
+  padding: 0px 1rem;
+  border-radius: 8px;
+  border: 1px solid #555;
+  font-size: 17px;
+  
+}
+
+.selectDark {
+  width: 240px;
+  height: 50px;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #fff;
+  background: transparent;
+  color: #fff;
+  outline: none;
+  appearance: none;
+  cursor: pointer;
+}
+
+.selectDark option {
+  background-color: #6a46a5;
+  color: #fff;
+}
+
+.selectDark option:checked {
+  background-color: #6a46a5;
+  color: #ff868d;
+}
+
+.selectDark option:hover {
+  background-color: #5a3a8f;
+  color: #ff868d;
+}
+
+.selectWrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.selectWrapper select {
+  appearance: none;
+  padding-right: 24px;
+  
+}
+
+.selectIcon {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: #fff;
+  width: 25px;
+  height: 25px;
+  
+}
+
+.transactionList {
+  overflow-y: auto;
+  width: 75%;
+  padding: 30px;
+  overflow-x: hidden;
+}
+
+.transactionItem {
+  width: calc(100% - 10px); /* Figma ölçüsü */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  font-size: 18px;
+}
+.transactionItem::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: -20px; /* sola taşır */
+  width: calc(100% + 20px); /* sağa taşır, toplam uzunluk = width + sol + sağ */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.transactionInfo {
+  display: flex;
+  justify-content: space-between; /* kategori solda, miktar sağda */
+  align-items: center;
+  gap: 12px;
+  width: 100%; /* satırın tamamını kaplasın */
+}
+
+.colorBox {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.summary {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 2rem;
+  position: relative;
+  right: 30px;
+  padding: 0 -20px;
+}
+
+.summary .transactionInfo {
+  display: flex;
+  justify-content: space-around; /* kategori solda, miktar sağda */
+  align-items: center;
+  font-weight: 700;
+  font-size: 17px;
+  margin: 0;
+  gap: 20px;
+  padding: 0;
+  position: relative;
+}
+
+.categ {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 600;
+  padding: 16px 0px;
+}
+
+.sum {
+  font-weight: 600;
+}
+
+.categDiv {
+  background-color: #523b7e;
+  width: 395px;
+  height: 56px;
+  border-radius: 8px;
+  margin: 20px 0;
+  position: relative;
+  left: -20px;
+  padding: 0 20px;
+  font-size: 18px;
+}
+
+.selectWrapper {
+  position: relative;
+  display: inline-block;
+  margin-right: 12px; /* yan yana boşluk için */
+}
+
+.selectIcon {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none; /* ikon tıklanamaz */
+  color: #fff; /* ikon rengi */
+  width: 25px;
+  height: 25px;
+}
+
+.emptyChartMessage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  text-align: center;
+  color: #bbb;
+  font-size: 18px;
+  padding: 1rem;
+}
+
+.emptyChartMessage span + span {
+  margin-top: 4px; /* yazılar arasındaki boşluk */
+}
+
+/* Statistics.module.css içine ekle */
+.categ {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 600; /* istersen semi bold gibi olsun */
+  padding: 16px 0px;
+}
+
+.sum {
+  font-weight: 600;
+}
+body {
+  color: white;
+}
+
+.categDiv {
+  background-color: #523b7e;
+  width: calc(100% - 20px); /* transactionItem ile aynı */
+  height: 56px;
+  border-radius: 8px;
+  margin: 20px 0;
+  position: relative;
+  left: -20px; /* transactionItem::after ile aynı hizaya gelir */
+  padding: 0 20px;
+}
+.rightSide {
+  margin-top: 50px;
+  width: 50%;
+}
+
+@media screen and (max-width: 1024px) {
+  .stat {
+    text-align: left;
+  }
+  .container {
+    padding: 0;
+    max-width: 100%;
+    position: relative;
+    top: 500px;
+    right: 700px;
+  }
+  .summary {
+    padding: 0 65px;
+    
+  }
+  .summary .transactionInfo {
+    margin-left: 0;
+    padding: 0;
+    justify-content: space-between;
+    right: 10px;
+  }
+
+  .selectWrapper {
+    max-width: 160px;
+    gap: 16px;
+  }
+  .rightSide {
+    position: relative;
+    right: 20px;
+    padding-top: 20px;
+    margin-right: 20px;
+  }
+  .transactionList {
+    padding: 0 auto;
+    margin: 0 auto;
+  }
+
+  .filterContainer {
+    margin-left: 55px;
+  }
+  .summary {
+    position: relative;
+    bottom: 20px;
+    right: 5px;
+  }
+  .selectDark {
+    width: 180px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+   width: calc(100% - 2rem);
+    align-items: center;
+    padding: 0 20px; /* kenarlardan boşluk */
+    width: 100%;
+    margin: 0 auto;
+    box-sizing: border-box;
+  }
+
+  .rightSide {
+    gap: 20px;
+    width: 320px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 auto;
+  }
+
+  .filterContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    max-width: 280px;
+    margin-left: 0;
+    margin-right: 35px;
+  }
+
+  .selectWrapper,
+  .selectDark {
+    width: 310px; /* eskiden 280px */
+    max-width: 280px;
+    margin-left: 8px;
+  }
+
+  .transactionList {
+    max-width: 280px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 0px;
+  }
+  .transactionList,
+  .transactionItem {
+    width: 100%;
+    max-width: 280px;
+  }
+
+  .summary {
+    width: 100%;
+    max-width: 280px;
+    margin: 0 auto; /* ortala */
+    padding: 0; /* çok yapışmasın */
+    box-sizing: border-box;
+    gap: 16px;
+    margin-bottom: 45px;
+  }
+  .summary .transactionInfo {
+    width: 280px;
+    justify-content: space-between; /* soldaki ve sağdaki yazılar dengeli */
+    margin: 0;
+    padding: 0;
+  }
+
+  .categDiv {
+    width: calc(100% - 20px);
+    padding: 0px;
+    margin-left: 20px;
+  }
+  .categ {
+    padding: 0 16px;
+  }
+  .sum {
+    position: relative;
+  }
+}

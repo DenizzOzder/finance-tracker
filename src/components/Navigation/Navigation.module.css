@@ -1,0 +1,128 @@
+.navElements {
+  display: flex;
+  flex-direction: row;
+  gap: 38px;
+  align-items: center;
+  justify-content: center;
+}
+.navigation .container {
+  padding: 0px;
+}
+.transactions,
+.statistics,
+.currency {
+  width: 38px;
+  height: 38px;
+  border-radius: 6px;
+  box-shadow: 0 3px 10px 0 rgba(74, 86, 226, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease, background-color 0.3s ease;
+}
+
+.navLinkActive .transactions,
+.navLinkActive .statistics,
+.navLinkActive .currency {
+  color: white;
+  box-shadow: 0 3px 10px 0 rgba(74, 86, 226, 0.5);
+  background-color: #734aef;;
+}
+.navLink .transactions,
+.navLink .statistics,
+.navLink .currency {
+  background-color: rgba(255, 255, 255, 0.496);
+}
+.navLink:hover .transactions,
+.navLink:hover .statistics,
+.navLink:hover .currency {
+  transform: scale(1.1);
+}
+
+.homeIcon {
+  font-size: 32px;
+}
+.statsIcon {
+  font-size: 32px;
+}
+.currIcon {
+  font-size: 25px;
+}
+.navLink .homeIcon,
+.navLink .statsIcon,
+.navLink .currIcon {
+  color: #2e1e53;
+  width: 44px;
+  height: 44px;
+    
+}
+
+.linkText {
+  display: none;
+}
+@media screen and (min-width: 768px) {
+  .navElements {
+    flex-direction: column;
+    gap: 0;
+    align-items: flex-start;
+    font-family: var(--font-family);
+  }
+  .navLinkActive,
+  .navLink {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 23px;
+  }
+  .currency {
+    display: none;
+  }
+  .linkText {
+    display: block;
+    font-weight: 400;
+    font-size: 18px;
+    color: wheat;
+  }
+  .navigation {
+    padding: 20px;
+  }
+  .navLink:hover .linkText {
+    transform: scale(1.1);
+  }
+  .navLinkActive .linkText {
+    font-weight: 700;
+    font-size: 18px;
+  }
+
+  .transactions,
+  .statistics {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+  }
+
+  .transactions,
+  .statistics,
+  .currency {
+    width: 24px;
+    height: 24px;
+    border-radius: 2px;
+  }
+
+  .homeIcon {
+    font-size: 20px;
+  }
+  .statsIcon {
+    font-size: 22px;
+  }
+}
+
+@media screen and (min-width: 1280px) {
+  .navigation {
+    margin-bottom: 28px;
+  }
+  .navElements {
+    padding: 40px 0 0 32px;
+    gap: 12px;
+  }
+}

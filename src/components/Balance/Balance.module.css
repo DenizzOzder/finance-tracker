@@ -1,0 +1,149 @@
+:root {
+  --clr: linear-gradient(
+    167deg,
+    rgb(255, 199, 39) 0%,
+    rgb(158, 64, 186) 61.46%,
+    rgb(112, 0, 255) 90.54%
+  );
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  backdrop-filter: blur(100px);
+  box-shadow: 0 4px 60px 0 rgba(0, 0, 0, 0.25);
+  background: rgba(82, 59, 126, 0.6);
+  border-radius: 8px;
+  max-width: 280px;
+  margin: 0 auto;
+  gap: 14px;
+}
+
+span {
+  margin-left: 5px;
+}
+
+.title {
+  font-family: var(--font-family);
+  font-weight: 400;
+  font-size: 15px;
+  text-transform: uppercase;
+  color: wheat;
+  padding-top: 8px;
+  padding-left: 32px;
+  padding-right: 160px;
+  text-wrap: nowrap;
+}
+
+.balance {
+  font-family: var(--font-family);
+  font-weight: 700;
+  font-size: 22px;
+  padding: 2px 8px;
+  color: white;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  text-align: center;
+}
+
+.balance.swiping {
+  transform: translateX(10px);
+  opacity: 0.7;
+}
+
+.swipeHint {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.6);
+  text-align: center;
+  animation: blink 1.5s infinite;
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .container {
+    max-width: 336px;
+  }
+
+  .title {
+    padding-left: 40px;
+    padding-right: 244px;
+  }
+
+  .buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    justify-content: center;
+    padding: 25px;
+  }
+
+  .button {
+    background: none;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    color: wheat;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  .button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .active {
+    background: var(--button-gradient);
+    background-image: linear-gradient(
+      167deg,
+      rgb(255, 199, 39) 0%,
+      rgb(158, 64, 186) 61.46%,
+      rgb(112, 0, 255) 90.54%
+    );
+    background-position-x: initial;
+    background-position-y: initial;
+    background-size: initial;
+    background-repeat: initial;
+    background-attachment: initial;
+    background-origin: initial;
+    background-clip: initial;
+    background-color: initial;
+    color: white;
+    border-color: transparent;
+    cursor: pointer;
+  }
+}
+
+@media screen and (min-width: 1280px) {
+  .container {
+    border-radius: 0px;
+    max-width: 480px;
+    flex-direction: row;
+    position: relative;
+    margin-bottom: 32px;
+  }
+
+  .title {
+    padding-left: 40px;
+    padding-right: 388px;
+  }
+
+  .balance {
+    margin-top: 50px;
+  }
+
+  .buttons {
+    position: absolute;
+    top: 8px;
+    right: 16px;
+    gap: 8px;
+  }
+}
