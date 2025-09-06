@@ -31,7 +31,6 @@ const EditTransactionForm = ({ onClose, transaction }) => {
   } = useForm({
     defaultValues: {
       amount: Math.abs(transaction.amount),
-      categoryName: transaction.categoryName,
       transactionDate: transaction.transactionDate
         ? new Date(transaction.transactionDate)
         : new Date(),
@@ -115,12 +114,7 @@ const EditTransactionForm = ({ onClose, transaction }) => {
         <form onSubmit={handleSubmit(customSubmit)}>
           {transaction.type === "EXPENSE" && (
             <div className={styles.inputRow}>
-              <input
-                className={styles.input}
-                type="text"
-                {...register("categoryName")}
-                readOnly
-              />
+              <label className={styles.input}>{transaction.categoryName}</label>
             </div>
           )}
           <div className={styles.inputRow}>
