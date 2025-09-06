@@ -22,7 +22,6 @@
   align-items: end;
   gap: 32px;
 }
-
 .currency {
   align-self: flex-end;
 }

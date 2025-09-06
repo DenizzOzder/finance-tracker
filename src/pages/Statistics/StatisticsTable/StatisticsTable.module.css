@@ -1,21 +1,21 @@
 .filterContainer {
   display: flex;
-  margin-left: 15px;
-  gap: 40px;
+  justify-content: flex-start;
+  gap: 41px;
+  margin-left: 10px;
 }
 
 .selectDark,
 .selectLight {
-  width: 182px;
-  height: 50px;
-  padding: 0.5rem 1rem;
+  padding: 0px 1rem;
   border-radius: 8px;
   border: 1px solid #555;
   font-size: 17px;
+  
 }
 
 .selectDark {
-  width: 182px;
+  width: 240px;
   height: 50px;
   padding: 0.5rem 1rem;
   border-radius: 8px;
@@ -45,12 +45,12 @@
 .selectWrapper {
   position: relative;
   display: inline-block;
-  margin-right: 12px;
 }
 
 .selectWrapper select {
   appearance: none;
   padding-right: 24px;
+  
 }
 
 .selectIcon {
@@ -62,10 +62,12 @@
   color: #fff;
   width: 25px;
   height: 25px;
+  
 }
 
 .transactionList {
   overflow-y: auto;
+  width: 75%;
   padding: 30px;
   overflow-x: hidden;
 }
@@ -109,17 +111,21 @@
   flex-direction: column;
   gap: 4px;
   margin-bottom: 2rem;
+  position: relative;
+  right: 30px;
+  padding: 0 -20px;
 }
 
 .summary .transactionInfo {
   display: flex;
-  justify-content: space-between; /* kategori solda, miktar sağda */
+  justify-content: space-around; /* kategori solda, miktar sağda */
   align-items: center;
-  padding: 0 12px; /* Figma’ya göre boşluk */
-  width: 395px; /* Figma ölçüsü */
   font-weight: 700;
   font-size: 17px;
-  margin-left: 20px;
+  margin: 0;
+  gap: 20px;
+  padding: 0;
+  position: relative;
 }
 
 .categ {
@@ -191,6 +197,9 @@
 .sum {
   font-weight: 600;
 }
+body {
+  color: white;
+}
 
 .categDiv {
   background-color: #523b7e;
@@ -212,18 +221,21 @@
     text-align: left;
   }
   .container {
-    gap: 0px;
     padding: 0;
     max-width: 100%;
+    position: relative;
+    top: 500px;
+    right: 700px;
   }
   .summary {
-    padding: 0 35px;
+    padding: 0 65px;
+    
   }
   .summary .transactionInfo {
     margin-left: 0;
-    width: 100%;
     padding: 0;
     justify-content: space-between;
+    right: 10px;
   }
 
   .selectWrapper {
@@ -242,14 +254,15 @@
   }
 
   .filterContainer {
-    margin-left: 25px;
+    margin-left: 55px;
   }
-  .summer {
+  .summary {
     position: relative;
     bottom: 20px;
+    right: 5px;
   }
   .selectDark {
-    width: 140px;
+    width: 180px;
   }
 }
 
@@ -257,7 +270,7 @@
   .container {
     display: flex;
     flex-direction: column;
-    max-width: 320px;
+   width: calc(100% - 2rem);
     align-items: center;
     padding: 0 20px; /* kenarlardan boşluk */
     width: 100%;
