@@ -14,7 +14,7 @@ import AddTransactionModal from "../AddTransactionModal/AddTransactionModal.jsx"
 import ModalEditTransaction from "../ModalEditTransaction/ModalEditTransaction.jsx";
 import Loader from "../Loader/Loader";
 
-const TransactionsList = () => {
+const TransactionsList = ({setBalance}) => {
   const dispatch = useDispatch();
   const isLoading = useSelector(selectTransactionsLoading);
   const transactions = useSelector(selectTransactions);
@@ -42,6 +42,13 @@ const TransactionsList = () => {
       categoryName: categoryMap[transaction.categoryId] || "Unknown Category",
     })) || [];
 
+  useEffect(() => {
+  if (!transactions) return;
+
+  const total = transactions.reduce((acc, t) => acc + Number(t.amount), 0);
+  setBalance(total);
+
+}, [transactions, setBalance]);
   const handleEdit = (transaction) => {
     setSelectedTransaction(transaction);
     console.log("Edit transaction:", transaction);

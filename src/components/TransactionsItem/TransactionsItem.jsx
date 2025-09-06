@@ -72,7 +72,7 @@ const TransactionsItem = ({ transaction, onEdit, onDelete }) => {
       </div>
     );
   }
-
+console.log(transaction.amount)
   return (
     <tr>
       <td>{formatDate(transaction.transactionDate)}</td>
